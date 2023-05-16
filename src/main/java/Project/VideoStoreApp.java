@@ -5,12 +5,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class VideoStoreApp extends Application {
     private VideoStoreManagement vsm = new VideoStoreManagement();
-    private Text warningText = new Text();
 
     @Override
     public void start(Stage primaryStage) {
@@ -64,6 +64,8 @@ public class VideoStoreApp extends Application {
                 loginStage.close();
                 mainApp();
             } else {
+                Text warningText = new Text();
+                warningText.setFill(Color.RED);
                 warningText.setText("Invalid username or password.");
                 grid.add(warningText, 1, 4);
             }
