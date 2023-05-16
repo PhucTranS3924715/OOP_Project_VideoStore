@@ -4,19 +4,25 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class VideoStoreApp extends Application {
     private VideoStoreManagement vsm = new VideoStoreManagement();
 
     @Override
     public void start(Stage primaryStage) {
-        vsm.loadData();
-        loginPage();
-        vsm.saveData();
+        if (vsm.loadData())
+            System.out.println("Load successful");
+        mainApp();
+        if (vsm.saveData())
+            System.out.println("Save successful");
     }
 
     public void loginPage(){
@@ -78,9 +84,52 @@ public class VideoStoreApp extends Application {
         loginStage.show();
     }
 
-    public void mainApp(){
+    public void mainApp() {
+        // Create the main application window
+        GridPane grid = new GridPane();
+        grid.setVgap(5);
+        grid.setHgap(5);
 
+        // Number of columns to display
+        int numColumns = 3;
+
+        // Add items to the grid
+        for (int i = 0; i < vsm.getItems().size(); i++) {
+            Item item = vsm.getItems().get(i);
+
+            // Calculate the row and column indices
+            int row = i / numColumns;
+            int column = i % numColumns;
+
+            // Item ID label
+            Label itemIDLabel = new Label(item.getID());
+
+            // Item title label
+            Label itemTitleLabel = new Label(item.getTitle());
+
+            // Item image view
+            ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup.jpg")).toExternalForm());
+            itemImageView.setFitWidth(200);
+            itemImageView.setFitHeight(200);
+
+            // Create a VBox to group the components together
+            VBox itemBox = new VBox(5);
+            itemBox.setAlignment(Pos.CENTER);
+            itemBox.getChildren().addAll(itemImageView, itemIDLabel, itemTitleLabel);
+
+            // Add the VBox to the grid
+            GridPane.setConstraints(itemBox, column, row);
+            grid.getChildren().add(itemBox);
+        }
+
+        // Set up the scene and stage
+        Scene scene = new Scene(grid);
+        Stage customerScreen = new Stage();
+        customerScreen.setScene(scene);
+        customerScreen.setTitle("Video Store");
+        customerScreen.show();
     }
+
 
     public static void main(String[] args) {
         launch(args);
