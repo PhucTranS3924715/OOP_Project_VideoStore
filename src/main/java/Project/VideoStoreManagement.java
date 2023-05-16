@@ -695,6 +695,14 @@ public class VideoStoreManagement {
         }
     }
 
+    public ArrayList<Customer> getCustomers() {
+        return customers;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
     public static void main(String[] args) {
         VideoStoreManagement vsm = new VideoStoreManagement();
         vsm.loadData();     // Do not remove this line;
