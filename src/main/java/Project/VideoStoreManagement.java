@@ -220,8 +220,7 @@ public class VideoStoreManagement {
     public boolean loadData() {
         try {
             // Load items
-            //File itemFile = new File("src/Project/items.txt");    // Old path
-            File itemFile = new File("src/main/java/Project/items.txt");    // New path
+            File itemFile = new File("src/main/java/Project/items.txt");
             Scanner itemScanner = new Scanner(itemFile);
             while (itemScanner.hasNextLine()) {
                 String itemData = itemScanner.nextLine();
@@ -238,8 +237,7 @@ public class VideoStoreManagement {
             itemScanner.close();
 
             // Load customers
-            //File customerFile = new File("src/Project/customers.txt");    // Old path
-            File customerFile = new File("src/main/java/Project/customers.txt");    // New path
+            File customerFile = new File("src/main/java/Project/customers.txt");
             Scanner customerScanner = new Scanner(customerFile);
             String data = "";
             while (customerScanner.hasNextLine()) {
@@ -278,8 +276,7 @@ public class VideoStoreManagement {
     public boolean saveData() {
         try {
             // Save customers
-            //FileWriter customerWriter = new FileWriter("src/Project/customers.txt");  // Old path
-            FileWriter customerWriter = new FileWriter("src/main/java/Project/customers.txt");    // New path
+            FileWriter customerWriter = new FileWriter("src/main/java/Project/customers.txt");
             for (Customer customer : customers) {
                 String customerString = customer.getID() + "," + customer.getName() + "," + customer.getAddress() + "," + customer.getPhone() + "," + customer.getNoOfRental() + "," + customer.getCustomerType() + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getRewardPoints();
                 if (!customer.getItems().isEmpty()) {
@@ -295,8 +292,7 @@ public class VideoStoreManagement {
             customerWriter.close();
 
             // Save items
-            //FileWriter itemWriter = new FileWriter("src/Project/items.txt");  // Old path
-            FileWriter itemWriter = new FileWriter("src/main/java/Project/items.txt");  // New path
+            FileWriter itemWriter = new FileWriter("src/main/java/Project/items.txt");
             for (Item item : items) {
                 String itemString = item.getID() + "," + item.getTitle() + "," + item.getRentalType() + "," + item.getLoanType() + "," + item.getNoOfCopy() + "," + item.getRentalFee() + "," + item.getRentalStatus();
                 if (item.getGenre() != null) {
