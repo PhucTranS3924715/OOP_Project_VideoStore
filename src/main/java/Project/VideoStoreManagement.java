@@ -1,5 +1,7 @@
 package Project;
 
+import javafx.scene.control.Label;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
@@ -54,7 +56,7 @@ public class VideoStoreManagement {
     }
 
     // Method to check valid item ID
-    private static boolean isValidItemID(String id) {
+    private boolean isValidItemID(String id) {
         if (!id.matches("I\\d{3}-\\d{4}")) {
             return false;
         }
@@ -63,7 +65,7 @@ public class VideoStoreManagement {
     }
 
     // Method to check valid customer ID
-    private static boolean isValidCustomerID(String id) {
+    private boolean isValidCustomerID(String id) {
         return id.matches("C\\d{3}");
     }
 
@@ -311,29 +313,72 @@ public class VideoStoreManagement {
 
     // Rent an item (decrease the number of copies held in stock)
     // Return true if the item is successfully rented, false otherwise
-    public boolean rentItem() {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter item ID: ");
-        String ID = scan.nextLine();
-        Item item = findItemByID(ID);
+//    public boolean rentItem(String ID) {
+//        Scanner scan = new Scanner(System.in);
+//        System.out.print("Enter item ID: ");
+//        String ID = scan.nextLine();
+//        Item item = findItemByID(ID);
+//
+//        if (item == null) {
+//            System.out.println("No item found!");
+//            return false;
+//        }
+//
+//        if (currentUser.getCustomerType().equals("Guest") && item.getLoanType().equals("2-day")) {
+//            System.out.println("Error: Guest customers cannot borrow 2-day items.");
+//            return false;
+//        } else if (item.getRentalStatus().equals("not available")) {
+//            System.out.println("Error: This item is not available for rent.");
+//            return false;
+//        } else if (item.getRentalStatus().equals("borrowed")) {
+//            System.out.println("Error: This item is already borrowed.");
+//            return false;
+//        } else {
+//            if (currentUser.getCustomerType().equals("Guest") && currentUser.getItems().size() >= 2) {
+//                System.out.println("Error: Guest customers can only rent a maximum of 2 items.");
+//                return false;
+//            } else {
+//                currentUser.getItems().add(item);
+//                item.setNoOfCopy(item.getNoOfCopy() - 1);
+//                if (item.getNoOfCopy() == 0) {
+//                    item.setRentalStatus("borrowed");
+//                }
+//                System.out.println("Item rented successfully.");
+//                if (currentUser.getCustomerType().equals("VIP")) {
+//                    currentUser.setRewardPoints(currentUser.getRewardPoints() + 10);
+//                    if (currentUser.getRewardPoints() >= 100) {
+//                        boolean useRewardPoints = promptForRewardPointsUsage();
+//                        if (useRewardPoints) {
+//                            chooseFreeRental();
+//                            currentUser.setRewardPoints(currentUser.getRewardPoints() - 100);
+//                        }
+//                    }
+//                }
+//                return true;
+//            }
+//        }
+//    }
+
+    public boolean rentItem(String itemID, Label messageLabel) {
+        Item item = findItemByID(itemID);
 
         if (item == null) {
-            System.out.println("No item found!");
+            messageLabel.setText("No item found!");
             return false;
         }
 
         if (currentUser.getCustomerType().equals("Guest") && item.getLoanType().equals("2-day")) {
-            System.out.println("Error: Guest customers cannot borrow 2-day items.");
+            messageLabel.setText("Error: Guest customers cannot borrow 2-day items.");
             return false;
         } else if (item.getRentalStatus().equals("not available")) {
-            System.out.println("Error: This item is not available for rent.");
+            messageLabel.setText("Error: This item is not available for rent.");
             return false;
         } else if (item.getRentalStatus().equals("borrowed")) {
-            System.out.println("Error: This item is already borrowed.");
+            messageLabel.setText("Error: This item is already borrowed.");
             return false;
         } else {
             if (currentUser.getCustomerType().equals("Guest") && currentUser.getItems().size() >= 2) {
-                System.out.println("Error: Guest customers can only rent a maximum of 2 items.");
+                messageLabel.setText("Error: Guest customers can only rent a maximum of 2 items.");
                 return false;
             } else {
                 currentUser.getItems().add(item);
@@ -341,21 +386,12 @@ public class VideoStoreManagement {
                 if (item.getNoOfCopy() == 0) {
                     item.setRentalStatus("borrowed");
                 }
-                System.out.println("Item rented successfully.");
-                if (currentUser.getCustomerType().equals("VIP")) {
-                    currentUser.setRewardPoints(currentUser.getRewardPoints() + 10);
-                    if (currentUser.getRewardPoints() >= 100) {
-                        boolean useRewardPoints = promptForRewardPointsUsage();
-                        if (useRewardPoints) {
-                            chooseFreeRental();
-                            currentUser.setRewardPoints(currentUser.getRewardPoints() - 100);
-                        }
-                    }
-                }
+                messageLabel.setText("Item rented successfully.");
                 return true;
             }
         }
     }
+
 
     public boolean promptForRewardPointsUsage() {
         Scanner scanner = new Scanner(System.in);
