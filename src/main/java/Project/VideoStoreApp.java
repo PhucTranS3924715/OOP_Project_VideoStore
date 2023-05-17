@@ -24,11 +24,11 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        loginPage(primaryStage);
+        rentItemStage(primaryStage);
 
-        primaryStage.setOnCloseRequest(windowEvent -> {
-            if (vsm.saveData()) System.out.println("Save successful");
-        });
+//        primaryStage.setOnCloseRequest(windowEvent -> {
+//            if (vsm.saveData()) System.out.println("Save successful");
+//        });
     }
 
     public void loginPage(Stage primaryStage) {
@@ -100,19 +100,21 @@ public class VideoStoreApp extends Application {
         // Create the main application window
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setAlignment(Pos.CENTER);
         grid.setVgap(5);
         grid.setHgap(5);
 
         // Create the buttons
         Button rentItemButton = new Button("Rent item");
         Button returnItemButton = new Button("Return item");
+        Button rewardPointsButton = new Button("Reward points");
         Button viewUpdateInfoButton = new Button("View/Update info");
 
         // Create an HBox to group the buttons together
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(20);
-        buttonBox.getChildren().addAll(rentItemButton, returnItemButton, viewUpdateInfoButton);
+        buttonBox.getChildren().addAll(rentItemButton, returnItemButton, rewardPointsButton, viewUpdateInfoButton);
 
         // Add the button box to the grid
         GridPane.setConstraints(buttonBox, 0, 0, 5, 1);
@@ -257,27 +259,30 @@ public class VideoStoreApp extends Application {
     }
 
     public void returnItemStage(Stage primaryStage){
+        // Create the main application window
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setAlignment(Pos.CENTER);
         grid.setVgap(5);
         grid.setHgap(5);
 
         // Create the buttons
         Button rentItemButton = new Button("Rent item");
         Button returnItemButton = new Button("Return item");
+        Button rewardPointsButton = new Button("Reward points");
         Button viewUpdateInfoButton = new Button("View/Update info");
 
         // Create an HBox to group the buttons together
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(20);
-        buttonBox.getChildren().addAll(rentItemButton, returnItemButton, viewUpdateInfoButton);
+        buttonBox.getChildren().addAll(rentItemButton, returnItemButton, rewardPointsButton, viewUpdateInfoButton);
 
         // Add the button box to the grid
         GridPane.setConstraints(buttonBox, 0, 0, 5, 1);
         grid.getChildren().add(buttonBox);
 
-
+        // TODO: Implement returnItemStage
     }
 
     public static void main(String[] args) {
