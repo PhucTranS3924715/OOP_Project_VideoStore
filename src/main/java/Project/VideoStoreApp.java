@@ -11,6 +11,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -26,12 +28,12 @@ public class VideoStoreApp extends Application {
 
         rentItemStage(primaryStage);
 
-//        primaryStage.setOnCloseRequest(windowEvent -> {
-//            if (vsm.saveData()) System.out.println("Save successful");
-//        });
+        /*primaryStage.setOnCloseRequest(windowEvent -> {
+            if (vsm.saveData()) System.out.println("Save successful");
+        });*/
     }
 
-    public void loginPage(Stage primaryStage) {
+    public void loginStage(Stage primaryStage) {
         Stage loginStage = new Stage();
         // Create the login form
         GridPane grid = new GridPane();
@@ -69,7 +71,7 @@ public class VideoStoreApp extends Application {
             if (loginType.equals("Customer")) {
                 if (vsm.login(username, password)) {
                     loginStage.close();
-                    rentItemStage(primaryStage);
+                    customerHome(primaryStage);
                 } else {
                     Text warningText = new Text();
                     warningText.setFill(Color.RED);
@@ -96,7 +98,7 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    public void rentItemStage(Stage primaryStage) {
+    public void customerHome(Stage primaryStage) {
         // Create the main application window
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -106,19 +108,114 @@ public class VideoStoreApp extends Application {
 
         // Create the buttons
         Button rentItemButton = new Button("Rent item");
+        rentItemButton.setPrefSize(120, 50);
+        ImageView rentItemIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/rentItem.png")).toExternalForm());
+        rentItemIcon.setFitHeight(20);
+        rentItemIcon.setFitWidth(20);
+        rentItemButton.setGraphic(rentItemIcon);
+        rentItemButton.setOnAction(actionEvent -> {
+            rentItemStage(primaryStage);
+        });
+
         Button returnItemButton = new Button("Return item");
+        returnItemButton.setPrefSize(120, 50);
+        ImageView returnItemIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/rentItem.png")).toExternalForm());
+        returnItemIcon.setFitHeight(20);
+        returnItemIcon.setFitWidth(20);
+        returnItemButton.setGraphic(returnItemIcon);
+        returnItemButton.setOnAction(actionEvent -> {
+            returnItemStage(primaryStage);
+        });
+
         Button rewardPointsButton = new Button("Reward points");
+        rewardPointsButton.setPrefSize(120, 50);
+        ImageView rewardPointsIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/rewardPoints.png")).toExternalForm());
+        rewardPointsIcon.setFitHeight(20);
+        rewardPointsIcon.setFitWidth(20);
+        rewardPointsButton.setGraphic(rewardPointsIcon);
+
+        Button viewUpdateInfoButton = new Button("View/Update\ninformation");
+        viewUpdateInfoButton.setPrefSize(120, 50);
+        viewUpdateInfoButton.setAlignment(Pos.CENTER);
+        ImageView viewInfoIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/info.png")).toExternalForm());
+        viewInfoIcon.setFitHeight(20);
+        viewInfoIcon.setFitWidth(20);
+        viewUpdateInfoButton.setGraphic(viewInfoIcon);
+
+        Button logoutButton = new Button("Logout");
+        logoutButton.setPrefWidth(120);
+        ImageView logoutIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/logout.png")).toExternalForm());
+        logoutIcon.setFitHeight(20);
+        logoutIcon.setFitWidth(20);
+        logoutButton.setGraphic(logoutIcon);
+        logoutButton.setOnAction(actionEvent -> {
+            loginStage(primaryStage);
+        });
+
+        grid.add(rentItemButton, 0, 0);
+        grid.add(returnItemButton, 1, 0);
+        grid.add(rewardPointsButton, 0, 1);
+        grid.add(viewUpdateInfoButton, 1, 1);
+        grid.add(logoutButton, 1, 2);
+
+        // Create home text
+        Text homeText = new Text("Home");
+        homeText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+
+        // Create vertical box to store everything
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(homeText, grid);
+
+        // Set up the scene and stage
+        Scene scene = new Scene(vBox, 500, 200);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Video Store");
+        primaryStage.show();
+    }
+
+    public void rentItemStage(Stage primaryStage) {
+        // Create the main application window
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setAlignment(Pos.CENTER);
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        // Create the buttons
+        Button homeButton = new Button("Home");
+        homeButton.setOnAction(actionEvent -> {
+            customerHome(primaryStage);
+        });
+
+        Button rentItemButton = new Button("Rent item");
+
+        Button returnItemButton = new Button("Return item");
+        returnItemButton.setOnAction(actionEvent -> {
+            returnItemStage(primaryStage);
+        });
+
+        Button rewardPointsButton = new Button("Reward points");
+        rewardPointsButton.setOnAction(actionEvent -> {
+            rewardPointsStage(primaryStage);
+        });
+
         Button viewUpdateInfoButton = new Button("View/Update info");
+        viewUpdateInfoButton.setOnAction(actionEvent -> {
+            viewUpdateInfoStage(primaryStage);
+        });
+
+        Button logoutButton = new Button("Logout");
+        logoutButton.setOnAction(actionEvent -> {
+            loginStage(primaryStage);
+        });
 
         // Create an HBox to group the buttons together
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(20);
-        buttonBox.getChildren().addAll(rentItemButton, returnItemButton, rewardPointsButton, viewUpdateInfoButton);
-
-        // Add the button box to the grid
-        GridPane.setConstraints(buttonBox, 0, 0, 5, 1);
-        grid.getChildren().add(buttonBox);
+        buttonBox.getChildren().addAll(homeButton, rentItemButton, returnItemButton, rewardPointsButton,
+                viewUpdateInfoButton, logoutButton);
 
         // Number of columns to display
         int numColumns = 3;
@@ -161,12 +258,17 @@ public class VideoStoreApp extends Application {
             grid.add(itemBox, column, row);
         }
 
-        rentItemButton.setOnAction(actionEvent -> {
-            rentItemStage(primaryStage);
-        });
+        // Create a scroll pane and add the grid to it
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(grid);
+
+        // Vertical box to store everything
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(buttonBox, scrollPane);
 
         // Set up the scene and stage
-        Scene scene = new Scene(grid);
+        Scene scene = new Scene(vBox);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Video Store");
         primaryStage.show();
@@ -258,7 +360,7 @@ public class VideoStoreApp extends Application {
         showItemInformationStage.show();
     }
 
-    public void returnItemStage(Stage primaryStage){
+    public void returnItemStage(Stage primaryStage) {
         // Create the main application window
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -267,26 +369,140 @@ public class VideoStoreApp extends Application {
         grid.setHgap(5);
 
         // Create the buttons
+        Button homeButton = new Button("Home");
+        homeButton.setOnAction(actionEvent -> {
+            customerHome(primaryStage);
+        });
+
         Button rentItemButton = new Button("Rent item");
+
         Button returnItemButton = new Button("Return item");
+        returnItemButton.setOnAction(actionEvent -> {
+            returnItemStage(primaryStage);
+        });
+
         Button rewardPointsButton = new Button("Reward points");
+        rewardPointsButton.setOnAction(actionEvent -> {
+            rewardPointsStage(primaryStage);
+        });
+
         Button viewUpdateInfoButton = new Button("View/Update info");
+        viewUpdateInfoButton.setOnAction(actionEvent -> {
+            viewUpdateInfoStage(primaryStage);
+        });
+
+        Button logoutButton = new Button("Logout");
+        logoutButton.setOnAction(actionEvent -> {
+            loginStage(primaryStage);
+        });
 
         // Create an HBox to group the buttons together
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(20);
-        buttonBox.getChildren().addAll(rentItemButton, returnItemButton, rewardPointsButton, viewUpdateInfoButton);
-
-        // Add the button box to the grid
-        GridPane.setConstraints(buttonBox, 0, 0, 5, 1);
-        grid.getChildren().add(buttonBox);
+        buttonBox.getChildren().addAll(homeButton, rentItemButton, returnItemButton, rewardPointsButton,
+                viewUpdateInfoButton, logoutButton);
 
         // TODO: Implement returnItemStage
+    }
+
+    public void rewardPointsStage(Stage primaryStage){
+        // Create the main application window
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setAlignment(Pos.CENTER);
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        // Create the buttons
+        Button homeButton = new Button("Home");
+        homeButton.setOnAction(actionEvent -> {
+            customerHome(primaryStage);
+        });
+
+        Button rentItemButton = new Button("Rent item");
+
+        Button returnItemButton = new Button("Return item");
+        returnItemButton.setOnAction(actionEvent -> {
+            returnItemStage(primaryStage);
+        });
+
+        Button rewardPointsButton = new Button("Reward points");
+        rewardPointsButton.setOnAction(actionEvent -> {
+            rewardPointsStage(primaryStage);
+        });
+
+        Button viewUpdateInfoButton = new Button("View/Update info");
+        viewUpdateInfoButton.setOnAction(actionEvent -> {
+            viewUpdateInfoStage(primaryStage);
+        });
+
+        Button logoutButton = new Button("Logout");
+        logoutButton.setOnAction(actionEvent -> {
+            loginStage(primaryStage);
+        });
+
+        // Create an HBox to group the buttons together
+        HBox buttonBox = new HBox();
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setSpacing(20);
+        buttonBox.getChildren().addAll(homeButton, rentItemButton, returnItemButton, rewardPointsButton,
+                viewUpdateInfoButton, logoutButton);
+
+        // TODO: Implement rewardPointsStage
+    }
+
+    public void viewUpdateInfoStage(Stage primaryStage){
+        // Create the main application window
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setAlignment(Pos.CENTER);
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        // Create the buttons
+        Button homeButton = new Button("Home");
+        homeButton.setOnAction(actionEvent -> {
+            customerHome(primaryStage);
+        });
+
+        Button rentItemButton = new Button("Rent item");
+
+        Button returnItemButton = new Button("Return item");
+        returnItemButton.setOnAction(actionEvent -> {
+            returnItemStage(primaryStage);
+        });
+
+        Button rewardPointsButton = new Button("Reward points");
+        rewardPointsButton.setOnAction(actionEvent -> {
+            rewardPointsStage(primaryStage);
+        });
+
+        Button viewUpdateInfoButton = new Button("View/Update info");
+        viewUpdateInfoButton.setOnAction(actionEvent -> {
+            viewUpdateInfoStage(primaryStage);
+        });
+
+        Button logoutButton = new Button("Logout");
+        logoutButton.setOnAction(actionEvent -> {
+            loginStage(primaryStage);
+        });
+
+        // Create an HBox to group the buttons together
+        HBox buttonBox = new HBox();
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setSpacing(20);
+        buttonBox.getChildren().addAll(homeButton, rentItemButton, returnItemButton, rewardPointsButton,
+                viewUpdateInfoButton, logoutButton);
+
+        // TODO: Implement viewUpdateInfoStage
+    }
+
+    public void adminHome(Stage primaryStage){
+
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-
 }
