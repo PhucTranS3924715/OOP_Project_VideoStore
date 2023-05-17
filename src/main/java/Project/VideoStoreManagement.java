@@ -1,6 +1,7 @@
 package Project;
 
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -229,7 +230,8 @@ public class VideoStoreManagement {
                 String[] itemParts = itemData.split(";");
                 for (String itemPart : itemParts) {
                     String[] itemFields = itemPart.split(",");
-                    Item item = new Item(itemFields[0], itemFields[1], itemFields[2], itemFields[3], Integer.parseInt(itemFields[4]), Float.parseFloat(itemFields[5]), itemFields[6]);
+                    Item item = new Item(itemFields[0], itemFields[1], itemFields[2], itemFields[3],
+                            Integer.parseInt(itemFields[4]), Float.parseFloat(itemFields[5]), itemFields[6]);
                     if (itemFields.length > 7) {
                         item.setGenre(itemFields[7]);
                     }
@@ -254,7 +256,9 @@ public class VideoStoreManagement {
                 // Split customer info and item list
                 String[] fields = part.split("/");
                 String[] customerFields = fields[0].split(",");
-                Customer customer = new Customer(customerFields[0], customerFields[1], customerFields[2], customerFields[3], Integer.parseInt(customerFields[4]), customerFields[5], customerFields[6], customerFields[7], Integer.parseInt(customerFields[8]));
+                Customer customer = new Customer(customerFields[0], customerFields[1], customerFields[2],
+                        customerFields[3], Integer.parseInt(customerFields[4]), customerFields[5], customerFields[6],
+                        customerFields[7], Integer.parseInt(customerFields[8]));
                 if (fields.length > 1) {
                     String[] itemIDs = fields[1].split(",");
                     for (String itemID : itemIDs) {
@@ -280,7 +284,8 @@ public class VideoStoreManagement {
             // Save customers
             FileWriter customerWriter = new FileWriter("src/main/java/Project/customers.txt");
             for (Customer customer : customers) {
-                String customerString = customer.getID() + "," + customer.getName() + "," + customer.getAddress() + "," + customer.getPhone() + "," + customer.getNoOfRental() + "," + customer.getCustomerType() + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getRewardPoints();
+                String customerString = customer.getID() + "," + customer.getName() + "," + customer.getAddress() +
+                        "," + customer.getPhone() + "," + customer.getNoOfRental() + "," + customer.getCustomerType() + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getRewardPoints();
                 if (!customer.getItems().isEmpty()) {
                     customerString += "/";
                     for (Item item : customer.getItems()) {
@@ -296,7 +301,8 @@ public class VideoStoreManagement {
             // Save items
             FileWriter itemWriter = new FileWriter("src/main/java/Project/items.txt");
             for (Item item : items) {
-                String itemString = item.getID() + "," + item.getTitle() + "," + item.getRentalType() + "," + item.getLoanType() + "," + item.getNoOfCopy() + "," + item.getRentalFee() + "," + item.getRentalStatus();
+                String itemString =
+                        item.getID() + "," + item.getTitle() + "," + item.getRentalType() + "," + item.getLoanType() + "," + item.getNoOfCopy() + "," + item.getRentalFee() + "," + item.getRentalStatus();
                 if (item.getGenre() != null) {
                     itemString += "," + item.getGenre();
                 }
@@ -313,51 +319,51 @@ public class VideoStoreManagement {
 
     // Rent an item (decrease the number of copies held in stock)
     // Return true if the item is successfully rented, false otherwise
-//    public boolean rentItem(String ID) {
-//        Scanner scan = new Scanner(System.in);
-//        System.out.print("Enter item ID: ");
-//        String ID = scan.nextLine();
-//        Item item = findItemByID(ID);
-//
-//        if (item == null) {
-//            System.out.println("No item found!");
-//            return false;
-//        }
-//
-//        if (currentUser.getCustomerType().equals("Guest") && item.getLoanType().equals("2-day")) {
-//            System.out.println("Error: Guest customers cannot borrow 2-day items.");
-//            return false;
-//        } else if (item.getRentalStatus().equals("not available")) {
-//            System.out.println("Error: This item is not available for rent.");
-//            return false;
-//        } else if (item.getRentalStatus().equals("borrowed")) {
-//            System.out.println("Error: This item is already borrowed.");
-//            return false;
-//        } else {
-//            if (currentUser.getCustomerType().equals("Guest") && currentUser.getItems().size() >= 2) {
-//                System.out.println("Error: Guest customers can only rent a maximum of 2 items.");
-//                return false;
-//            } else {
-//                currentUser.getItems().add(item);
-//                item.setNoOfCopy(item.getNoOfCopy() - 1);
-//                if (item.getNoOfCopy() == 0) {
-//                    item.setRentalStatus("borrowed");
-//                }
-//                System.out.println("Item rented successfully.");
-//                if (currentUser.getCustomerType().equals("VIP")) {
-//                    currentUser.setRewardPoints(currentUser.getRewardPoints() + 10);
-//                    if (currentUser.getRewardPoints() >= 100) {
-//                        boolean useRewardPoints = promptForRewardPointsUsage();
-//                        if (useRewardPoints) {
-//                            chooseFreeRental();
-//                            currentUser.setRewardPoints(currentUser.getRewardPoints() - 100);
-//                        }
-//                    }
-//                }
-//                return true;
-//            }
-//        }
-//    }
+/*    public boolean rentItem(String ID) {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter item ID: ");
+        String ID = scan.nextLine();
+        Item item = findItemByID(ID);
+
+        if (item == null) {
+            System.out.println("No item found!");
+            return false;
+        }
+
+        if (currentUser.getCustomerType().equals("Guest") && item.getLoanType().equals("2-day")) {
+            System.out.println("Error: Guest customers cannot borrow 2-day items.");
+            return false;
+        } else if (item.getRentalStatus().equals("not available")) {
+            System.out.println("Error: This item is not available for rent.");
+            return false;
+        } else if (item.getRentalStatus().equals("borrowed")) {
+            System.out.println("Error: This item is already borrowed.");
+            return false;
+        } else {
+            if (currentUser.getCustomerType().equals("Guest") && currentUser.getItems().size() >= 2) {
+                System.out.println("Error: Guest customers can only rent a maximum of 2 items.");
+                return false;
+            } else {
+                currentUser.getItems().add(item);
+                item.setNoOfCopy(item.getNoOfCopy() - 1);
+                if (item.getNoOfCopy() == 0) {
+                    item.setRentalStatus("borrowed");
+                }
+                System.out.println("Item rented successfully.");
+                if (currentUser.getCustomerType().equals("VIP")) {
+                    currentUser.setRewardPoints(currentUser.getRewardPoints() + 10);
+                    if (currentUser.getRewardPoints() >= 100) {
+                        boolean useRewardPoints = promptForRewardPointsUsage();
+                        if (useRewardPoints) {
+                            chooseFreeRental();
+                            currentUser.setRewardPoints(currentUser.getRewardPoints() - 100);
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+    }*/
 
     public boolean rentItem(String itemID, Label messageLabel) {
         Item item = findItemByID(itemID);
@@ -392,10 +398,10 @@ public class VideoStoreManagement {
         }
     }
 
-
     public boolean promptForRewardPointsUsage() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Congratulations! You have earned a free rental. Would you like to use your reward points? (Y/N)");
+        System.out.println("Congratulations! You have earned a free rental. Would you like to use your reward points?" +
+                " (Y/N)");
         String input = scanner.nextLine().toLowerCase();
         return input.equals("Y");
     }
@@ -737,6 +743,10 @@ public class VideoStoreManagement {
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    public String welcomeTitle(){
+        return "Welcome back, " + currentUser.getName() + "!";
     }
 
     public static void main(String[] args) {
