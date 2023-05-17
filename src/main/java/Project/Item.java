@@ -1,5 +1,7 @@
 package Project;
 
+import java.util.Objects;
+
 public class Item {
     private String ID;
     private String title;
@@ -108,14 +110,16 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item" +
-                "ID = " + ID +
-                ", title = " + title +
-                ", rentalType = " + rentalType +
-                ", loanType = " + loanType +
-                ", noOfCopy = " + noOfCopy +
-                ", rentalFee = " + rentalFee +
-                ", rentalStatus = " + rentalStatus +
-                ", genre = " + genre;
+        String item = "ID: " + ID +
+                "\nTitle: " + title +
+                "\nRental type: " + rentalType +
+                "\nLoan type: " + loanType +
+                "\nNumber of copies: " + noOfCopy +
+                "\nRental fee: " + rentalFee +
+                "\nRental status: " + rentalStatus;
+        if (Objects.equals(this.rentalType, "Record") || Objects.equals(this.rentalType, "DVD")){
+            item += "\nGenre: " + genre;
+        }
+        return item;
     }
 }
