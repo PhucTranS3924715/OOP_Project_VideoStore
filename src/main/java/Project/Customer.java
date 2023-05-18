@@ -14,7 +14,8 @@ public class Customer {
     private int rewardPoints;
     private ArrayList<Item> items;
 
-    public Customer(String ID, String name, String address, String phone, int noOfRental, String customerType, String username, String password, int rewardPoints, ArrayList<Item> items) {
+    public Customer(String ID, String name, String address, String phone, int noOfRental, String customerType,
+                    String username, String password, int rewardPoints, ArrayList<Item> items) {
         this.ID = ID;
         this.name = name;
         this.address = address;
@@ -27,7 +28,8 @@ public class Customer {
         this.items = items;
     }
 
-    public Customer(String ID, String name, String address, String phone, int noOfRental, String customerType, String username, String password, int rewardPoints) {
+    public Customer(String ID, String name, String address, String phone, int noOfRental, String customerType,
+                    String username, String password, int rewardPoints) {
         this.ID = ID;
         this.name = name;
         this.address = address;
@@ -116,6 +118,7 @@ public class Customer {
     public void addItem(Item item) {
         items.add(item);
     }
+
     public int getRewardPoints() {
         return rewardPoints;
     }
@@ -126,16 +129,38 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer" +
-                "ID = " + ID  +
-                ", name = " + name +
-                ", address = " + address +
-                ", phone = " + phone +
-                ", noOfRental = " + noOfRental +
-                ", customerType = " + customerType +
-                ", username = " + username +
-                ", password = " + password  +
-                ", reward points = " + rewardPoints +
-                ", items = " + items;
+        String customer = "ID: " + ID +
+                "\nName: " + name +
+                "\nAddress: " + address +
+                "\nPhone: " + phone +
+                "\nNumber of rental: " + noOfRental +
+                "\nCustomer type: " + customerType +
+                "\nUsername: " + username +
+                "\nPassword: " + password +
+                "\nReward points: " + rewardPoints;
+        if (!items.isEmpty()){
+            customer += "\nItems:\n" + items;
+        }
+        return customer;
     }
+
+    public String customerInfo() {
+        String customer = "ID: " + ID +
+                "\nName: " + name +
+                "\nAddress: " + address +
+                "\nPhone: " + phone +
+                "\nNumber of rental: " + noOfRental +
+                "\nCustomer type: " + customerType +
+                "\nUsername: " + username +
+                "\nPassword: " + password +
+                "\nReward points: " + rewardPoints;
+        if (!items.isEmpty()) {
+            customer += "\nItems:";
+            for (Item item : items) {
+                customer += "\nID: " + item.getID() + ", Title: " + item.getTitle();
+            }
+        }
+        return customer;
+    }
+
 }
