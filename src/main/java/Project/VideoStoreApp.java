@@ -851,20 +851,46 @@ public class VideoStoreApp extends Application {
 
     public void displayItemStage(Stage primaryStage) {
         // TODO: Implement stage
+        Button sortButton = new Button("Display item");
+        ComboBox<String> sortComboBox = new ComboBox<>();
+        sortComboBox.getItems().addAll("Sort by ID", "Sort by Title");
+        sortComboBox.setValue("Sort by ID");
+
+        HBox buttonBox = new HBox();
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setSpacing(20);
+
+        buttonBox.getChildren().addAll(sortButton,sortComboBox);
+
         GridPane gridPane = new GridPane();
+        VBox sortTable = new VBox();
+        sortTable.setSpacing(10);
+        sortButton.setOnAction(e -> {
+            String selectedOption = sortComboBox.getValue();
+            if (selectedOption.equals("Sort by ID")) {
+                sortTable.getChildren().clear();
+                vsm.displayIDSortItem(gridPane);
+            } else if (selectedOption.equals("Sort by Title")) {
+                sortTable.getChildren().clear();
+                vsm.displayTitleSortItem(gridPane);
+            }
+            sortTable.getChildren().addAll(buttonBox, gridPane);
+        });
 
-        vsm.displayTitleSortItem(gridPane);
+        // Vertical box to store everything
+        VBox vBox = new VBox(10, adminPageButtonBox(primaryStage), buttonBox, sortTable);
+        vBox.setAlignment(Pos.TOP_CENTER);
 
-        VBox vBox = new VBox(10, adminPageButtonBox(primaryStage), gridPane);
-
-        Scene scene = new Scene(vBox);
-        primaryStage.setTitle("Display Item");
+        // Set up the scene and stage
+        Scene scene = new Scene(vBox, 900, 500);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Video Store");
         primaryStage.show();
     }
 
     public void searchItemStage(Stage primaryStage) {
         // TODO: Implement stage
+
     }
 
     public void addCustomerStage(Stage primaryStage) {
