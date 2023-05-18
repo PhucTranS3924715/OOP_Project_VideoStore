@@ -50,7 +50,7 @@ public class VideoStoreManagement {
         return null;
     }
 
-    private Item findItemByID(String ID) {
+    public Item findItemByID(String ID) {
         for (Item item : items) {
             if (item.getID().equals(ID))
                 return item;
@@ -220,19 +220,15 @@ public class VideoStoreManagement {
         return false;
     }
 
-    public boolean increaseNoOfCopies() {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter item ID: ");
-        String ID = scan.nextLine();
-        Item item = findItemByID(ID);
+    public boolean increaseNoOfCopies(String idField, Text infoText, String numberField) {
+        Item item = findItemByID(idField);
         if (item != null) {
-            System.out.print("Enter number of new stock: ");
-            int copies = scan.nextInt();
-            item.setNoOfCopy(item.getNoOfCopy() + copies);
-            System.out.println("Number of items udpated!");
+            item.setNoOfCopy(item.getNoOfCopy() + Integer.parseInt(numberField));
+            infoText.setText("Number of items updated!");
+            infoText.setFill(Color.GREEN);
             return true;
         }
-        System.out.println("No item found!");
+        infoText.setText("No item found!");
         return false;
     }
 
