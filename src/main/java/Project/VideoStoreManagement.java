@@ -519,31 +519,169 @@ public class VideoStoreManagement {
         return true;
     }
 
-    private void displayIDSortItem() {
+    public void displayIDSortItem(GridPane gridPane) {
         Collections.sort(items, new IDSortItem());
-        for (Item item : items) {
-            System.out.println(item);
+
+        gridPane.getChildren().clear();
+
+        gridPane.setHgap(15);
+        gridPane.setAlignment(Pos.CENTER);
+
+        Text[][] text = new Text[8][items.size() + 1];
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < items.size() + 1; j++) {
+                text[i][j] = new Text(); // Initialize each element of the array
+            }
         }
+
+        text[0][0].setText("ID");
+        text[1][0].setText("Title");
+        text[2][0].setText("Rental Type");
+        text[3][0].setText("Loan Type");
+        text[4][0].setText("Number of Copies");
+        text[5][0].setText("Rental Fee");
+        text[6][0].setText("Rental Status");
+        text[7][0].setText("Genre");
+
+        for (int i = 0; i < 8; i++) {
+            gridPane.add(text[i][0], i, 0);
+            GridPane.setHalignment(text[i][0], HPos.CENTER);
+        }
+
+        for (int i = 1; i < items.size(); i++){
+            for (int j = 0; j < 8; j++){
+                switch (j){
+                    case 0:
+                        text[0][i].setText(items.get(i-1).getID());
+                        gridPane.add(text[0][i], 0, i);
+                        break;
+                    case 1:
+                        text[1][i].setText(items.get(i-1).getTitle());
+                        gridPane.add(text[1][i], 1, i);
+                        break;
+                    case 2:
+                        text[2][i].setText(items.get(i-1).getRentalType());
+                        gridPane.add(text[2][i], 2, i);
+                        break;
+                    case 3:
+                        text[3][i].setText(items.get(i-1).getLoanType());
+                        gridPane.add(text[3][i], 3, i);
+                        break;
+                    case 4:
+                        text[4][i].setText(String.valueOf(items.get(i-1).getNoOfCopy()));
+                        gridPane.add(text[4][i], 4, i);
+                        GridPane.setHalignment(text[4][i], HPos.CENTER);
+                        break;
+                    case 5:
+                        text[5][i].setText(String.valueOf(items.get(i-1).getRentalFee()));
+                        GridPane.setHalignment(text[5][i], HPos.CENTER);
+                        gridPane.add(text[5][i], 5, i);
+                        break;
+                    case 6:
+                        text[6][i].setText(items.get(i-1).getRentalStatus());
+                        gridPane.add(text[6][i], 6, i);
+                        break;
+                    case 7:
+                        text[7][i].setText(items.get(i-1).getGenre());
+                        gridPane.add(text[7][i], 7, i);
+                        break;
+                }
+            }
+        }
+
+        // Create a scroll pane and add the grid to it
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(gridPane);
     }
 
-    private void displayTitleSortItem() {
+    public void displayTitleSortItem(GridPane gridPane) {
         Collections.sort(items, new TitleSortItem());
-        for (Item item : items) {
-            System.out.println(item);
+
+        gridPane.getChildren().clear();
+
+        gridPane.setHgap(15);
+        gridPane.setAlignment(Pos.CENTER);
+
+        Text[][] text = new Text[8][items.size() + 1];
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < items.size() + 1; j++) {
+                text[i][j] = new Text(); // Initialize each element of the array
+            }
         }
+
+        text[0][0].setText("ID");
+        text[1][0].setText("Title");
+        text[2][0].setText("Rental Type");
+        text[3][0].setText("Loan Type");
+        text[4][0].setText("Number of Copies");
+        text[5][0].setText("Rental Fee");
+        text[6][0].setText("Rental Status");
+        text[7][0].setText("Genre");
+
+        for (int i = 0; i < 8; i++) {
+            gridPane.add(text[i][0], i, 0);
+            GridPane.setHalignment(text[i][0], HPos.CENTER);
+        }
+
+        for (int i = 1; i < items.size(); i++){
+            for (int j = 0; j < 8; j++){
+                switch (j){
+                    case 0:
+                        text[0][i].setText(items.get(i-1).getID());
+                        gridPane.add(text[0][i], 0, i);
+                        break;
+                    case 1:
+                        text[1][i].setText(items.get(i-1).getTitle());
+                        gridPane.add(text[1][i], 1, i);
+                        break;
+                    case 2:
+                        text[2][i].setText(items.get(i-1).getRentalType());
+                        gridPane.add(text[2][i], 2, i);
+                        break;
+                    case 3:
+                        text[3][i].setText(items.get(i-1).getLoanType());
+                        gridPane.add(text[3][i], 3, i);
+                        break;
+                    case 4:
+                        text[4][i].setText(String.valueOf(items.get(i-1).getNoOfCopy()));
+                        gridPane.add(text[4][i], 4, i);
+                        GridPane.setHalignment(text[4][i], HPos.CENTER);
+                        break;
+                    case 5:
+                        text[5][i].setText(String.valueOf(items.get(i-1).getRentalFee()));
+                        GridPane.setHalignment(text[5][i], HPos.CENTER);
+                        gridPane.add(text[5][i], 5, i);
+                        break;
+                    case 6:
+                        text[6][i].setText(items.get(i-1).getRentalStatus());
+                        gridPane.add(text[6][i], 6, i);
+                        break;
+                    case 7:
+                        text[7][i].setText(items.get(i-1).getGenre());
+                        gridPane.add(text[7][i], 7, i);
+                        break;
+                }
+            }
+        }
+
+        // Create a scroll pane and add the grid to it
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(gridPane);
     }
 
-    public void displayItem() {
-        Scanner sc = new Scanner(System.in);
-        int input;
-        System.out.println("Display item by:\n1. ID\n2. Title");
-        input = sc.nextInt();
-        if (input == 1) {
-            displayIDSortItem();
-        } else {
-            displayTitleSortItem();
-        }
-    }
+//    public void displayItem() {
+//        Scanner sc = new Scanner(System.in);
+//        int input;
+//        System.out.println("Display item by:\n1. ID\n2. Title");
+//        input = sc.nextInt();
+//        if (input == 1) {
+//            displayIDSortItem();
+//        } else {
+//            displayTitleSortItem();
+//        }
+//    }
 
     public void displayIDSortCustomer(GridPane gridPane){
         Collections.sort(customers, new IDSortCustomer());
@@ -573,6 +711,7 @@ public class VideoStoreManagement {
 
         for (int i = 0; i < 9; i++) {
             gridPane.add(text[i][0], i, 0);
+            GridPane.setHalignment(text[i][0], HPos.CENTER);
         }
 
         for (int i = 1; i < customers.size(); i++){

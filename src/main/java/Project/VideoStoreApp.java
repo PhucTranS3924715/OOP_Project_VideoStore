@@ -851,6 +851,16 @@ public class VideoStoreApp extends Application {
 
     public void displayItemStage(Stage primaryStage) {
         // TODO: Implement stage
+        GridPane gridPane = new GridPane();
+
+        vsm.displayTitleSortItem(gridPane);
+
+        VBox vBox = new VBox(gridPane);
+
+        Scene scene = new Scene(vBox);
+        primaryStage.setTitle("Display Item");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public void searchItemStage(Stage primaryStage) {
