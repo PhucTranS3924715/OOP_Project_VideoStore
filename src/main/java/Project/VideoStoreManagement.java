@@ -1,7 +1,6 @@
 package Project;
 
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -178,9 +177,9 @@ public class VideoStoreManagement {
         return false;
     }
 
-    public boolean updateCustomer(String idField, Text infoText, String nameField, String addressField,
-                                  String phoneField, String noOfRentalField, String customerTypeField,
-                                  String usernameField, String passwordField, String rewardPointField) {
+    public void updateCustomer(String idField, Text infoText, String nameField, String addressField,
+                               String phoneField, String noOfRentalField, String customerTypeField,
+                               String usernameField, String passwordField, String rewardPointField) {
         Customer customer = findCustomerByID(idField);
         if (customer != null) {
             // Display current info
@@ -214,22 +213,20 @@ public class VideoStoreManagement {
 
             infoText.setText("Customer updated!");
             infoText.setFill(Color.GREEN);
-            return true;
+            return;
         }
         infoText.setText("No customer found!");
-        return false;
     }
 
-    public boolean increaseNoOfCopies(String idField, Text infoText, String numberField) {
+    public void increaseNoOfCopies(String idField, Text infoText, String numberField) {
         Item item = findItemByID(idField);
         if (item != null) {
             item.setNoOfCopy(item.getNoOfCopy() + Integer.parseInt(numberField));
             infoText.setText("Number of items updated!");
             infoText.setFill(Color.GREEN);
-            return true;
+            return;
         }
         infoText.setText("No item found!");
-        return false;
     }
 
     public boolean loadData() {
