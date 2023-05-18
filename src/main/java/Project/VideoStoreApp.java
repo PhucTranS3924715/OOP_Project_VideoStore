@@ -640,7 +640,7 @@ public class VideoStoreApp extends Application {
             updateCustomerStage(primaryStage);
         });
 
-        Button displayCustomerButton = new Button("Display customer");
+        Button displayCustomerButton = new Button("Display\ncustomer");
         displayCustomerButton.setPrefSize(120, 50);
         ImageView displayCustomerIcon =
                 new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display.png")).toExternalForm());
@@ -651,7 +651,7 @@ public class VideoStoreApp extends Application {
             displayCustomerStage(primaryStage);
         });
 
-        Button searchCustomerButton = new Button("Search customer");
+        Button searchCustomerButton = new Button("Search\ncustomer");
         searchCustomerButton.setPrefSize(120, 50);
         ImageView searchCustomerIcon =
                 new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search.png")).toExternalForm());
@@ -1033,9 +1033,7 @@ public class VideoStoreApp extends Application {
 
     public void displayCustomerStage(Stage primaryStage) {
         // TODO: Implement stage
-        GridPane gridPane = new GridPane();
-
-        Button sortButton = new Button("Display Customer");
+        Button sortButton = new Button("Display customer");
         ComboBox<String> sortComboBox = new ComboBox<>();
         sortComboBox.getItems().addAll("Sort by ID", "Sort by Name");
         sortComboBox.setValue("Sort by ID");
@@ -1046,31 +1044,27 @@ public class VideoStoreApp extends Application {
 
         buttonBox.getChildren().addAll(sortButton,sortComboBox);
 
+        GridPane gridPane = new GridPane();
+        VBox sortTable = new VBox();
+        sortTable.setSpacing(10);
         sortButton.setOnAction(e -> {
             String selectedOption = sortComboBox.getValue();
             if (selectedOption.equals("Sort by ID")) {
+                sortTable.getChildren().clear();
                 vsm.displayIDSortCustomer(gridPane);
-                VBox vBox = new VBox(10, buttonBox, gridPane);
-                Scene scene = new Scene(vBox);
-                primaryStage.setTitle("Display Customer by ID");
-                primaryStage.setScene(scene);
-                primaryStage.show();
             } else if (selectedOption.equals("Sort by Name")) {
+                sortTable.getChildren().clear();
                 vsm.displayNameSortCustomer(gridPane);
-                VBox vBox = new VBox(10, buttonBox, gridPane);
-                Scene scene = new Scene(vBox);
-                primaryStage.setTitle("Display Customer by name");
-                primaryStage.setScene(scene);
-                primaryStage.show();
             }
+            sortTable.getChildren().addAll(buttonBox, gridPane);
         });
 
         // Vertical box to store everything
-        VBox vBox = new VBox(10, adminPageButtonBox(primaryStage), buttonBox, gridPane);
+        VBox vBox = new VBox(10, adminPageButtonBox(primaryStage), buttonBox, sortTable);
         vBox.setAlignment(Pos.TOP_CENTER);
 
         // Set up the scene and stage
-        Scene scene = new Scene(vBox);
+        Scene scene = new Scene(vBox, 900, 500);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Video Store");
         primaryStage.show();
