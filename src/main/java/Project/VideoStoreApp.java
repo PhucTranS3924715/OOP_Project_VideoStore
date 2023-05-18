@@ -1061,7 +1061,7 @@ public class VideoStoreApp extends Application {
         // TODO: Implement stage
         Button sortButton = new Button("Display customer");
         ComboBox<String> sortComboBox = new ComboBox<>();
-        sortComboBox.getItems().addAll("Sort by ID", "Sort by Name");
+        sortComboBox.getItems().addAll("Sort by ID", "Sort by Name", "Sort by Group");
         sortComboBox.setValue("Sort by ID");
 
         HBox buttonBox = new HBox();
@@ -1081,6 +1081,9 @@ public class VideoStoreApp extends Application {
             } else if (selectedOption.equals("Sort by Name")) {
                 sortTable.getChildren().clear();
                 vsm.displayNameSortCustomer(gridPane);
+            } else if (selectedOption.equals("Sort by Group")) {
+                sortTable.getChildren().clear();
+                vsm.displayGroup(gridPane);
             }
             sortTable.getChildren().addAll(buttonBox, gridPane);
         });
