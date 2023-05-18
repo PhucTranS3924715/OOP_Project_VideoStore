@@ -671,17 +671,17 @@ public class VideoStoreManagement {
         scrollPane.setContent(gridPane);
     }
 
-//    public void displayItem() {
-//        Scanner sc = new Scanner(System.in);
-//        int input;
-//        System.out.println("Display item by:\n1. ID\n2. Title");
-//        input = sc.nextInt();
-//        if (input == 1) {
-//            displayIDSortItem();
-//        } else {
-//            displayTitleSortItem();
-//        }
-//    }
+    /*public void displayItem() {
+        Scanner sc = new Scanner(System.in);
+        int input;
+        System.out.println("Display item by:\n1. ID\n2. Title");
+        input = sc.nextInt();
+        if (input == 1) {
+            displayIDSortItem();
+        } else {
+            displayTitleSortItem();
+        }
+    }*/
 
     public void displayIDSortCustomer(GridPane gridPane){
         Collections.sort(customers, new IDSortCustomer());
@@ -850,17 +850,17 @@ public class VideoStoreManagement {
         scrollPane.setContent(gridPane);
     }
 
-//    public void displayCustomer() {
-//        Scanner sc = new Scanner(System.in);
-//        int input;
-//        System.out.println("Display customer by:\n1. ID\n2. Name");
-//        input = sc.nextInt();
-//        if (input == 1) {
-//            displayIDSortCustomer();
-//        } else {
-//            displayNameSortCustomer();
-//        }
-//    }
+    /*public void displayCustomer() {
+        Scanner sc = new Scanner(System.in);
+        int input;
+        System.out.println("Display customer by:\n1. ID\n2. Name");
+        input = sc.nextInt();
+        if (input == 1) {
+            displayIDSortCustomer();
+        } else {
+            displayNameSortCustomer();
+        }
+    }*/
 
     public void displayGroup() {
         Collections.sort(customers, new customerTypeSort());
