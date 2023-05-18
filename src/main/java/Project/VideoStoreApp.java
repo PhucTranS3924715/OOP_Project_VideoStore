@@ -640,7 +640,7 @@ public class VideoStoreApp extends Application {
             updateCustomerStage(primaryStage);
         });
 
-        Button displayCustomerButton = new Button("Display item");
+        Button displayCustomerButton = new Button("Display customer");
         displayCustomerButton.setPrefSize(120, 50);
         ImageView displayCustomerIcon =
                 new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display.png")).toExternalForm());
@@ -651,7 +651,7 @@ public class VideoStoreApp extends Application {
             displayCustomerStage(primaryStage);
         });
 
-        Button searchCustomerButton = new Button("Search item");
+        Button searchCustomerButton = new Button("Search customer");
         searchCustomerButton.setPrefSize(120, 50);
         ImageView searchCustomerIcon =
                 new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search.png")).toExternalForm());
@@ -855,7 +855,7 @@ public class VideoStoreApp extends Application {
 
         vsm.displayTitleSortItem(gridPane);
 
-        VBox vBox = new VBox(gridPane);
+        VBox vBox = new VBox(10, adminPageButtonBox(primaryStage), gridPane);
 
         Scene scene = new Scene(vBox);
         primaryStage.setTitle("Display Item");
@@ -1032,40 +1032,6 @@ public class VideoStoreApp extends Application {
     }
 
     public void displayCustomerStage(Stage primaryStage) {
-        Button homeButton = new Button("Home");
-        homeButton.setOnAction(actionEvent -> {
-            adminHome(primaryStage);
-        });
-
-        Button addCustomerButton = new Button("Add customer");
-        addCustomerButton.setOnAction(actionEvent -> {
-            addCustomerStage(primaryStage);
-        });
-
-        Button updateCustomerButton = new Button("Update customer");
-        updateCustomerButton.setOnAction(actionEvent -> {
-            updateCustomerStage(primaryStage);
-        });
-
-        Button displayCustomerButton = new Button("Display customer");
-
-        Button searchCustomerButton = new Button("Search customer");
-        searchCustomerButton.setOnAction(actionEvent -> {
-            searchCustomerStage(primaryStage);
-        });
-
-        Button logoutButton = new Button("Logout");
-        logoutButton.setOnAction(actionEvent -> {
-            loginStage(primaryStage);
-        });
-
-        // Create an HBox to group the buttons together
-        HBox buttonBox = new HBox();
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(20);
-        buttonBox.getChildren().addAll(homeButton, addCustomerButton, updateCustomerButton, displayCustomerButton,
-                searchCustomerButton, logoutButton);
-
         // TODO: Implement stage
         GridPane gridPane = new GridPane();
 
@@ -1073,6 +1039,10 @@ public class VideoStoreApp extends Application {
         ComboBox<String> sortComboBox = new ComboBox<>();
         sortComboBox.getItems().addAll("Sort by ID", "Sort by Name");
         sortComboBox.setValue("Sort by ID");
+
+        HBox buttonBox = new HBox();
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setSpacing(20);
 
         buttonBox.getChildren().addAll(sortButton,sortComboBox);
 
@@ -1096,51 +1066,17 @@ public class VideoStoreApp extends Application {
         });
 
         // Vertical box to store everything
-        VBox vBox = new VBox(10, buttonBox, gridPane);
+        VBox vBox = new VBox(10, adminPageButtonBox(primaryStage), buttonBox, gridPane);
         vBox.setAlignment(Pos.TOP_CENTER);
 
         // Set up the scene and stage
         Scene scene = new Scene(vBox);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Admin Home");
+        primaryStage.setTitle("Video Store");
         primaryStage.show();
     }
 
     public void searchCustomerStage(Stage primaryStage) {
-        Button homeButton = new Button("Home");
-        homeButton.setOnAction(actionEvent -> {
-            adminHome(primaryStage);
-        });
-
-        Button addCustomerButton = new Button("Add customer");
-        addCustomerButton.setOnAction(actionEvent -> {
-            addCustomerStage(primaryStage);
-        });
-
-        Button updateCustomerButton = new Button("Update customer");
-        updateCustomerButton.setOnAction(actionEvent -> {
-            updateCustomerStage(primaryStage);
-        });
-
-        Button displayCustomerButton = new Button("Display customer");
-        displayCustomerButton.setOnAction(actionEvent -> {
-            displayCustomerStage(primaryStage);
-        });
-
-        Button searchCustomerButton = new Button("Search customer");
-
-        Button logoutButton = new Button("Logout");
-        logoutButton.setOnAction(actionEvent -> {
-            loginStage(primaryStage);
-        });
-
-        // Create an HBox to group the buttons together
-        HBox buttonBox = new HBox();
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(20);
-        buttonBox.getChildren().addAll(homeButton, addCustomerButton, updateCustomerButton, displayCustomerButton,
-                searchCustomerButton, logoutButton);
-
         // TODO: Implement stage
     }
 
