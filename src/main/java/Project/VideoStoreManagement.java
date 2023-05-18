@@ -2,6 +2,7 @@ package Project;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.FileWriter;
@@ -177,38 +178,42 @@ public class VideoStoreManagement {
         return false;
     }
 
-    public boolean updateCustomer(TextField idField, Text infoText, TextField nameField, TextField addressField,
-                                  TextField phoneField, TextField usernameField, TextField passwordField) {
-        Customer customer = findCustomerByID(idField.getText());
+    public boolean updateCustomer(String idField, Text infoText, String nameField, String addressField,
+                                  String phoneField, String noOfRentalField, String customerTypeField,
+                                  String usernameField, String passwordField, String rewardPointField) {
+        Customer customer = findCustomerByID(idField);
         if (customer != null) {
             // Display current info
             infoText.setText(customer.customerInfo());
 
-            // Get new info from TextFields
-            String name = nameField.getText();
-            String address = addressField.getText();
-            String phone = phoneField.getText();
-            String username = usernameField.getText();
-            String password = passwordField.getText();
-
             // Update customer info for non-empty fields
-            if (!name.isEmpty()) {
-                customer.setName(name);
+            if (!nameField.isEmpty()) {
+                customer.setName(nameField);
             }
-            if (!address.isEmpty()) {
-                customer.setAddress(address);
+            if (!addressField.isEmpty()) {
+                customer.setAddress(addressField);
             }
-            if (!phone.isEmpty()) {
-                customer.setPhone(phone);
+            if (!phoneField.isEmpty()) {
+                customer.setPhone(phoneField);
             }
-            if (!username.isEmpty()) {
-                customer.setUsername(username);
+            if (!noOfRentalField.isEmpty()){
+                customer.setNoOfRental(Integer.parseInt(noOfRentalField));
             }
-            if (!password.isEmpty()) {
-                customer.setPassword(password);
+            if (!customerTypeField.isEmpty()){
+                customer.setCustomerType(customerTypeField);
+            }
+            if (!usernameField.isEmpty()) {
+                customer.setUsername(usernameField);
+            }
+            if (!passwordField.isEmpty()) {
+                customer.setPassword(passwordField);
+            }
+            if (!rewardPointField.isEmpty()){
+                customer.setRewardPoints(Integer.parseInt(rewardPointField));
             }
 
             infoText.setText("Customer updated!");
+            infoText.setFill(Color.GREEN);
             return true;
         }
         infoText.setText("No customer found!");
@@ -328,8 +333,8 @@ public class VideoStoreManagement {
         }
     }
 
-    // Rent an item (decrease the number of copies held in stock)
-    // Return true if the item is successfully rented, false otherwise
+    /* Rent an item (decrease the number of copies held in stock)
+     Return true if the item is successfully rented, false otherwise*/
 /*    public boolean rentItem(String ID) {
         Scanner scan = new Scanner(System.in);
         System.out.print("Enter item ID: ");
@@ -451,8 +456,8 @@ public class VideoStoreManagement {
         }
     }
 
-    // Return an item (increase the number of copies held in stock)
-    // Return true if the item is successfully returned, false otherwise
+    /* Return an item (increase the number of copies held in stock)
+     Return true if the item is successfully returned, false otherwise*/
     public boolean returnItem() {
         Scanner scan = new Scanner(System.in);
         System.out.print("Enter item ID to return: ");
@@ -748,10 +753,6 @@ public class VideoStoreManagement {
         }
     }
 
-    public ArrayList<Customer> getCustomers() {
-        return customers;
-    }
-
     public ArrayList<Item> getItems() {
         return items;
     }
@@ -760,13 +761,8 @@ public class VideoStoreManagement {
         return "Welcome back, " + currentUser.getName() + "!";
     }
 
-    public static void main(String[] args) {
-        VideoStoreManagement vsm = new VideoStoreManagement();
-        vsm.loadData();     // Do not remove this line;
-
-        //vsm.addItem();
-
-        vsm.saveData();     // Do not remove this line
+    public String getCurrentUserID(){
+        return currentUser.getID();
     }
 }
 
