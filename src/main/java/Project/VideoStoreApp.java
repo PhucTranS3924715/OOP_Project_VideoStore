@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -26,11 +27,11 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        addItemStage(primaryStage);
+        loginStage(primaryStage);
 
-        /*primaryStage.setOnCloseRequest(windowEvent -> {
+        primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
-        });*/
+        });
     }
 
     public void loginStage(Stage primaryStage) {
@@ -80,7 +81,8 @@ public class VideoStoreApp extends Application {
                 }
             } else {
                 if (vsm.adminLogin(username, password)) {
-                    // TODO: Call admin stage
+                    loginStage.close();
+                    adminHome(primaryStage);
                 } else {
                     Text warningText = new Text();
                     warningText.setFill(Color.RED);
@@ -88,11 +90,35 @@ public class VideoStoreApp extends Application {
                     grid.add(warningText, 1, 4);
                 }
             }
-
         });
 
+        // Create title and student info
+        Text courseTitle = new Text("RMIT University – INTE2512 Object-Oriented Programming\nFINAL PROJECT – A VIDEO STORE");
+        courseTitle.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        courseTitle.setTextAlignment(TextAlignment.CENTER);
+
+        Text student1 = new Text("Tran Dai Phuc – S3924715");
+        Text student2 = new Text("Nguyen Hong Anh – S3924711");
+        Text student3 = new Text("Vo Hong Trien – S3907397");
+        Text student4 = new Text("Vo Hoang Khanh – S3926310");
+
+        GridPane studentInfo = new GridPane();
+        studentInfo.setAlignment(Pos.CENTER);
+        studentInfo.setHgap(10);
+        studentInfo.setVgap(10);
+
+        studentInfo.add(student1, 0, 0);
+        studentInfo.add(student2, 0, 1);
+        studentInfo.add(student3, 1, 0);
+        studentInfo.add(student4, 1, 1);
+
+        VBox screen = new VBox();
+        screen.setAlignment(Pos.CENTER);
+        screen.setSpacing(10);
+        screen.getChildren().addAll(courseTitle, studentInfo, grid);
+
         // Set up the scene and stage
-        Scene scene = new Scene(grid, 400, 200);
+        Scene scene = new Scene(screen, 600, 500);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Video Store Login");
         primaryStage.show();
@@ -186,13 +212,6 @@ public class VideoStoreApp extends Application {
     }
 
     public void rentItemStage(Stage primaryStage) {
-        // Create the main application window
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setAlignment(Pos.CENTER);
-        grid.setVgap(5);
-        grid.setHgap(5);
-
         // Create the buttons
         Button homeButton = new Button("Home");
         homeButton.setOnAction(actionEvent -> {
@@ -230,6 +249,13 @@ public class VideoStoreApp extends Application {
 
         // Number of columns to display
         int numColumns = 3;
+
+        // Create grid to store items
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setAlignment(Pos.CENTER);
+        grid.setVgap(5);
+        grid.setHgap(5);
 
         // Add items to the grid
         for (int i = 0; i < vsm.getItems().size(); i++) {
@@ -274,9 +300,8 @@ public class VideoStoreApp extends Application {
         scrollPane.setContent(grid);
 
         // Vertical box to store everything
-        VBox vBox = new VBox();
-        vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(buttonBox, scrollPane);
+        VBox vBox = new VBox(10, buttonBox, scrollPane);
+        vBox.setAlignment(Pos.TOP_CENTER);
 
         // Set up the scene and stage
         Scene scene = new Scene(vBox);
@@ -511,6 +536,9 @@ public class VideoStoreApp extends Application {
         addItemIcon.setFitHeight(20);
         addItemIcon.setFitWidth(20);
         addItemButton.setGraphic(addItemIcon);
+        addItemButton.setOnAction(actionEvent -> {
+            addItemStage(primaryStage);
+        });
 
         Button updateItemButton = new Button("Update item");
         updateItemButton.setPrefSize(120, 50);
@@ -519,6 +547,9 @@ public class VideoStoreApp extends Application {
         updateItemIcon.setFitHeight(20);
         updateItemIcon.setFitWidth(20);
         updateItemButton.setGraphic(updateItemIcon);
+        updateItemButton.setOnAction(actionEvent -> {
+            updateItemStage(primaryStage);
+        });
 
         Button increaseItemButton = new Button("Increase\ncopies");
         increaseItemButton.setPrefSize(120, 50);
@@ -527,6 +558,9 @@ public class VideoStoreApp extends Application {
         increaseItemIcon.setFitHeight(20);
         increaseItemIcon.setFitWidth(20);
         increaseItemButton.setGraphic(increaseItemIcon);
+        increaseItemButton.setOnAction(actionEvent -> {
+            increaseItemStage(primaryStage);
+        });
 
         Button deleteItemButton = new Button("Delete item");
         deleteItemButton.setPrefSize(120, 50);
@@ -535,6 +569,9 @@ public class VideoStoreApp extends Application {
         deleteItemIcon.setFitHeight(20);
         deleteItemIcon.setFitWidth(20);
         deleteItemButton.setGraphic(deleteItemIcon);
+        deleteItemButton.setOnAction(actionEvent -> {
+            deleteItemStage(primaryStage);
+        });
 
         Button displayItemButton = new Button("Display item");
         displayItemButton.setPrefSize(120, 50);
@@ -543,6 +580,9 @@ public class VideoStoreApp extends Application {
         displayItemIcon.setFitHeight(20);
         displayItemIcon.setFitWidth(20);
         displayItemButton.setGraphic(displayItemIcon);
+        displayItemButton.setOnAction(actionEvent -> {
+            displayItemStage(primaryStage);
+        });
 
         Button searchItemButton = new Button("Search item");
         searchItemButton.setPrefSize(120, 50);
@@ -551,6 +591,9 @@ public class VideoStoreApp extends Application {
         searchItemIcon.setFitHeight(20);
         searchItemIcon.setFitWidth(20);
         searchItemButton.setGraphic(searchItemIcon);
+        searchItemButton.setOnAction(actionEvent -> {
+            searchItemStage(primaryStage);
+        });
 
         itemGrid.add(addItemButton, 0, 0);
         itemGrid.add(updateItemButton, 0, 1);
@@ -573,7 +616,7 @@ public class VideoStoreApp extends Application {
         Text customerManagementText = new Text("Customers management");
         customerManagementText.setFont(Font.font("Arial", FontWeight.BOLD, 10));
 
-        // Create the buttons for item management
+        // Create the buttons for customer management
         Button addCustomerButton = new Button("Add customer");
         addCustomerButton.setPrefSize(120, 50);
         ImageView addCustomerIcon =
@@ -581,6 +624,9 @@ public class VideoStoreApp extends Application {
         addCustomerIcon.setFitHeight(20);
         addCustomerIcon.setFitWidth(20);
         addCustomerButton.setGraphic(addCustomerIcon);
+        addCustomerButton.setOnAction(actionEvent -> {
+            addCustomerStage(primaryStage);
+        });
 
         Button updateCustomerButton = new Button("Update\ncustomer");
         updateCustomerButton.setPrefSize(120, 50);
@@ -589,6 +635,9 @@ public class VideoStoreApp extends Application {
         updateCustomerIcon.setFitHeight(20);
         updateCustomerIcon.setFitWidth(20);
         updateCustomerButton.setGraphic(updateCustomerIcon);
+        updateCustomerButton.setOnAction(actionEvent -> {
+            updateCustomerStage(primaryStage);
+        });
 
         Button displayCustomerButton = new Button("Display item");
         displayCustomerButton.setPrefSize(120, 50);
@@ -597,6 +646,9 @@ public class VideoStoreApp extends Application {
         displayCustomerIcon.setFitHeight(20);
         displayCustomerIcon.setFitWidth(20);
         displayCustomerButton.setGraphic(displayCustomerIcon);
+        displayCustomerButton.setOnAction(actionEvent -> {
+            displayCustomerStage(primaryStage);
+        });
 
         Button searchCustomerButton = new Button("Search item");
         searchCustomerButton.setPrefSize(120, 50);
@@ -605,6 +657,9 @@ public class VideoStoreApp extends Application {
         searchCustomerIcon.setFitHeight(20);
         searchCustomerIcon.setFitWidth(20);
         searchCustomerButton.setGraphic(searchCustomerIcon);
+        searchCustomerButton.setOnAction(actionEvent -> {
+            searchCustomerStage(primaryStage);
+        });
 
         Button logoutButton = new Button("Logout");
         logoutButton.setPrefWidth(120);
@@ -1006,7 +1061,110 @@ public class VideoStoreApp extends Application {
         buttonBox.getChildren().addAll(homeButton, addCustomerButton, updateCustomerButton, displayCustomerButton,
                 searchCustomerButton, logoutButton);
 
-        // TODO: Implement stage
+        // Create UI elements
+        Label idLabel = new Label("Enter customer ID:");
+        TextField idField = new TextField();
+        Button checkButton = new Button("Check");
+        HBox idBox = new HBox(10, idLabel, idField, checkButton);
+        idBox.setAlignment(Pos.CENTER);
+
+        Text infoText = new Text();
+        Label nameLabel = new Label("Enter new name:");
+        TextField nameField = new TextField();
+        Label addressLabel = new Label("Enter new address:");
+        TextField addressField = new TextField();
+        Label phoneLabel = new Label("Enter new phone number:");
+        TextField phoneField = new TextField();
+        Label usernameLabel = new Label("Enter new username:");
+        TextField usernameField = new TextField();
+        Label passwordLabel = new Label("Enter new password:");
+        TextField passwordField = new TextField();
+
+        Button updateButton = new Button("Update Customer");
+        HBox updateBox = new HBox(updateButton);
+        updateBox.setAlignment(Pos.CENTER);
+
+        // Initially hide all fields below the ID field
+        infoText.setVisible(false);
+        nameLabel.setVisible(false);
+        nameField.setVisible(false);
+        addressLabel.setVisible(false);
+        addressField.setVisible(false);
+        phoneLabel.setVisible(false);
+        phoneField.setVisible(false);
+        usernameLabel.setVisible(false);
+        usernameField.setVisible(false);
+        passwordLabel.setVisible(false);
+        passwordField.setVisible(false);
+        updateButton.setVisible(false);
+
+        // Set action for checkButton to check if the entered ID is valid
+        checkButton.setOnAction(event -> {
+            infoText.setText("");
+            String ID = idField.getText();
+            if (vsm.isValidCustomerID(ID)) {
+                // Show all fields below the ID field
+                infoText.setVisible(true);
+                nameLabel.setVisible(true);
+                nameField.setVisible(true);
+                addressLabel.setVisible(true);
+                addressField.setVisible(true);
+                phoneLabel.setVisible(true);
+                phoneField.setVisible(true);
+                usernameLabel.setVisible(true);
+                usernameField.setVisible(true);
+                passwordLabel.setVisible(true);
+                passwordField.setVisible(true);
+                updateButton.setVisible(true);
+
+                // Display current customer info
+                Customer customer = vsm.findCustomerByID(ID);
+                if (customer != null) {
+                    infoText.setText(customer.customerInfo());
+                } else {
+                    infoText.setText("No customer found!");
+                }
+            } else {
+                infoText.setText("Invalid ID!");
+                infoText.setVisible(true);
+            }
+        });
+
+        // Set action for updateButton to call updateCustomer method
+        updateButton.setOnAction(event -> {
+            vsm.updateCustomer(idField, infoText, nameField, addressField, phoneField, usernameField, passwordField);
+        });
+
+        // Create a GridPane to hold text fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+        grid.add(nameLabel, 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(addressLabel, 0, 1);
+        grid.add(addressField, 1, 1);
+        grid.add(phoneLabel, 0, 2);
+        grid.add(phoneField, 1, 2);
+        grid.add(usernameLabel, 0, 3);
+        grid.add(usernameField, 1, 3);
+        grid.add(passwordLabel, 0, 4);
+        grid.add(passwordField, 1, 4);
+
+        HBox infoBox = new HBox(15, infoText, grid);
+        infoBox.setAlignment(Pos.CENTER);
+
+        // Create a VBox to store everything
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setSpacing(10);
+        vBox.getChildren().addAll(buttonBox, idBox, infoBox, updateBox);
+
+        // Create a Scene and set it on the Stage
+        Scene scene = new Scene(vBox, 700, 400);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Video Store");
+        primaryStage.show();
     }
 
     public void displayCustomerStage(Stage primaryStage) {
