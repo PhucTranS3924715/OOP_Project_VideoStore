@@ -3,6 +3,7 @@ package Project;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -547,6 +548,8 @@ public class VideoStoreManagement {
     public void displayIDSortCustomer(GridPane gridPane){
         Collections.sort(customers, new IDSortCustomer());
 
+        gridPane.getChildren().clear();
+
         gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
 
@@ -619,11 +622,17 @@ public class VideoStoreManagement {
                 }
             }
         }
+
+        // Create a scroll pane and add the grid to it
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(gridPane);
     }
 
     public void displayNameSortCustomer(GridPane gridPane) {
         Collections.sort(customers, new NameSortCustomer());
 
+        gridPane.getChildren().clear();
+
         gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
 
@@ -696,6 +705,10 @@ public class VideoStoreManagement {
                 }
             }
         }
+
+        // Create a scroll pane and add the grid to it
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(gridPane);
     }
 
 //    public void displayCustomer() {

@@ -1059,20 +1059,40 @@ public class VideoStoreApp extends Application {
         // TODO: Implement stage
         GridPane gridPane = new GridPane();
 
-        vsm.displayNameSortCustomer(gridPane);
+        Button sortButton = new Button("Display Customer");
+        ComboBox<String> sortComboBox = new ComboBox<>();
+        sortComboBox.getItems().addAll("Sort by ID", "Sort by Name");
+        sortComboBox.setValue("Sort by ID");
 
-        // Create a scroll pane and add the grid to it
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(gridPane);
+        buttonBox.getChildren().addAll(sortButton,sortComboBox);
+
+        sortButton.setOnAction(e -> {
+            String selectedOption = sortComboBox.getValue();
+            if (selectedOption.equals("Sort by ID")) {
+                vsm.displayIDSortCustomer(gridPane);
+                VBox vBox = new VBox(10, buttonBox, gridPane);
+                Scene scene = new Scene(vBox);
+                primaryStage.setTitle("Display Customer by ID");
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            } else if (selectedOption.equals("Sort by Name")) {
+                vsm.displayNameSortCustomer(gridPane);
+                VBox vBox = new VBox(10, buttonBox, gridPane);
+                Scene scene = new Scene(vBox);
+                primaryStage.setTitle("Display Customer by name");
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+        });
 
         // Vertical box to store everything
-        VBox vBox = new VBox(10, buttonBox, scrollPane);
+        VBox vBox = new VBox(10, buttonBox, gridPane);
         vBox.setAlignment(Pos.TOP_CENTER);
 
         // Set up the scene and stage
         Scene scene = new Scene(vBox);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Display Customer");
+        primaryStage.setTitle("Admin Home");
         primaryStage.show();
     }
 
