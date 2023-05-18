@@ -1,6 +1,7 @@
 package Project;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.io.FileWriter;
@@ -40,7 +41,7 @@ public class VideoStoreManagement {
         return Objects.equals(username, adminUsername) && Objects.equals(password, adminPassword);
     }
 
-    private Customer findCustomerByID(String ID) {
+    public Customer findCustomerByID(String ID) {
         for (Customer customer : customers) {
             if (customer.getID().equals(ID))
                 return customer;
@@ -57,7 +58,7 @@ public class VideoStoreManagement {
     }
 
     // Method to check valid item ID
-    private boolean isValidItemID(String id) {
+    public boolean isValidItemID(String id) {
         if (!id.matches("I\\d{3}-\\d{4}")) {
             return false;
         }
@@ -66,7 +67,7 @@ public class VideoStoreManagement {
     }
 
     // Method to check valid customer ID
-    private boolean isValidCustomerID(String id) {
+    public boolean isValidCustomerID(String id) {
         return id.matches("C\\d{3}");
     }
 
@@ -176,31 +177,41 @@ public class VideoStoreManagement {
         return false;
     }
 
-    public boolean updateCustomer() {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter customer ID: ");
-        String ID = scan.nextLine();
-        Customer customer = findCustomerByID(ID);
+    public boolean updateCustomer(TextField idField, Text infoText, TextField nameField, TextField addressField,
+                                  TextField phoneField, TextField usernameField, TextField passwordField) {
+        Customer customer = findCustomerByID(idField.getText());
         if (customer != null) {
-            System.out.print("Enter new name: ");
-            String name = scan.nextLine();
-            System.out.print("Enter new address: ");
-            String address = scan.nextLine();
-            System.out.print("Enter new phone number: ");
-            String phone = scan.nextLine();
-            System.out.print("Enter new username: ");
-            String username = scan.nextLine();
-            System.out.print("Enter new password: ");
-            String password = scan.nextLine();
-            customer.setName(name);
-            customer.setAddress(address);
-            customer.setPhone(phone);
-            customer.setUsername(username);
-            customer.setPassword(password);
-            System.out.println("Customer updated!");
+            // Display current info
+            infoText.setText(customer.customerInfo());
+
+            // Get new info from TextFields
+            String name = nameField.getText();
+            String address = addressField.getText();
+            String phone = phoneField.getText();
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+
+            // Update customer info for non-empty fields
+            if (!name.isEmpty()) {
+                customer.setName(name);
+            }
+            if (!address.isEmpty()) {
+                customer.setAddress(address);
+            }
+            if (!phone.isEmpty()) {
+                customer.setPhone(phone);
+            }
+            if (!username.isEmpty()) {
+                customer.setUsername(username);
+            }
+            if (!password.isEmpty()) {
+                customer.setPassword(password);
+            }
+
+            infoText.setText("Customer updated!");
             return true;
         }
-        System.out.println("No customer found!");
+        infoText.setText("No customer found!");
         return false;
     }
 
@@ -745,7 +756,7 @@ public class VideoStoreManagement {
         return items;
     }
 
-    public String welcomeTitle(){
+    public String welcomeTitle() {
         return "Welcome back, " + currentUser.getName() + "!";
     }
 
