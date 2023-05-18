@@ -1057,6 +1057,23 @@ public class VideoStoreApp extends Application {
                 searchCustomerButton, logoutButton);
 
         // TODO: Implement stage
+        GridPane gridPane = new GridPane();
+
+        vsm.displayNameSortCustomer(gridPane);
+
+        // Create a scroll pane and add the grid to it
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(gridPane);
+
+        // Vertical box to store everything
+        VBox vBox = new VBox(10, buttonBox, scrollPane);
+        vBox.setAlignment(Pos.TOP_CENTER);
+
+        // Set up the scene and stage
+        Scene scene = new Scene(vBox);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Display Customer");
+        primaryStage.show();
     }
 
     public void searchCustomerStage(Stage primaryStage) {
