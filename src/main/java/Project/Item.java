@@ -12,7 +12,8 @@ public class Item {
     private String rentalStatus;
     private String genre;
 
-    public Item(String ID, String title, String rentalType, String loanType, int noOfCopy, float rentalFee, String rentalStatus, String genre) {
+    public Item(String ID, String title, String rentalType, String loanType, int noOfCopy, float rentalFee,
+                String rentalStatus, String genre) {
         this.ID = ID;
         this.title = title;
         this.rentalType = rentalType;
@@ -23,7 +24,8 @@ public class Item {
         this.genre = genre;
     }
 
-    public Item(String ID, String title, String rentalType, String loanType, int noOfCopy, float rentalFee, String rentalStatus) {
+    public Item(String ID, String title, String rentalType, String loanType, int noOfCopy, float rentalFee,
+                String rentalStatus) {
         this.ID = ID;
         this.title = title;
         this.rentalType = rentalType;
@@ -117,9 +119,14 @@ public class Item {
                 "\nNumber of copies: " + noOfCopy +
                 "\nRental fee: " + rentalFee +
                 "\nRental status: " + rentalStatus;
-        if (Objects.equals(this.rentalType, "Record") || Objects.equals(this.rentalType, "DVD")){
+        if (Objects.equals(this.rentalType, "Record") || Objects.equals(this.rentalType, "DVD")) {
             item += "\nGenre: " + genre;
         }
         return item;
+    }
+
+    public String itemInfo() {
+        return "ID: " + ID +
+                "\nTitle: " + title;
     }
 }
