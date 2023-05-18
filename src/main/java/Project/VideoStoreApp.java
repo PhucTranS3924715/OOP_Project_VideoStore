@@ -853,7 +853,7 @@ public class VideoStoreApp extends Application {
         // TODO: Implement stage
         Button sortButton = new Button("Display item");
         ComboBox<String> sortComboBox = new ComboBox<>();
-        sortComboBox.getItems().addAll("Sort by ID", "Sort by Title");
+        sortComboBox.getItems().addAll("Sort by ID", "Sort by Title", "No Copies");
         sortComboBox.setValue("Sort by ID");
 
         HBox buttonBox = new HBox();
@@ -873,6 +873,9 @@ public class VideoStoreApp extends Application {
             } else if (selectedOption.equals("Sort by Title")) {
                 sortTable.getChildren().clear();
                 vsm.displayTitleSortItem(gridPane);
+            } else if (selectedOption.equals("No Copies")) {
+                sortTable.getChildren().clear();
+                vsm.displayItemNoCopies(gridPane);
             }
             sortTable.getChildren().addAll(buttonBox, gridPane);
         });
