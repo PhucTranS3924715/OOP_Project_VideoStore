@@ -93,7 +93,8 @@ public class VideoStoreApp extends Application {
         });
 
         // Create title and student info
-        Text courseTitle = new Text("RMIT University – INTE2512 Object-Oriented Programming\nFINAL PROJECT – A VIDEO STORE");
+        Text courseTitle = new Text("RMIT University – INTE2512 Object-Oriented Programming\nFINAL PROJECT – A VIDEO " +
+                "STORE");
         courseTitle.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         courseTitle.setTextAlignment(TextAlignment.CENTER);
 
@@ -511,6 +512,66 @@ public class VideoStoreApp extends Application {
                 viewUpdateInfoButton, logoutButton);
 
         // TODO: Implement viewUpdateInfoStage
+        Text infoText = new Text();
+        Label nameLabel = new Label("Enter new name:");
+        TextField nameField = new TextField();
+        Label addressLabel = new Label("Enter new address:");
+        TextField addressField = new TextField();
+        Label phoneLabel = new Label("Enter new phone number:");
+        TextField phoneField = new TextField();
+        Label usernameLabel = new Label("Enter new username:");
+        TextField usernameField = new TextField();
+        Label passwordLabel = new Label("Enter new password:");
+        TextField passwordField = new TextField();
+
+        Button updateButton = new Button("Update Customer");
+        HBox updateBox = new HBox(updateButton);
+        updateBox.setAlignment(Pos.CENTER);
+
+        // Display current customer info
+        Customer customer = vsm.findCustomerByID(vsm.getCurrentUserID());
+        if (customer != null) {
+            infoText.setText(customer.customerInfo());
+        } else {
+            infoText.setText("No customer found!");
+        }
+
+        // Set action for updateButton to call updateCustomer method
+        updateButton.setOnAction(event -> {
+            vsm.updateCustomer(vsm.getCurrentUserID(), infoText, nameField.getText(), addressField.getText(),
+                    phoneField.getText(), "", "",
+                    usernameField.getText(), passwordField.getText(), "");
+        });
+
+        // Create a grid to hold the text fields
+        GridPane infoGrid = new GridPane();
+        infoGrid.setHgap(10);
+        infoGrid.setVgap(10);
+        infoGrid.add(nameLabel, 0, 0);
+        infoGrid.add(nameField, 1, 0);
+        infoGrid.add(addressLabel, 0, 1);
+        infoGrid.add(addressField, 1, 1);
+        infoGrid.add(phoneLabel, 0, 2);
+        infoGrid.add(phoneField, 1, 2);
+        infoGrid.add(usernameLabel, 0, 3);
+        infoGrid.add(usernameField, 1, 3);
+        infoGrid.add(passwordLabel, 0, 4);
+        infoGrid.add(passwordField, 1, 4);
+
+        HBox infoBox = new HBox(10, infoText, infoGrid);
+        infoBox.setAlignment(Pos.CENTER);
+
+        // Create a VBox to store everything
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setSpacing(10);
+        vBox.getChildren().addAll(buttonBox, infoBox, updateBox);
+
+        // Create a Scene and set it on the Stage
+        Scene scene = new Scene(vBox, 700, 400);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Video Store");
+        primaryStage.show();
     }
 
     public void adminHome(Stage primaryStage) {
@@ -1075,10 +1136,18 @@ public class VideoStoreApp extends Application {
         TextField addressField = new TextField();
         Label phoneLabel = new Label("Enter new phone number:");
         TextField phoneField = new TextField();
+        Label noOfRentalLabel = new Label("Enter new no. of rental:");
+        TextField noOfRentalField = new TextField();
+        Label customerTypeLabel = new Label("Choose new customer type:");
+        ComboBox<String> customerTypeComboBox = new ComboBox<>();
+        customerTypeComboBox.getItems().addAll("", "Guest", "Regular", "VIP");
+        customerTypeComboBox.setValue("");
         Label usernameLabel = new Label("Enter new username:");
         TextField usernameField = new TextField();
         Label passwordLabel = new Label("Enter new password:");
         TextField passwordField = new TextField();
+        Label rewardPointLabel = new Label("Enter new reward point:");
+        TextField rewardPointField = new TextField();
 
         Button updateButton = new Button("Update Customer");
         HBox updateBox = new HBox(updateButton);
@@ -1092,10 +1161,16 @@ public class VideoStoreApp extends Application {
         addressField.setVisible(false);
         phoneLabel.setVisible(false);
         phoneField.setVisible(false);
+        noOfRentalLabel.setVisible(false);
+        noOfRentalField.setVisible(false);
+        customerTypeLabel.setVisible(false);
+        customerTypeComboBox.setVisible(false);
         usernameLabel.setVisible(false);
         usernameField.setVisible(false);
         passwordLabel.setVisible(false);
         passwordField.setVisible(false);
+        rewardPointLabel.setVisible(false);
+        rewardPointField.setVisible(false);
         updateButton.setVisible(false);
 
         // Set action for checkButton to check if the entered ID is valid
@@ -1111,10 +1186,16 @@ public class VideoStoreApp extends Application {
                 addressField.setVisible(true);
                 phoneLabel.setVisible(true);
                 phoneField.setVisible(true);
+                noOfRentalLabel.setVisible(true);
+                noOfRentalField.setVisible(true);
+                customerTypeLabel.setVisible(true);
+                customerTypeComboBox.setVisible(true);
                 usernameLabel.setVisible(true);
                 usernameField.setVisible(true);
                 passwordLabel.setVisible(true);
                 passwordField.setVisible(true);
+                rewardPointLabel.setVisible(true);
+                rewardPointField.setVisible(true);
                 updateButton.setVisible(true);
 
                 // Display current customer info
@@ -1132,7 +1213,9 @@ public class VideoStoreApp extends Application {
 
         // Set action for updateButton to call updateCustomer method
         updateButton.setOnAction(event -> {
-            vsm.updateCustomer(idField, infoText, nameField, addressField, phoneField, usernameField, passwordField);
+            vsm.updateCustomer(idField.getText(), infoText, nameField.getText(), addressField.getText(),
+                    phoneField.getText(), noOfRentalField.getText(), customerTypeComboBox.getValue(),
+                    usernameField.getText(), passwordField.getText(), rewardPointField.getText());
         });
 
         // Create a GridPane to hold text fields
@@ -1146,10 +1229,16 @@ public class VideoStoreApp extends Application {
         grid.add(addressField, 1, 1);
         grid.add(phoneLabel, 0, 2);
         grid.add(phoneField, 1, 2);
-        grid.add(usernameLabel, 0, 3);
-        grid.add(usernameField, 1, 3);
-        grid.add(passwordLabel, 0, 4);
-        grid.add(passwordField, 1, 4);
+        grid.add(noOfRentalLabel, 0, 3);
+        grid.add(noOfRentalField, 1, 3);
+        grid.add(customerTypeLabel, 0, 4);
+        grid.add(customerTypeComboBox, 1, 4);
+        grid.add(usernameLabel, 0, 5);
+        grid.add(usernameField, 1, 5);
+        grid.add(passwordLabel, 0, 6);
+        grid.add(passwordField, 1, 6);
+        grid.add(rewardPointLabel, 0, 7);
+        grid.add(rewardPointField, 1, 7);
 
         HBox infoBox = new HBox(15, infoText, grid);
         infoBox.setAlignment(Pos.CENTER);
