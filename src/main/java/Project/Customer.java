@@ -144,6 +144,7 @@ public class Customer {
         return customer;
     }
 
+    // A shorter version of toString method (only display item's ID and title)
     public String customerInfo() {
         String customer = "ID: " + ID +
                 "\nName: " + name +
