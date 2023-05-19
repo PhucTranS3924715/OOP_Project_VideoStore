@@ -47,16 +47,14 @@ public class VideoStoreManagement {
 
     public Customer findCustomerByID(String ID) {
         for (Customer customer : customers) {
-            if (customer.getID().equals(ID))
-                return customer;
+            if (customer.getID().equals(ID)) return customer;
         }
         return null;
     }
 
     public Item findItemByID(String ID) {
         for (Item item : items) {
-            if (item.getID().equals(ID))
-                return item;
+            if (item.getID().equals(ID)) return item;
         }
         return null;
     }
@@ -199,10 +197,10 @@ public class VideoStoreManagement {
             if (!phoneField.isEmpty()) {
                 customer.setPhone(phoneField);
             }
-            if (!noOfRentalField.isEmpty()){
+            if (!noOfRentalField.isEmpty()) {
                 customer.setNoOfRental(Integer.parseInt(noOfRentalField));
             }
-            if (!customerTypeField.isEmpty()){
+            if (!customerTypeField.isEmpty()) {
                 customer.setCustomerType(customerTypeField);
             }
             if (!usernameField.isEmpty()) {
@@ -211,7 +209,7 @@ public class VideoStoreManagement {
             if (!passwordField.isEmpty()) {
                 customer.setPassword(passwordField);
             }
-            if (!rewardPointField.isEmpty()){
+            if (!rewardPointField.isEmpty()) {
                 customer.setRewardPoints(Integer.parseInt(rewardPointField));
             }
 
@@ -332,52 +330,6 @@ public class VideoStoreManagement {
 
     /* Rent an item (decrease the number of copies held in stock)
      Return true if the item is successfully rented, false otherwise*/
-/*    public boolean rentItem(String ID) {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter item ID: ");
-        String ID = scan.nextLine();
-        Item item = findItemByID(ID);
-
-        if (item == null) {
-            System.out.println("No item found!");
-            return false;
-        }
-
-        if (currentUser.getCustomerType().equals("Guest") && item.getLoanType().equals("2-day")) {
-            System.out.println("Error: Guest customers cannot borrow 2-day items.");
-            return false;
-        } else if (item.getRentalStatus().equals("not available")) {
-            System.out.println("Error: This item is not available for rent.");
-            return false;
-        } else if (item.getRentalStatus().equals("borrowed")) {
-            System.out.println("Error: This item is already borrowed.");
-            return false;
-        } else {
-            if (currentUser.getCustomerType().equals("Guest") && currentUser.getItems().size() >= 2) {
-                System.out.println("Error: Guest customers can only rent a maximum of 2 items.");
-                return false;
-            } else {
-                currentUser.getItems().add(item);
-                item.setNoOfCopy(item.getNoOfCopy() - 1);
-                if (item.getNoOfCopy() == 0) {
-                    item.setRentalStatus("borrowed");
-                }
-                System.out.println("Item rented successfully.");
-                if (currentUser.getCustomerType().equals("VIP")) {
-                    currentUser.setRewardPoints(currentUser.getRewardPoints() + 10);
-                    if (currentUser.getRewardPoints() >= 100) {
-                        boolean useRewardPoints = promptForRewardPointsUsage();
-                        if (useRewardPoints) {
-                            chooseFreeRental();
-                            currentUser.setRewardPoints(currentUser.getRewardPoints() - 100);
-                        }
-                    }
-                }
-                return true;
-            }
-        }
-    }*/
-
     public boolean rentItem(String itemID, Label messageLabel) {
         Item item = findItemByID(itemID);
 
@@ -413,8 +365,8 @@ public class VideoStoreManagement {
 
     public boolean promptForRewardPointsUsage() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Congratulations! You have earned a free rental. Would you like to use your reward points?" +
-                " (Y/N)");
+        System.out.println("Congratulations! You have earned a free rental. Would you like to use your reward " +
+                "points?" + " (Y/N)");
         String input = scanner.nextLine().toLowerCase();
         return input.equals("Y");
     }
@@ -524,7 +476,6 @@ public class VideoStoreManagement {
 
         gridPane.getChildren().clear();
 
-        //gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setStyle("-fx-grid-lines-visible: true");
 
@@ -550,41 +501,41 @@ public class VideoStoreManagement {
             GridPane.setHalignment(text[i][0], HPos.CENTER);
         }
 
-        for (int i = 1; i < items.size() + 1; i++){
-            for (int j = 0; j < 8; j++){
-                switch (j){
+        for (int i = 1; i < items.size() + 1; i++) {
+            for (int j = 0; j < 8; j++) {
+                switch (j) {
                     case 0:
-                        text[0][i].setText("  " + items.get(i-1).getID() + "  ");
+                        text[0][i].setText("  " + items.get(i - 1).getID() + "  ");
                         gridPane.add(text[0][i], 0, i);
                         break;
                     case 1:
-                        text[1][i].setText("  " + items.get(i-1).getTitle() + "  ");
+                        text[1][i].setText("  " + items.get(i - 1).getTitle() + "  ");
                         gridPane.add(text[1][i], 1, i);
                         break;
                     case 2:
-                        text[2][i].setText("  " + items.get(i-1).getRentalType() + "  ");
+                        text[2][i].setText("  " + items.get(i - 1).getRentalType() + "  ");
                         gridPane.add(text[2][i], 2, i);
                         break;
                     case 3:
-                        text[3][i].setText("  " + items.get(i-1).getLoanType() + "  ");
+                        text[3][i].setText("  " + items.get(i - 1).getLoanType() + "  ");
                         gridPane.add(text[3][i], 3, i);
                         break;
                     case 4:
-                        text[4][i].setText("  " + String.valueOf(items.get(i-1).getNoOfCopy()) + "  ");
+                        text[4][i].setText("  " + String.valueOf(items.get(i - 1).getNoOfCopy()) + "  ");
                         gridPane.add(text[4][i], 4, i);
                         GridPane.setHalignment(text[4][i], HPos.CENTER);
                         break;
                     case 5:
-                        text[5][i].setText("  " + String.valueOf(items.get(i-1).getRentalFee()) + "  ");
+                        text[5][i].setText("  " + String.valueOf(items.get(i - 1).getRentalFee()) + "  ");
                         GridPane.setHalignment(text[5][i], HPos.CENTER);
                         gridPane.add(text[5][i], 5, i);
                         break;
                     case 6:
-                        text[6][i].setText("  " + items.get(i-1).getRentalStatus() + "  ");
+                        text[6][i].setText("  " + items.get(i - 1).getRentalStatus() + "  ");
                         gridPane.add(text[6][i], 6, i);
                         break;
                     case 7:
-                        text[7][i].setText("  " + items.get(i-1).getGenre() + "  ");
+                        text[7][i].setText("  " + items.get(i - 1).getGenre() + "  ");
                         gridPane.add(text[7][i], 7, i);
                         break;
                 }
@@ -601,7 +552,6 @@ public class VideoStoreManagement {
 
         gridPane.getChildren().clear();
 
-        //gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setStyle("-fx-grid-lines-visible: true");
 
@@ -627,41 +577,41 @@ public class VideoStoreManagement {
             GridPane.setHalignment(text[i][0], HPos.CENTER);
         }
 
-        for (int i = 1; i < items.size() + 1; i++){
-            for (int j = 0; j < 8; j++){
-                switch (j){
+        for (int i = 1; i < items.size() + 1; i++) {
+            for (int j = 0; j < 8; j++) {
+                switch (j) {
                     case 0:
-                        text[0][i].setText("  " + items.get(i-1).getID() + "  ");
+                        text[0][i].setText("  " + items.get(i - 1).getID() + "  ");
                         gridPane.add(text[0][i], 0, i);
                         break;
                     case 1:
-                        text[1][i].setText("  " + items.get(i-1).getTitle() + "  ");
+                        text[1][i].setText("  " + items.get(i - 1).getTitle() + "  ");
                         gridPane.add(text[1][i], 1, i);
                         break;
                     case 2:
-                        text[2][i].setText("  " + items.get(i-1).getRentalType() + "  ");
+                        text[2][i].setText("  " + items.get(i - 1).getRentalType() + "  ");
                         gridPane.add(text[2][i], 2, i);
                         break;
                     case 3:
-                        text[3][i].setText("  " + items.get(i-1).getLoanType() + "  ");
+                        text[3][i].setText("  " + items.get(i - 1).getLoanType() + "  ");
                         gridPane.add(text[3][i], 3, i);
                         break;
                     case 4:
-                        text[4][i].setText("  " + String.valueOf(items.get(i-1).getNoOfCopy()) + "  ");
+                        text[4][i].setText("  " + String.valueOf(items.get(i - 1).getNoOfCopy()) + "  ");
                         gridPane.add(text[4][i], 4, i);
                         GridPane.setHalignment(text[4][i], HPos.CENTER);
                         break;
                     case 5:
-                        text[5][i].setText("  " + String.valueOf(items.get(i-1).getRentalFee()) + "  ");
+                        text[5][i].setText("  " + String.valueOf(items.get(i - 1).getRentalFee()) + "  ");
                         GridPane.setHalignment(text[5][i], HPos.CENTER);
                         gridPane.add(text[5][i], 5, i);
                         break;
                     case 6:
-                        text[6][i].setText("  " + items.get(i-1).getRentalStatus() + "  ");
+                        text[6][i].setText("  " + items.get(i - 1).getRentalStatus() + "  ");
                         gridPane.add(text[6][i], 6, i);
                         break;
                     case 7:
-                        text[7][i].setText("  " + items.get(i-1).getGenre() + "  ");
+                        text[7][i].setText("  " + items.get(i - 1).getGenre() + "  ");
                         gridPane.add(text[7][i], 7, i);
                         break;
                 }
@@ -673,24 +623,11 @@ public class VideoStoreManagement {
         scrollPane.setContent(gridPane);
     }
 
-    /*public void displayItem() {
-        Scanner sc = new Scanner(System.in);
-        int input;
-        System.out.println("Display item by:\n1. ID\n2. Title");
-        input = sc.nextInt();
-        if (input == 1) {
-            displayIDSortItem();
-        } else {
-            displayTitleSortItem();
-        }
-    }*/
-
-    public void displayIDSortCustomer(GridPane gridPane){
+    public void displayIDSortCustomer(GridPane gridPane) {
         Collections.sort(customers, new IDSortCustomer());
 
         gridPane.getChildren().clear();
 
-        //gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setStyle("-fx-grid-lines-visible: true");
 
@@ -717,47 +654,47 @@ public class VideoStoreManagement {
             GridPane.setHalignment(text[i][0], HPos.CENTER);
         }
 
-        for (int i = 1; i < customers.size() + 1; i++){
-            for (int j = 0; j < 9; j++){
-                switch (j){
+        for (int i = 1; i < customers.size() + 1; i++) {
+            for (int j = 0; j < 9; j++) {
+                switch (j) {
                     case 0:
-                        text[0][i].setText("  " + customers.get(i-1).getID() + "  ");
+                        text[0][i].setText("  " + customers.get(i - 1).getID() + "  ");
                         GridPane.setHalignment(text[0][i], HPos.CENTER);
                         gridPane.add(text[0][i], 0, i);
                         break;
                     case 1:
-                        text[1][i].setText("  " + customers.get(i-1).getName() + "  ");
+                        text[1][i].setText("  " + customers.get(i - 1).getName() + "  ");
                         gridPane.add(text[1][i], 1, i);
                         break;
                     case 2:
-                        text[2][i].setText("  " + customers.get(i-1).getAddress() + "  ");
+                        text[2][i].setText("  " + customers.get(i - 1).getAddress() + "  ");
                         gridPane.add(text[2][i], 2, i);
                         break;
                     case 3:
-                        text[3][i].setText("  " + customers.get(i-1).getPhone() + "  ");
+                        text[3][i].setText("  " + customers.get(i - 1).getPhone() + "  ");
                         GridPane.setHalignment(text[3][i], HPos.CENTER);
                         gridPane.add(text[3][i], 3, i);
                         break;
                     case 4:
-                        text[4][i].setText("  " + String.valueOf(customers.get(i-1).getNoOfRental()) + "  ");
+                        text[4][i].setText("  " + String.valueOf(customers.get(i - 1).getNoOfRental()) + "  ");
                         GridPane.setHalignment(text[4][i], HPos.CENTER);
                         gridPane.add(text[4][i], 4, i);
                         break;
                     case 5:
-                        text[5][i].setText("  " + customers.get(i-1).getCustomerType() + "  ");
+                        text[5][i].setText("  " + customers.get(i - 1).getCustomerType() + "  ");
                         GridPane.setHalignment(text[5][i], HPos.CENTER);
                         gridPane.add(text[5][i], 5, i);
                         break;
                     case 6:
-                        text[6][i].setText("  " + customers.get(i-1).getUsername() + "  ");
+                        text[6][i].setText("  " + customers.get(i - 1).getUsername() + "  ");
                         gridPane.add(text[6][i], 6, i);
                         break;
                     case 7:
-                        text[7][i].setText("  " + customers.get(i-1).getPassword() + "  ");
+                        text[7][i].setText("  " + customers.get(i - 1).getPassword() + "  ");
                         gridPane.add(text[7][i], 7, i);
                         break;
                     case 8:
-                        text[8][i].setText("  " + String.valueOf(customers.get(i-1).getRewardPoints()) + "  ");
+                        text[8][i].setText("  " + String.valueOf(customers.get(i - 1).getRewardPoints()) + "  ");
                         GridPane.setHalignment(text[8][i], HPos.CENTER);
                         gridPane.add(text[8][i], 8, i);
                         break;
@@ -775,7 +712,6 @@ public class VideoStoreManagement {
 
         gridPane.getChildren().clear();
 
-        //gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setStyle("-fx-grid-lines-visible: true");
 
@@ -801,47 +737,47 @@ public class VideoStoreManagement {
             gridPane.add(text[i][0], i, 0);
         }
 
-        for (int i = 1; i < customers.size() + 1; i++){
-            for (int j = 0; j < 9; j++){
-                switch (j){
+        for (int i = 1; i < customers.size() + 1; i++) {
+            for (int j = 0; j < 9; j++) {
+                switch (j) {
                     case 0:
-                        text[0][i].setText("  " + customers.get(i-1).getID() + "  ");
+                        text[0][i].setText("  " + customers.get(i - 1).getID() + "  ");
                         GridPane.setHalignment(text[0][i], HPos.CENTER);
                         gridPane.add(text[0][i], 0, i);
                         break;
                     case 1:
-                        text[1][i].setText("  " + customers.get(i-1).getName() + "  ");
+                        text[1][i].setText("  " + customers.get(i - 1).getName() + "  ");
                         gridPane.add(text[1][i], 1, i);
                         break;
                     case 2:
-                        text[2][i].setText("  " + customers.get(i-1).getAddress() + "  ");
+                        text[2][i].setText("  " + customers.get(i - 1).getAddress() + "  ");
                         gridPane.add(text[2][i], 2, i);
                         break;
                     case 3:
-                        text[3][i].setText("  " + customers.get(i-1).getPhone() + "  ");
+                        text[3][i].setText("  " + customers.get(i - 1).getPhone() + "  ");
                         GridPane.setHalignment(text[3][i], HPos.CENTER);
                         gridPane.add(text[3][i], 3, i);
                         break;
                     case 4:
-                        text[4][i].setText("  " + String.valueOf(customers.get(i-1).getNoOfRental()) + "  ");
+                        text[4][i].setText("  " + String.valueOf(customers.get(i - 1).getNoOfRental()) + "  ");
                         GridPane.setHalignment(text[4][i], HPos.CENTER);
                         gridPane.add(text[4][i], 4, i);
                         break;
                     case 5:
-                        text[5][i].setText("  " + customers.get(i-1).getCustomerType() + "  ");
+                        text[5][i].setText("  " + customers.get(i - 1).getCustomerType() + "  ");
                         GridPane.setHalignment(text[5][i], HPos.CENTER);
                         gridPane.add(text[5][i], 5, i);
                         break;
                     case 6:
-                        text[6][i].setText("  " + customers.get(i-1).getUsername() + "  ");
+                        text[6][i].setText("  " + customers.get(i - 1).getUsername() + "  ");
                         gridPane.add(text[6][i], 6, i);
                         break;
                     case 7:
-                        text[7][i].setText("  " + customers.get(i-1).getPassword() + "  ");
+                        text[7][i].setText("  " + customers.get(i - 1).getPassword() + "  ");
                         gridPane.add(text[7][i], 7, i);
                         break;
                     case 8:
-                        text[8][i].setText("  " + String.valueOf(customers.get(i-1).getRewardPoints()) + "  ");
+                        text[8][i].setText("  " + String.valueOf(customers.get(i - 1).getRewardPoints()) + "  ");
                         GridPane.setHalignment(text[8][i], HPos.CENTER);
                         gridPane.add(text[8][i], 8, i);
                         break;
@@ -854,24 +790,11 @@ public class VideoStoreManagement {
         scrollPane.setContent(gridPane);
     }
 
-    /*public void displayCustomer() {
-        Scanner sc = new Scanner(System.in);
-        int input;
-        System.out.println("Display customer by:\n1. ID\n2. Name");
-        input = sc.nextInt();
-        if (input == 1) {
-            displayIDSortCustomer();
-        } else {
-            displayNameSortCustomer();
-        }
-    }*/
-
     public void displayGroup(GridPane gridPane) {
         Collections.sort(customers, new customerTypeSort());
 
         gridPane.getChildren().clear();
 
-        //gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setStyle("-fx-grid-lines-visible: true");
 
@@ -898,47 +821,47 @@ public class VideoStoreManagement {
             GridPane.setHalignment(text[i][0], HPos.CENTER);
         }
 
-        for (int i = 1; i < customers.size() + 1; i++){
-            for (int j = 0; j < 9; j++){
-                switch (j){
+        for (int i = 1; i < customers.size() + 1; i++) {
+            for (int j = 0; j < 9; j++) {
+                switch (j) {
                     case 0:
-                        text[0][i].setText("  " + customers.get(i-1).getID() + "  ");
+                        text[0][i].setText("  " + customers.get(i - 1).getID() + "  ");
                         GridPane.setHalignment(text[0][i], HPos.CENTER);
                         gridPane.add(text[0][i], 0, i);
                         break;
                     case 1:
-                        text[1][i].setText("  " + customers.get(i-1).getName() + "  ");
+                        text[1][i].setText("  " + customers.get(i - 1).getName() + "  ");
                         gridPane.add(text[1][i], 1, i);
                         break;
                     case 2:
-                        text[2][i].setText("  " + customers.get(i-1).getAddress() + "  ");
+                        text[2][i].setText("  " + customers.get(i - 1).getAddress() + "  ");
                         gridPane.add(text[2][i], 2, i);
                         break;
                     case 3:
-                        text[3][i].setText("  " + customers.get(i-1).getPhone() + "  ");
+                        text[3][i].setText("  " + customers.get(i - 1).getPhone() + "  ");
                         GridPane.setHalignment(text[3][i], HPos.CENTER);
                         gridPane.add(text[3][i], 3, i);
                         break;
                     case 4:
-                        text[4][i].setText(String.valueOf("  " + customers.get(i-1).getNoOfRental()) + "  ");
+                        text[4][i].setText(String.valueOf("  " + customers.get(i - 1).getNoOfRental()) + "  ");
                         GridPane.setHalignment(text[4][i], HPos.CENTER);
                         gridPane.add(text[4][i], 4, i);
                         break;
                     case 5:
-                        text[5][i].setText("  " + customers.get(i-1).getCustomerType() + "  ");
+                        text[5][i].setText("  " + customers.get(i - 1).getCustomerType() + "  ");
                         GridPane.setHalignment(text[5][i], HPos.CENTER);
                         gridPane.add(text[5][i], 5, i);
                         break;
                     case 6:
-                        text[6][i].setText("  " + customers.get(i-1).getUsername() + "  ");
+                        text[6][i].setText("  " + customers.get(i - 1).getUsername() + "  ");
                         gridPane.add(text[6][i], 6, i);
                         break;
                     case 7:
-                        text[7][i].setText("  " + customers.get(i-1).getPassword() + "  ");
+                        text[7][i].setText("  " + customers.get(i - 1).getPassword() + "  ");
                         gridPane.add(text[7][i], 7, i);
                         break;
                     case 8:
-                        text[8][i].setText("  " + String.valueOf(customers.get(i-1).getRewardPoints()) + "  ");
+                        text[8][i].setText("  " + String.valueOf(customers.get(i - 1).getRewardPoints()) + "  ");
                         GridPane.setHalignment(text[8][i], HPos.CENTER);
                         gridPane.add(text[8][i], 8, i);
                         break;
@@ -960,7 +883,6 @@ public class VideoStoreManagement {
 
         gridPane.getChildren().clear();
 
-        //gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setStyle("-fx-grid-lines-visible: true");
 
@@ -986,7 +908,7 @@ public class VideoStoreManagement {
             GridPane.setHalignment(text[i][0], HPos.CENTER);
         }
 
-        for (int i = 1; i < items.size() + 1; i++){
+        for (int i = 1; i < items.size() + 1; i++) {
             for (int j = 0; j < 8; j++) {
                 if (items.get(i - 1).getNoOfCopy() == 0) {
                     switch (j) {
@@ -1054,7 +976,6 @@ public class VideoStoreManagement {
             int res = input.compareTo(items.get(m).getID());
 
             if (res == 0) {
-                //gridPane.setHgap(15);
                 gridPane.setAlignment(Pos.CENTER);
                 gridPane.setStyle("-fx-grid-lines-visible: true");
 
@@ -1084,8 +1005,8 @@ public class VideoStoreManagement {
                 text[1][1].setText("  " + items.get(m).getTitle() + "  ");
                 text[2][1].setText("  " + items.get(m).getRentalType() + "  ");
                 text[3][1].setText("  " + items.get(m).getLoanType() + "  ");
-                text[4][1].setText("  " + String.valueOf(items.get(m).getNoOfCopy()) + "  ");
-                text[5][1].setText("  " + String.valueOf(items.get(m).getRentalFee()) + "  ");
+                text[4][1].setText("  " + items.get(m).getNoOfCopy() + "  ");
+                text[5][1].setText("  " + items.get(m).getRentalFee() + "  ");
                 text[6][1].setText("  " + items.get(m).getRentalStatus() + "  ");
                 text[7][1].setText("  " + items.get(m).getGenre() + "  ");
 
@@ -1098,8 +1019,7 @@ public class VideoStoreManagement {
 
             if (res > 0) {
                 l = m + 1;
-            } else
-                r = m - 1;
+            } else r = m - 1;
         }
 
         if (!found) {
@@ -1108,8 +1028,7 @@ public class VideoStoreManagement {
                 warningText.setFill(Color.RED);
                 warningText.setText("No item found");
                 gridPane.getChildren().add(warningText);
-            }
-            else {
+            } else {
                 Text warningText = new Text();
                 warningText.setFill(Color.RED);
                 warningText.setText("ID is invalid");
@@ -1118,7 +1037,7 @@ public class VideoStoreManagement {
         }
     }
 
-    public void searchItemTitle(GridPane gridPane, String input) {
+    /*public void searchItemTitle(GridPane gridPane, String input) {
         Collections.sort(items, new TitleSortItem());
 
         gridPane.getChildren().clear();
@@ -1132,14 +1051,14 @@ public class VideoStoreManagement {
 
         boolean found = false;
         for (Item item : items) {
-            if (Objects.equals(item.getTitle(), input)) {
+            if (item.getTitle().contains(input)) {
                 found = true;
 
-                //gridPane.setHgap(15);
                 gridPane.setAlignment(Pos.CENTER);
                 gridPane.setStyle("-fx-grid-lines-visible: true");
 
-                String[] labels = { "  ID  ", "  Title  ", "  Rental type  ", "  Loan type  ", "  Number of copies  ", "  Rental fee  ",
+                String[] labels = {"  ID  ", "  Title  ", "  Rental type  ", "  Loan type  ", "  Number of copies  ",
+                        "  Rental fee  ",
                         "  Rental status  ", "  Genre  "};
 
                 for (int i = 0; i < labels.length; i++) {
@@ -1182,30 +1101,101 @@ public class VideoStoreManagement {
         }
 
         if (!found) {
-                Text warningText = new Text();
-                warningText.setFill(Color.RED);
-                warningText.setText("No item found");
-                gridPane.getChildren().add(warningText);
+            Text warningText = new Text();
+            warningText.setFill(Color.RED);
+            warningText.setText("No item found");
+            gridPane.getChildren().add(warningText);
+        }
+    }*/
+
+    // Modified version of searchItemTitle
+    public void searchItemTitle(GridPane itemTable, String input) {
+        Collections.sort(items, new TitleSortItem());
+
+        itemTable.getChildren().clear();
+
+        if (items.isEmpty()) {
+            Text text = new Text();
+            text.setText("No item available");
+            itemTable.getChildren().add(text);
+            return;
+        }
+
+        if (input.isEmpty()) {
+            Text warningText = new Text();
+            warningText.setFill(Color.RED);
+            warningText.setText("Please enter a title to search");
+            itemTable.getChildren().add(warningText);
+            return;
+        }
+
+        boolean found = false;
+        int currentRow = 0; // Keep track of the current row
+
+        // Add the labels to the first row of the grid
+        String[] labels = {" ID ", " Title ", " Rental type ", " Loan type ", " Number of copies ", " Rental fee ",
+                " Rental status ", " Genre "};
+        for (int i = 0; i < labels.length; i++) {
+            Text label = new Text(labels[i]);
+            itemTable.add(label, i, currentRow);
+            GridPane.setHalignment(label, HPos.CENTER);
+        }
+        currentRow++;
+
+        // Set the style of the grid
+        itemTable.setAlignment(Pos.CENTER);
+        itemTable.setStyle("-fx-grid-lines-visible: true");
+
+        for (Item item : items) {
+            if (item.getTitle().contains(input)) {
+                found = true;
+
+                for (int i = 0; i < labels.length; i++) {
+                    Text value = new Text();
+
+                    switch (i) {
+                        case 0:
+                            value.setText(" " + item.getID() + " ");
+                            break;
+                        case 1:
+                            value.setText(" " + item.getTitle() + " ");
+                            break;
+                        case 2:
+                            value.setText(" " + item.getRentalType() + " ");
+                            break;
+                        case 3:
+                            value.setText(" " + item.getLoanType() + " ");
+                            break;
+                        case 4:
+                            value.setText(" " + String.valueOf(item.getNoOfCopy()) + " ");
+                            break;
+                        case 5:
+                            value.setText(" " + String.valueOf(item.getRentalFee()) + " ");
+                            break;
+                        case 6:
+                            value.setText(" " + item.getRentalStatus() + " ");
+                            break;
+                        case 7:
+                            value.setText(" " + item.getGenre() + " ");
+                            break;
+                    }
+
+                    // Add the value to the current row
+                    itemTable.add(value, i, currentRow);
+                    GridPane.setHalignment(value, HPos.CENTER);
+                }
+                // Increment the current row by 1
+                currentRow++;
             }
         }
 
-/*    public void searchItem() {
-        System.out.println("Search Item by:\n1. ID\n2. Title");
-        Scanner sc = new Scanner(System.in);
-        int choice;
-        String input;
-        choice = sc.nextInt();
-        sc.nextLine();
-        if (choice == 1) {
-            System.out.println("Please input ID:");
-            input = sc.nextLine();
-            searchItemID(input);
-        } else {
-            System.out.println("Please input title:");
-            input = sc.nextLine();
-            searchItemTitle(input);
+        if (!found) {
+            Text warningText = new Text();
+            warningText.setFill(Color.RED);
+            warningText.setText("No item found");
+            itemTable.getChildren().add(warningText);
         }
-    }*/
+    }
 
     public void searchCustomerID(GridPane gridPane, String input) {
         Collections.sort(customers, new IDSortCustomer());
@@ -1273,8 +1263,7 @@ public class VideoStoreManagement {
 
             if (res > 0) {
                 l = m + 1;
-            } else
-                r = m - 1;
+            } else r = m - 1;
         }
 
         if (!found) {
@@ -1283,8 +1272,7 @@ public class VideoStoreManagement {
                 warningText.setFill(Color.RED);
                 warningText.setText("No customer found");
                 gridPane.getChildren().add(warningText);
-            }
-            else {
+            } else {
                 Text warningText = new Text();
                 warningText.setFill(Color.RED);
                 warningText.setText("ID is invalid");
@@ -1293,8 +1281,8 @@ public class VideoStoreManagement {
         }
     }
 
-    public void searchCustomerName(GridPane gridPane, String input) {
-        //Collections.sort(customers, new NameSortCustomer());
+    /*public void searchCustomerName(GridPane gridPane, String input) {
+        Collections.sort(customers, new NameSortCustomer());
 
         gridPane.getChildren().clear();
 
@@ -1308,15 +1296,15 @@ public class VideoStoreManagement {
         boolean found = false;
 
         for (Customer customer : customers) {
-            if (Objects.equals(customer.getName(), input)) {
+            if (customer.getName().contains(input)) {
                 found = true;
 
                 //gridPane.setHgap(15);
                 gridPane.setAlignment(Pos.CENTER);
                 gridPane.setStyle("-fx-grid-lines-visible: true");
 
-                String[] labels = { "  ID  ", "  Name  ", "  Address  ", "  Phone  ", "  Number of Rental  ", "  Customer type  ",
-                        "  Username  ", "  Password  ", "  Reward Points  " };
+                String[] labels = {"  ID  ", "  Name  ", "  Address  ", "  Phone  ", "  Number of Rental  ", "  " +
+                        "Customer type  ", "  Username  ", "  Password  ", "  Reward Points  "};
 
                 for (int i = 0; i < labels.length; i++) {
                     Text label = new Text(labels[i]);
@@ -1366,26 +1354,99 @@ public class VideoStoreManagement {
             warningText.setText("No customer found");
             gridPane.getChildren().add(warningText);
         }
+    }*/
+
+    // Modified version of searchCustomerName
+    public void searchCustomerName(GridPane customerTable, String input) {
+        Collections.sort(customers, new NameSortCustomer());
+
+        customerTable.getChildren().clear();
+
+        if (customers.isEmpty()) {
+            Text text = new Text();
+            text.setText("No customer available");
+            customerTable.getChildren().add(text);
+            return;
+        }
+
+        if (input.isEmpty()) {
+            Text warningText = new Text();
+            warningText.setFill(Color.RED);
+            warningText.setText("Please enter a name to search");
+            customerTable.getChildren().add(warningText);
+            return;
+        }
+
+        boolean found = false;
+        int currentRow = 0; // Keep track of the current row
+
+        // Add the labels to the first row of the grid
+        String[] labels = {" ID ", " Name ", " Address ", " Phone ", " Number of Rental ",
+                " Customer type ", " Username ", " Password ", " Reward Points "};
+        for (int i = 0; i < labels.length; i++) {
+            Text label = new Text(labels[i]);
+            customerTable.add(label, i, currentRow);
+            GridPane.setHalignment(label, HPos.CENTER);
+        }
+        currentRow++;
+
+        // Set the style of the grid
+        customerTable.setAlignment(Pos.CENTER);
+        customerTable.setStyle("-fx-grid-lines-visible: true");
+
+        for (Customer customer : customers) {
+            if (customer.getName().contains(input)) {
+                found = true;
+
+                for (int i = 0; i < labels.length; i++) {
+                    Text value = new Text();
+
+                    switch (i) {
+                        case 0:
+                            value.setText(customer.getID());
+                            break;
+                        case 1:
+                            value.setText(customer.getName());
+                            break;
+                        case 2:
+                            value.setText(customer.getAddress());
+                            break;
+                        case 3:
+                            value.setText(customer.getPhone());
+                            break;
+                        case 4:
+                            value.setText(String.valueOf(customer.getNoOfRental()));
+                            break;
+                        case 5:
+                            value.setText(customer.getCustomerType());
+                            break;
+                        case 6:
+                            value.setText(customer.getUsername());
+                            break;
+                        case 7:
+                            value.setText(customer.getPassword());
+                            break;
+                        case 8:
+                            value.setText(String.valueOf(customer.getRewardPoints()));
+                            break;
+                    }
+
+                    // Add the value to the current row
+                    customerTable.add(value, i, currentRow);
+                    GridPane.setHalignment(value, HPos.CENTER);
+                }
+                // Increment the current row by 1
+                currentRow++;
+            }
+        }
+
+        if (!found) {
+            Text warningText = new Text();
+            warningText.setFill(Color.RED);
+            warningText.setText("No customer found");
+            customerTable.getChildren().add(warningText);
+        }
     }
-
-
-//    public void searchCustomer() {
-//        System.out.println("Search customer by:\n1. ID\n2. Name");
-//        Scanner sc = new Scanner(System.in);
-//        int choice;
-//        String input;
-//        choice = sc.nextInt();
-//        sc.nextLine();
-//        if (choice == 1) {
-//            System.out.println("Please input ID:");
-//            input = sc.nextLine();
-//            searchCustomerID(input);
-//        } else {
-//            System.out.println("Please input name:");
-//            input = sc.nextLine();
-//            searchCustomerName(input);
-//        }
-//    }
 
     public ArrayList<Item> getItems() {
         return items;
@@ -1395,7 +1456,7 @@ public class VideoStoreManagement {
         return "Welcome back, " + currentUser.getName() + "!";
     }
 
-    public String getCurrentUserID(){
+    public String getCurrentUserID() {
         return currentUser.getID();
     }
 }
