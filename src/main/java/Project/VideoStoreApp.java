@@ -28,7 +28,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        searchItemStage(primaryStage);
+        searchCustomerStage(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -892,8 +892,7 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    public void searchItemStage(Stage primaryStage) {
-        // TODO: Implement stage
+    /*public void searchItemStage(Stage primaryStage) {
         ComboBox<String> searchComboBox = new ComboBox<>();
         searchComboBox.getItems().addAll("Search by ID", "Search by Title");
         searchComboBox.setValue("Search by ID");
@@ -926,6 +925,55 @@ public class VideoStoreApp extends Application {
         searchBox.setAlignment(Pos.CENTER);
         searchBox.add(searchField, 0, 0);
         searchBox.add(searchButton, 1, 0);
+        searchBox.add(searchComboBox, 2, 0);
+
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.getChildren().addAll(adminPageButtonBox(primaryStage), searchBox, searchTable);
+
+        Scene scene = new Scene(vBox, 900, 600);
+
+        primaryStage.setTitle("Search item");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }*/
+
+    // Modified version of searchItemStage
+    public void searchItemStage(Stage primaryStage) {
+        ComboBox<String> searchComboBox = new ComboBox<>();
+        searchComboBox.getItems().addAll("Search by ID", "Search by Title");
+        searchComboBox.setValue("Search by ID");
+
+        TextField searchField = new TextField();
+        GridPane itemTable = new GridPane();
+        itemTable.setAlignment(Pos.CENTER);
+
+        VBox searchTable = new VBox();
+
+        // Add a listener to the text field
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            String selectedOption = searchComboBox.getValue();
+            if (selectedOption.equals("Search by ID")) {
+                String ID = newValue;
+                searchTable.getChildren().clear();
+                vsm.searchItemID(itemTable, ID);
+            } else if (selectedOption.equals("Search by Title")) {
+                String title = newValue;
+                searchTable.getChildren().clear();
+                vsm.searchItemTitle(itemTable, title);
+            }
+            itemTable.setStyle("-fx-grid-lines-visible: true");
+            searchTable.getChildren().addAll(itemTable);
+        });
+
+        GridPane searchBox = new GridPane();
+        searchBox.setHgap(5);
+        searchBox.setVgap(5);
+        searchBox.setAlignment(Pos.CENTER);
+        searchBox.add(searchField, 0, 0);
+        // Remove the search button
+        //searchBox.add(searchButton, 1, 0);
         searchBox.add(searchComboBox, 2, 0);
 
         VBox vBox = new VBox();
@@ -1146,8 +1194,7 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    public void searchCustomerStage(Stage primaryStage) {
-        // TODO: Implement stage
+    /*public void searchCustomerStage(Stage primaryStage) {
         ComboBox<String> searchComboBox = new ComboBox<>();
         searchComboBox.getItems().addAll("Search by ID", "Search by Name");
         searchComboBox.setValue("Search by ID");
@@ -1178,6 +1225,52 @@ public class VideoStoreApp extends Application {
         searchBox.setAlignment(Pos.CENTER);
         searchBox.add(searchField, 0, 0);
         searchBox.add(searchButton, 1, 0);
+        searchBox.add(searchComboBox, 2, 0);
+
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.getChildren().addAll(adminPageButtonBox(primaryStage), searchBox, searchTable);
+
+        Scene scene = new Scene(vBox, 900, 600);
+
+        primaryStage.setTitle("Search Customer");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }*/
+
+    // Modified version of searchCustomerStage
+    public void searchCustomerStage(Stage primaryStage) {
+        ComboBox<String> searchComboBox = new ComboBox<>();
+        searchComboBox.getItems().addAll("Search by ID", "Search by Name");
+        searchComboBox.setValue("Search by ID");
+
+        TextField searchField = new TextField();
+        GridPane customerTable = new GridPane();
+        VBox searchTable = new VBox();
+
+        // Add a listener to the text field
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            String selectedOption = searchComboBox.getValue();
+            if (selectedOption.equals("Search by ID")) {
+                String ID = newValue;
+                searchTable.getChildren().clear();
+                vsm.searchCustomerID(customerTable, ID);
+            } else if (selectedOption.equals("Search by Name")) {
+                String name = newValue;
+                searchTable.getChildren().clear();
+                vsm.searchCustomerName(customerTable, name);
+            }
+            searchTable.getChildren().addAll(customerTable);
+        });
+
+        GridPane searchBox = new GridPane();
+        searchBox.setHgap(5);
+        searchBox.setVgap(5);
+        searchBox.setAlignment(Pos.CENTER);
+        searchBox.add(searchField, 0, 0);
+        // Remove the search button
+        //searchBox.add(searchButton, 1, 0);
         searchBox.add(searchComboBox, 2, 0);
 
         VBox vBox = new VBox();
