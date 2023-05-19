@@ -1099,7 +1099,7 @@ public class VideoStoreManagement {
             if (isValidItemID(input)) {
                 Text warningText = new Text();
                 warningText.setFill(Color.RED);
-                warningText.setText("No result found");
+                warningText.setText("No item found");
                 gridPane.getChildren().add(warningText);
             }
             else {
@@ -1180,7 +1180,7 @@ public class VideoStoreManagement {
         if (!found) {
                 Text warningText = new Text();
                 warningText.setFill(Color.RED);
-                warningText.setText("No result found");
+                warningText.setText("No item found");
                 gridPane.getChildren().add(warningText);
             }
         }
@@ -1203,13 +1203,18 @@ public class VideoStoreManagement {
         }
     }*/
 
-    private void searchCustomerID(String input) {
+    public void searchCustomerID(GridPane gridPane, String input) {
+        Collections.sort(customers, new IDSortCustomer());
+
+        gridPane.getChildren().clear();
+
         if (customers.isEmpty()) {
-            System.out.println("No customer.");
+            Text text = new Text();
+            text.setText("No customer available");
+            gridPane.getChildren().add(text);
             return;
         }
 
-        Collections.sort(customers, new IDSortCustomer());
         boolean found = false;
         int l = 0, r = customers.size() - 1;
         while (l <= r) {
@@ -1218,10 +1223,46 @@ public class VideoStoreManagement {
             int res = input.compareTo(customers.get(m).getID());
 
             if (res == 0) {
-                System.out.println("Name: " + customers.get(m).getName()
-                        + "\nID: " + customers.get(m).getID()
-                        + "\nRental Type: " + customers.get(m).getPhone()
-                        + "\nNumber of copies available: " + customers.get(m).getAddress());
+                gridPane.setHgap(15);
+                gridPane.setAlignment(Pos.CENTER);
+
+                Text[][] text = new Text[9][2];
+
+                for (int i = 0; i < 9; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        text[i][j] = new Text(); // Initialize each element of the array
+                    }
+                }
+
+                text[0][0].setText("ID");
+                text[1][0].setText("Name");
+                text[2][0].setText("Address");
+                text[3][0].setText("Phone");
+                text[4][0].setText("Number of Rental");
+                text[5][0].setText("Customer type");
+                text[6][0].setText("Username");
+                text[7][0].setText("Password");
+                text[8][0].setText("Reward Points");
+
+                for (int i = 0; i < 9; i++) {
+                    gridPane.add(text[i][0], i, 0);
+                    GridPane.setHalignment(text[i][0], HPos.CENTER);
+                }
+
+                text[0][1].setText(customers.get(m).getID());
+                text[1][1].setText(customers.get(m).getName());
+                text[2][1].setText(customers.get(m).getAddress());
+                text[3][1].setText(customers.get(m).getPhone());
+                text[4][1].setText(String.valueOf(customers.get(m).getNoOfRental()));
+                text[5][1].setText(customers.get(m).getCustomerType());
+                text[6][1].setText(customers.get(m).getUsername());
+                text[7][1].setText(customers.get(m).getPassword());
+                text[8][1].setText(String.valueOf(customers.get(m).getRewardPoints()));
+
+                for (int i = 0; i < 9; i++) {
+                    gridPane.add(text[i][1], i, 1);
+                }
+
                 found = true;
             }
 
@@ -1230,8 +1271,20 @@ public class VideoStoreManagement {
             } else
                 r = m - 1;
         }
+
         if (!found) {
-            System.out.println("Customer not found.");
+            if (isValidCustomerID(input)) {
+                Text warningText = new Text();
+                warningText.setFill(Color.RED);
+                warningText.setText("No customer found");
+                gridPane.getChildren().add(warningText);
+            }
+            else {
+                Text warningText = new Text();
+                warningText.setFill(Color.RED);
+                warningText.setText("ID is invalid");
+                gridPane.getChildren().add(warningText);
+            }
         }
     }
 
@@ -1267,23 +1320,23 @@ public class VideoStoreManagement {
         }
     }
 
-    public void searchCustomer() {
-        System.out.println("Search customer by:\n1. ID\n2. Name");
-        Scanner sc = new Scanner(System.in);
-        int choice;
-        String input;
-        choice = sc.nextInt();
-        sc.nextLine();
-        if (choice == 1) {
-            System.out.println("Please input ID:");
-            input = sc.nextLine();
-            searchCustomerID(input);
-        } else {
-            System.out.println("Please input name:");
-            input = sc.nextLine();
-            searchCustomerName(input);
-        }
-    }
+//    public void searchCustomer() {
+//        System.out.println("Search customer by:\n1. ID\n2. Name");
+//        Scanner sc = new Scanner(System.in);
+//        int choice;
+//        String input;
+//        choice = sc.nextInt();
+//        sc.nextLine();
+//        if (choice == 1) {
+//            System.out.println("Please input ID:");
+//            input = sc.nextLine();
+//            searchCustomerID(input);
+//        } else {
+//            System.out.println("Please input name:");
+//            input = sc.nextLine();
+//            searchCustomerName(input);
+//        }
+//    }
 
     public ArrayList<Item> getItems() {
         return items;
