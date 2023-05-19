@@ -28,7 +28,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        searchCustomerStage(primaryStage);
+        loginStage(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -842,7 +842,7 @@ public class VideoStoreApp extends Application {
         // Create a Scene and set it on the Stage
         Scene scene = new Scene(screen, 800, 400);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Video Store");
+        primaryStage.setTitle("Increase number of Items");
         primaryStage.show();
     }
 
@@ -963,7 +963,6 @@ public class VideoStoreApp extends Application {
                 searchTable.getChildren().clear();
                 vsm.searchItemTitle(itemTable, title);
             }
-            itemTable.setStyle("-fx-grid-lines-visible: true");
             searchTable.getChildren().addAll(itemTable);
         });
 
@@ -1148,12 +1147,11 @@ public class VideoStoreApp extends Application {
         // Create a Scene and set it on the Stage
         Scene scene = new Scene(screen, 800, 400);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Video Store");
+        primaryStage.setTitle("Update Customer");
         primaryStage.show();
     }
 
     public void displayCustomerStage(Stage primaryStage) {
-        // TODO: Implement stage
         Button sortButton = new Button("Display customer");
         ComboBox<String> sortComboBox = new ComboBox<>();
         sortComboBox.getItems().addAll("Sort by ID", "Sort by Name", "Sort by Group");
