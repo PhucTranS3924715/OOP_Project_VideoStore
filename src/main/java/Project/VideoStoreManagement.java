@@ -1289,7 +1289,7 @@ public class VideoStoreManagement {
     }
 
     public void searchCustomerName(GridPane gridPane, String input) {
-        Collections.sort(customers, new NameSortCustomer());
+        //Collections.sort(customers, new NameSortCustomer());
 
         gridPane.getChildren().clear();
 
@@ -1301,61 +1301,59 @@ public class VideoStoreManagement {
         }
 
         boolean found = false;
-        int l = 0, r = customers.size() - 1;
-        while (l <= r) {
-            int m = l + (r - l) / 2;
 
-            int res = input.compareTo(customers.get(m).getName());
+        for (Customer customer : customers) {
+            if (Objects.equals(customer.getName(), input)) {
+                found = true;
 
-            if (res == 0) {
                 gridPane.setHgap(15);
                 gridPane.setAlignment(Pos.CENTER);
 
-                Text[][] text = new Text[9][2];
+                String[] labels = { "ID", "Name", "Address", "Phone", "Number of Rental", "Customer type",
+                        "Username", "Password", "Reward Points" };
 
-                for (int i = 0; i < 9; i++) {
-                    for (int j = 0; j < 2; j++) {
-                        text[i][j] = new Text(); // Initialize each element of the array
+                for (int i = 0; i < labels.length; i++) {
+                    Text label = new Text(labels[i]);
+                    Text value = new Text();
+
+                    switch (i) {
+                        case 0:
+                            value.setText(customer.getID());
+                            break;
+                        case 1:
+                            value.setText(customer.getName());
+                            break;
+                        case 2:
+                            value.setText(customer.getAddress());
+                            break;
+                        case 3:
+                            value.setText(customer.getPhone());
+                            break;
+                        case 4:
+                            value.setText(String.valueOf(customer.getNoOfRental()));
+                            break;
+                        case 5:
+                            value.setText(customer.getCustomerType());
+                            break;
+                        case 6:
+                            value.setText(customer.getUsername());
+                            break;
+                        case 7:
+                            value.setText(customer.getPassword());
+                            break;
+                        case 8:
+                            value.setText(String.valueOf(customer.getRewardPoints()));
+                            break;
                     }
+
+                    gridPane.add(label, i, 0);
+                    gridPane.add(value, i, 1);
+                    GridPane.setHalignment(label, HPos.CENTER);
+                    GridPane.setHalignment(value, HPos.CENTER);
                 }
-
-                text[0][0].setText("ID");
-                text[1][0].setText("Name");
-                text[2][0].setText("Address");
-                text[3][0].setText("Phone");
-                text[4][0].setText("Number of Rental");
-                text[5][0].setText("Customer type");
-                text[6][0].setText("Username");
-                text[7][0].setText("Password");
-                text[8][0].setText("Reward Points");
-
-                for (int i = 0; i < 9; i++) {
-                    gridPane.add(text[i][0], i, 0);
-                    GridPane.setHalignment(text[i][0], HPos.CENTER);
-                }
-
-                text[0][1].setText(customers.get(m).getID());
-                text[1][1].setText(customers.get(m).getName());
-                text[2][1].setText(customers.get(m).getAddress());
-                text[3][1].setText(customers.get(m).getPhone());
-                text[4][1].setText(String.valueOf(customers.get(m).getNoOfRental()));
-                text[5][1].setText(customers.get(m).getCustomerType());
-                text[6][1].setText(customers.get(m).getUsername());
-                text[7][1].setText(customers.get(m).getPassword());
-                text[8][1].setText(String.valueOf(customers.get(m).getRewardPoints()));
-
-                for (int i = 0; i < 9; i++) {
-                    gridPane.add(text[i][1], i, 1);
-                }
-
-                found = true;
             }
-
-            if (res > 0) {
-                l = m + 1;
-            } else
-                r = m - 1;
         }
+
         if (!found) {
             Text warningText = new Text();
             warningText.setFill(Color.RED);
@@ -1363,6 +1361,7 @@ public class VideoStoreManagement {
             gridPane.getChildren().add(warningText);
         }
     }
+
 
 //    public void searchCustomer() {
 //        System.out.println("Search customer by:\n1. ID\n2. Name");
