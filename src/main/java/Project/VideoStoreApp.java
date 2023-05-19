@@ -1153,8 +1153,8 @@ public class VideoStoreApp extends Application {
         searchComboBox.setValue("Search by ID");
 
         TextField searchField = new TextField();
-        GridPane itemTable = new GridPane();
-        itemTable.setAlignment(Pos.CENTER);
+        GridPane customerTable = new GridPane();
+        customerTable.setAlignment(Pos.CENTER);
 
         VBox searchTable = new VBox();
 
@@ -1162,15 +1162,13 @@ public class VideoStoreApp extends Application {
         searchButton.setOnAction(e ->{
             String selectedOption = searchComboBox.getValue();
             if (selectedOption.equals("Search by ID")) {
-                String search = searchField.getText();
                 searchTable.getChildren().clear();
-                vsm.searchCustomerID(itemTable, search);
-                searchTable.getChildren().addAll(itemTable);
+                vsm.searchCustomerID(customerTable, searchField.getText());
+                searchTable.getChildren().addAll(customerTable);
             } else if (selectedOption.equals("Search by Name")) {
-                String search = searchButton.getText();
                 searchTable.getChildren().clear();
-                vsm.searchCustomerName(itemTable, search);
-                searchTable.getChildren().addAll(itemTable);
+                vsm.searchCustomerName(customerTable, searchField.getText());
+                searchTable.getChildren().addAll(customerTable);
             }
         });
 
