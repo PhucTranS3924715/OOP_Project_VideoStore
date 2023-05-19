@@ -893,6 +893,37 @@ public class VideoStoreApp extends Application {
 
     public void searchItemStage(Stage primaryStage) {
         // TODO: Implement stage
+        TextField idField = new TextField();
+        GridPane itemTable = new GridPane();
+        itemTable.setAlignment(Pos.CENTER);
+
+        VBox searchTable = new VBox();
+
+        Button searchButton = new Button("Search");
+        searchButton.setOnAction(e ->{
+            String ID = idField.getText();
+            searchTable.getChildren().clear();
+            vsm.searchItemID(itemTable, ID);
+            searchTable.getChildren().addAll(itemTable);
+        });
+
+        GridPane searchBox = new GridPane();
+        searchBox.setHgap(5);
+        searchBox.setVgap(5);
+        searchBox.setAlignment(Pos.CENTER);
+        searchBox.add(idField, 0, 0);
+        searchBox.add(searchButton, 1, 0);
+
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.getChildren().addAll(adminPageButtonBox(primaryStage), searchBox, searchTable);
+
+        Scene scene = new Scene(vBox, 900, 600);
+
+        primaryStage.setTitle("Test");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public void addCustomerStage(Stage primaryStage) {
