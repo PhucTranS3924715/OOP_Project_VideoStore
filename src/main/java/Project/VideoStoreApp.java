@@ -893,6 +893,10 @@ public class VideoStoreApp extends Application {
 
     public void searchItemStage(Stage primaryStage) {
         // TODO: Implement stage
+        ComboBox<String> searchComboBox = new ComboBox<>();
+        searchComboBox.getItems().addAll("Search by ID", "Search by Title");
+        searchComboBox.setValue("Search by ID");
+
         TextField idField = new TextField();
         GridPane itemTable = new GridPane();
         itemTable.setAlignment(Pos.CENTER);
@@ -901,10 +905,18 @@ public class VideoStoreApp extends Application {
 
         Button searchButton = new Button("Search");
         searchButton.setOnAction(e ->{
-            String ID = idField.getText();
-            searchTable.getChildren().clear();
-            vsm.searchItemID(itemTable, ID);
-            searchTable.getChildren().addAll(itemTable);
+            String selectedOption = searchComboBox.getValue();
+            if (selectedOption.equals("Search by ID")) {
+                String ID = idField.getText();
+                searchTable.getChildren().clear();
+                vsm.searchItemID(itemTable, ID);
+                searchTable.getChildren().addAll(itemTable);
+            } else if (selectedOption.equals("Search by Title")) {
+                String ID = idField.getText();
+                searchTable.getChildren().clear();
+                vsm.searchItemTitle(itemTable, ID);
+                searchTable.getChildren().addAll(itemTable);
+            }
         });
 
         GridPane searchBox = new GridPane();
@@ -913,6 +925,7 @@ public class VideoStoreApp extends Application {
         searchBox.setAlignment(Pos.CENTER);
         searchBox.add(idField, 0, 0);
         searchBox.add(searchButton, 1, 0);
+        searchBox.add(searchComboBox, 2, 0);
 
         VBox vBox = new VBox();
         vBox.setSpacing(10);
