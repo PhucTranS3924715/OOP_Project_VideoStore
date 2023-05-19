@@ -897,7 +897,7 @@ public class VideoStoreApp extends Application {
         searchComboBox.getItems().addAll("Search by ID", "Search by Title");
         searchComboBox.setValue("Search by ID");
 
-        TextField idField = new TextField();
+        TextField searchField = new TextField();
         GridPane itemTable = new GridPane();
         itemTable.setAlignment(Pos.CENTER);
 
@@ -907,12 +907,12 @@ public class VideoStoreApp extends Application {
         searchButton.setOnAction(e ->{
             String selectedOption = searchComboBox.getValue();
             if (selectedOption.equals("Search by ID")) {
-                String ID = idField.getText();
+                String ID = searchField.getText();
                 searchTable.getChildren().clear();
                 vsm.searchItemID(itemTable, ID);
                 searchTable.getChildren().addAll(itemTable);
             } else if (selectedOption.equals("Search by Title")) {
-                String ID = idField.getText();
+                String ID = searchField.getText();
                 searchTable.getChildren().clear();
                 vsm.searchItemTitle(itemTable, ID);
                 searchTable.getChildren().addAll(itemTable);
@@ -923,7 +923,7 @@ public class VideoStoreApp extends Application {
         searchBox.setHgap(5);
         searchBox.setVgap(5);
         searchBox.setAlignment(Pos.CENTER);
-        searchBox.add(idField, 0, 0);
+        searchBox.add(searchBox, 0, 0);
         searchBox.add(searchButton, 1, 0);
         searchBox.add(searchComboBox, 2, 0);
 
@@ -934,7 +934,7 @@ public class VideoStoreApp extends Application {
 
         Scene scene = new Scene(vBox, 900, 600);
 
-        primaryStage.setTitle("Test");
+        primaryStage.setTitle("Search item");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -1151,7 +1151,7 @@ public class VideoStoreApp extends Application {
         searchComboBox.getItems().addAll("Search by ID", "Search Name");
         searchComboBox.setValue("Search by ID");
 
-        TextField idField = new TextField();
+        TextField searchField = new TextField();
         GridPane itemTable = new GridPane();
         itemTable.setAlignment(Pos.CENTER);
 
@@ -1161,12 +1161,12 @@ public class VideoStoreApp extends Application {
         searchButton.setOnAction(e ->{
             String selectedOption = searchComboBox.getValue();
             if (selectedOption.equals("Search by ID")) {
-                String ID = idField.getText();
+                String ID = searchField.getText();
                 searchTable.getChildren().clear();
                 vsm.searchCustomerID(itemTable, ID);
                 searchTable.getChildren().addAll(itemTable);
             } else if (selectedOption.equals("Search by Name")) {
-                String ID = idField.getText();
+                String ID = searchButton.getText();
                 searchTable.getChildren().clear();
                 vsm.searchCustomerName(itemTable, ID);
                 searchTable.getChildren().addAll(itemTable);
@@ -1177,7 +1177,7 @@ public class VideoStoreApp extends Application {
         searchBox.setHgap(5);
         searchBox.setVgap(5);
         searchBox.setAlignment(Pos.CENTER);
-        searchBox.add(idField, 0, 0);
+        searchBox.add(searchField, 0, 0);
         searchBox.add(searchButton, 1, 0);
         searchBox.add(searchComboBox, 2, 0);
 
@@ -1188,7 +1188,7 @@ public class VideoStoreApp extends Application {
 
         Scene scene = new Scene(vBox, 900, 600);
 
-        primaryStage.setTitle("Test");
+        primaryStage.setTitle("Search Customer");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
