@@ -31,6 +31,11 @@ public class VideoStoreManagement {
         this.adminUsername = "admin";
         this.adminPassword = "password";
     }
+    //Allow VideoStoreApp to access the instance
+    public Customer getCurrentUser() {
+        return currentUser;
+    }
+
 
     public boolean login(String username, String password) {
         for (Customer customer : customers) {
@@ -222,6 +227,7 @@ public class VideoStoreManagement {
     }
 
     public void increaseNoOfCopies(String idField, Text infoText, String numberField) {
+        // Get the item using ID
         Item item = findItemByID(idField);
         if (item != null) {
             item.setNoOfCopy(item.getNoOfCopy() + Integer.parseInt(numberField));
@@ -408,16 +414,13 @@ public class VideoStoreManagement {
 
     /* Return an item (increase the number of copies held in stock)
      Return true if the item is successfully returned, false otherwise*/
-    public boolean returnItem() {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter item ID to return: ");
-        String ID = scan.nextLine();
+    public boolean returnItem(String itemID) {
         // Find the item in the customer item list
         for (Item currentItem : currentUser.getItems()) {
-            if (Objects.equals(currentItem.getID(), ID)) {      // If the item exists in the customer list
+            if (Objects.equals(currentItem.getID(), itemID)) { // If the item exists in the customer list
                 // Remove the item from the customer list
                 currentUser.getItems().remove(currentItem);
-                // Update number of rental whenever a customer return an item
+                // Update number of rental whenever a customer returns an item
                 currentUser.setNoOfRental(currentUser.getNoOfRental() + 1);
 
                 // Return the item and update the rental status and number of copies
@@ -436,13 +439,15 @@ public class VideoStoreManagement {
                     System.out.println("Congratulations! You have been promoted to a VIP customer.");
                 }
 
-                System.out.println("Return successfully!");
+                System.out.println("Return successful!");
                 return true;
             }
         }
         System.out.println("You did not rent this item.");
         return false;
     }
+
+
 
     // Promote the customer to the next customer type if they meet the criteria
     public boolean promote() {
@@ -1073,6 +1078,7 @@ public class VideoStoreManagement {
         }
     }
 
+    // Old version
     /*public void searchItemTitle(GridPane gridPane, String input) {
         Collections.sort(items, new TitleSortItem());
 
@@ -1318,6 +1324,7 @@ public class VideoStoreManagement {
         }
     }
 
+    // Old version
     /*public void searchCustomerName(GridPane gridPane, String input) {
         Collections.sort(customers, new NameSortCustomer());
 
