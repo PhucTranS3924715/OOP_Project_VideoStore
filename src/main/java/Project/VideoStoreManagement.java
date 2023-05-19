@@ -1111,8 +1111,8 @@ public class VideoStoreManagement {
         }
     }
 
-    private void searchItemTitle(GridPane gridPane, String input) {
-        Collections.sort(items, new IDSortItem());
+    public void searchItemTitle(GridPane gridPane, String input) {
+        Collections.sort(items, new TitleSortItem());
 
         gridPane.getChildren().clear();
 
@@ -1178,20 +1178,12 @@ public class VideoStoreManagement {
                 r = m - 1;
         }
         if (!found) {
-            if (isValidItemID(input)) {
                 Text warningText = new Text();
                 warningText.setFill(Color.RED);
                 warningText.setText("No result found");
                 gridPane.getChildren().add(warningText);
             }
-            else {
-                Text warningText = new Text();
-                warningText.setFill(Color.RED);
-                warningText.setText("ID is invalid");
-                gridPane.getChildren().add(warningText);
-            }
         }
-    }
 
 /*    public void searchItem() {
         System.out.println("Search Item by:\n1. ID\n2. Title");
