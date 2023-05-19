@@ -28,7 +28,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        loginStage(primaryStage);
+        searchItemStage(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -94,8 +94,8 @@ public class VideoStoreApp extends Application {
         });
 
         // Create title and student info
-        Text courseTitle = new Text("RMIT University – INTE2512 Object-Oriented Programming\nFINAL PROJECT – A VIDEO " +
-                "STORE");
+        Text courseTitle = new Text("RMIT University – INTE2512 Object-Oriented Programming\nFINAL PROJECT – A VIDEO "
+                + "STORE");
         courseTitle.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         courseTitle.setTextAlignment(TextAlignment.CENTER);
 
@@ -152,8 +152,8 @@ public class VideoStoreApp extends Application {
 
         Button returnItemButton = new Button("Return item");
         returnItemButton.setPrefSize(120, 50);
-        ImageView returnItemIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/returnItem" +
-                ".png")).toExternalForm());
+        ImageView returnItemIcon =
+                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/returnItem" + ".png")).toExternalForm());
         returnItemIcon.setFitHeight(20);
         returnItemIcon.setFitWidth(20);
         returnItemButton.setGraphic(returnItemIcon);
@@ -213,7 +213,7 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    private HBox customerPageButtonBox(Stage primaryStage){
+    private HBox customerPageButtonBox(Stage primaryStage) {
         // Create the buttons
         Button homeButton = new Button("Home");
         homeButton.setOnAction(actionEvent -> {
@@ -256,7 +256,7 @@ public class VideoStoreApp extends Application {
     }
 
     public void rentItemStage(Stage primaryStage) {
-        // Number of columns to display
+        // Number of columns to display items
         int numColumns = 3;
 
         // Create grid to store items
@@ -281,8 +281,8 @@ public class VideoStoreApp extends Application {
             Label itemTitleLabel = new Label(item.getTitle());
 
             // Item image view
-            ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" +
-                    ".jpg")).toExternalForm());
+            ImageView itemImageView =
+                    new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" + ".jpg")).toExternalForm());
             itemImageView.setFitWidth(200);
             itemImageView.setFitHeight(200);
 
@@ -304,7 +304,7 @@ public class VideoStoreApp extends Application {
             grid.add(itemBox, column, row);
         }
 
-        // Create a scroll pane and add the grid to it
+        // Create a scroll pane to add the grid
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(grid);
 
@@ -315,7 +315,7 @@ public class VideoStoreApp extends Application {
         // Set up the scene and stage
         Scene scene = new Scene(vBox);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Video Store");
+        primaryStage.setTitle("Rent Item");
         primaryStage.show();
     }
 
@@ -410,44 +410,6 @@ public class VideoStoreApp extends Application {
     }
 
     public void rewardPointsStage(Stage primaryStage) {
-        // Create the buttons
-        Button homeButton = new Button("Home");
-        homeButton.setOnAction(actionEvent -> {
-            customerHome(primaryStage);
-        });
-
-        Button rentItemButton = new Button("Rent item");
-        rentItemButton.setOnAction(actionEvent -> {
-            rentItemStage(primaryStage);
-        });
-
-        Button returnItemButton = new Button("Return item");
-        returnItemButton.setOnAction(actionEvent -> {
-            returnItemStage(primaryStage);
-        });
-
-        Button rewardPointsButton = new Button("Reward points");
-        rewardPointsButton.setOnAction(actionEvent -> {
-            rewardPointsStage(primaryStage);
-        });
-
-        Button viewUpdateInfoButton = new Button("View/Update info");
-        viewUpdateInfoButton.setOnAction(actionEvent -> {
-            viewUpdateInfoStage(primaryStage);
-        });
-
-        Button logoutButton = new Button("Logout");
-        logoutButton.setOnAction(actionEvent -> {
-            loginStage(primaryStage);
-        });
-
-        // Create an HBox to group the buttons together
-        HBox buttonBox = new HBox();
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(20);
-        buttonBox.getChildren().addAll(homeButton, rentItemButton, returnItemButton, rewardPointsButton,
-                viewUpdateInfoButton, logoutButton);
-
         // TODO: Implement rewardPointsStage
     }
 
@@ -480,8 +442,7 @@ public class VideoStoreApp extends Application {
         // Set action for updateButton to call updateCustomer method
         updateButton.setOnAction(event -> {
             vsm.updateCustomer(vsm.getCurrentUserID(), infoText, nameField.getText(), addressField.getText(),
-                    phoneField.getText(), "", "",
-                    usernameField.getText(), passwordField.getText(), "");
+                    phoneField.getText(), "", "", usernameField.getText(), passwordField.getText(), "");
         });
 
         // Create a grid to hold the text fields
@@ -511,7 +472,7 @@ public class VideoStoreApp extends Application {
         // Create a Scene and set it on the Stage
         Scene scene = new Scene(vBox, 700, 400);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Video Store");
+        primaryStage.setTitle("View/Update information");
         primaryStage.show();
     }
 
@@ -632,8 +593,8 @@ public class VideoStoreApp extends Application {
 
         Button updateCustomerButton = new Button("Update\ncustomer");
         updateCustomerButton.setPrefSize(120, 50);
-        ImageView updateCustomerIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/update.png")).toExternalForm());
+        ImageView updateCustomerIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/update" +
+                ".png")).toExternalForm());
         updateCustomerIcon.setFitHeight(20);
         updateCustomerIcon.setFitWidth(20);
         updateCustomerButton.setGraphic(updateCustomerIcon);
@@ -643,8 +604,8 @@ public class VideoStoreApp extends Application {
 
         Button displayCustomerButton = new Button("Display\ncustomer");
         displayCustomerButton.setPrefSize(120, 50);
-        ImageView displayCustomerIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display.png")).toExternalForm());
+        ImageView displayCustomerIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display" +
+                ".png")).toExternalForm());
         displayCustomerIcon.setFitHeight(20);
         displayCustomerIcon.setFitWidth(20);
         displayCustomerButton.setGraphic(displayCustomerIcon);
@@ -654,8 +615,8 @@ public class VideoStoreApp extends Application {
 
         Button searchCustomerButton = new Button("Search\ncustomer");
         searchCustomerButton.setPrefSize(120, 50);
-        ImageView searchCustomerIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search.png")).toExternalForm());
+        ImageView searchCustomerIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search" +
+                ".png")).toExternalForm());
         searchCustomerIcon.setFitHeight(20);
         searchCustomerIcon.setFitWidth(20);
         searchCustomerButton.setGraphic(searchCustomerIcon);
@@ -702,7 +663,7 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    private HBox adminPageButtonBox(Stage primaryStage){
+    private HBox adminPageButtonBox(Stage primaryStage) {
         Button homeButton = new Button("Home");
         homeButton.setOnAction(actionEvent -> {
             adminHome(primaryStage);
@@ -787,7 +748,7 @@ public class VideoStoreApp extends Application {
         checkButton.setOnAction(event -> {
             infoText.setText("");
             String ID = idField.getText();
-            if (vsm.isValidItemID(ID)) {
+            if (vsm.isValidItemID(ID)) {    // If ID is valid
                 // Show all fields below the ID field
                 infoText.setVisible(true);
                 numberLabel.setVisible(true);
@@ -842,7 +803,7 @@ public class VideoStoreApp extends Application {
         // Create a Scene and set it on the Stage
         Scene scene = new Scene(screen, 800, 400);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Increase number of Items");
+        primaryStage.setTitle("Increase Number of Items");
         primaryStage.show();
     }
 
@@ -861,7 +822,7 @@ public class VideoStoreApp extends Application {
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(20);
 
-        buttonBox.getChildren().addAll(sortButton,sortComboBox);
+        buttonBox.getChildren().addAll(sortButton, sortComboBox);
 
         GridPane gridPane = new GridPane();
         VBox sortTable = new VBox();
@@ -1020,6 +981,7 @@ public class VideoStoreApp extends Application {
         Label rewardPointLabel = new Label("Enter new reward point:");
         TextField rewardPointField = new TextField();
 
+        // Create update button
         Button updateButton = new Button("Update Customer");
         HBox updateBox = new HBox(updateButton);
         updateBox.setAlignment(Pos.CENTER);
@@ -1048,7 +1010,7 @@ public class VideoStoreApp extends Application {
         checkButton.setOnAction(event -> {
             infoText.setText("");
             String ID = idField.getText();
-            if (vsm.isValidCustomerID(ID)) {
+            if (vsm.isValidCustomerID(ID)) {    // If the ID is valid
                 // Show all fields below the ID field
                 infoText.setVisible(true);
                 nameLabel.setVisible(true);
@@ -1161,7 +1123,7 @@ public class VideoStoreApp extends Application {
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(20);
 
-        buttonBox.getChildren().addAll(sortButton,sortComboBox);
+        buttonBox.getChildren().addAll(sortButton, sortComboBox);
 
         GridPane gridPane = new GridPane();
         VBox sortTable = new VBox();

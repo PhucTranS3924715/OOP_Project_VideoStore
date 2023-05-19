@@ -222,6 +222,7 @@ public class VideoStoreManagement {
     }
 
     public void increaseNoOfCopies(String idField, Text infoText, String numberField) {
+        // Get the item using ID
         Item item = findItemByID(idField);
         if (item != null) {
             item.setNoOfCopy(item.getNoOfCopy() + Integer.parseInt(numberField));
@@ -1073,6 +1074,7 @@ public class VideoStoreManagement {
         }
     }
 
+    // Old version
     /*public void searchItemTitle(GridPane gridPane, String input) {
         Collections.sort(items, new TitleSortItem());
 
@@ -1318,6 +1320,7 @@ public class VideoStoreManagement {
         }
     }
 
+    // Old version
     /*public void searchCustomerName(GridPane gridPane, String input) {
         Collections.sort(customers, new NameSortCustomer());
 
