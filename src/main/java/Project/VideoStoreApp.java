@@ -28,7 +28,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        searchCustomerStage(primaryStage);
+        searchItemStage(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -924,7 +924,7 @@ public class VideoStoreApp extends Application {
         searchBox.setHgap(5);
         searchBox.setVgap(5);
         searchBox.setAlignment(Pos.CENTER);
-        searchBox.add(searchBox, 0, 0);
+        searchBox.add(searchField, 0, 0);
         searchBox.add(searchButton, 1, 0);
         searchBox.add(searchComboBox, 2, 0);
 
