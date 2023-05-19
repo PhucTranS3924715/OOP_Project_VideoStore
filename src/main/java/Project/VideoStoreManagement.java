@@ -1028,13 +1028,19 @@ public class VideoStoreManagement {
         scrollPane.setContent(gridPane);
     }
 
-    private void searchItemID(String input) {
+    public void searchItemID(GridPane gridPane, String input) {
+        Collections.sort(items, new IDSortItem());
+
+        gridPane.getChildren().clear();
+
         if (items.isEmpty()) {
-            System.out.println("No items available.");
+//            System.out.println("No items available.");
+            Text text = new Text();
+            text.setText("No item available");
+            gridPane.getChildren().add(text);
             return;
         }
 
-        Collections.sort(items, new IDSortItem());
         boolean found = false;
         int l = 0, r = items.size() - 1;
         while (l <= r) {
@@ -1043,10 +1049,44 @@ public class VideoStoreManagement {
             int res = input.compareTo(items.get(m).getID());
 
             if (res == 0) {
-                System.out.println("Title: " + items.get(m).getTitle()
-                        + "\nGenre: " + items.get(m).getGenre()
-                        + "\nRental Type: " + items.get(m).getRentalType()
-                        + "\nNumber of copies available: " + items.get(m).getNoOfCopy());
+                gridPane.setHgap(15);
+                gridPane.setAlignment(Pos.CENTER);
+
+                Text[][] text = new Text[8][2];
+
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        text[i][j] = new Text(); // Initialize each element of the array
+                    }
+                }
+
+                text[0][0].setText("ID");
+                text[1][0].setText("Title");
+                text[2][0].setText("Rental Type");
+                text[3][0].setText("Loan Type");
+                text[4][0].setText("Number of Copies");
+                text[5][0].setText("Rental Fee");
+                text[6][0].setText("Rental Status");
+                text[7][0].setText("Genre");
+
+                for (int i = 0; i < 8; i++) {
+                    gridPane.add(text[i][0], i, 0);
+                    GridPane.setHalignment(text[i][0], HPos.CENTER);
+                }
+
+                text[0][1].setText(items.get(m).getID());
+                text[1][1].setText(items.get(m).getTitle());
+                text[2][1].setText(items.get(m).getRentalType());
+                text[3][1].setText(items.get(m).getLoanType());
+                text[4][1].setText(String.valueOf(items.get(m).getNoOfCopy()));
+                text[5][1].setText(String.valueOf(items.get(m).getRentalFee()));
+                text[6][1].setText(items.get(m).getRentalStatus());
+                text[7][1].setText(items.get(m).getGenre());
+
+                for (int i = 0; i < 8; i++){
+                    gridPane.add(text[i][1], i, 1);
+                }
+
                 found = true;
             }
 
@@ -1055,10 +1095,13 @@ public class VideoStoreManagement {
             } else
                 r = m - 1;
         }
+
         if (!found) {
-            System.out.println("Item not found.");
+            Text text = new Text();
+            text.setText("No result found");
+            gridPane.getChildren().add(text);
         }
-    }
+        }
 
     private void searchItemTitle(String input) {
         if (items.isEmpty()) {
@@ -1092,7 +1135,7 @@ public class VideoStoreManagement {
         }
     }
 
-    public void searchItem() {
+/*    public void searchItem() {
         System.out.println("Search Item by:\n1. ID\n2. Title");
         Scanner sc = new Scanner(System.in);
         int choice;
@@ -1108,7 +1151,7 @@ public class VideoStoreManagement {
             input = sc.nextLine();
             searchItemTitle(input);
         }
-    }
+    }*/
 
     private void searchCustomerID(String input) {
         if (customers.isEmpty()) {
