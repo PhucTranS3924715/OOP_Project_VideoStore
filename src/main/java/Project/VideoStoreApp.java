@@ -1147,6 +1147,50 @@ public class VideoStoreApp extends Application {
 
     public void searchCustomerStage(Stage primaryStage) {
         // TODO: Implement stage
+        ComboBox<String> searchComboBox = new ComboBox<>();
+        searchComboBox.getItems().addAll("Search by ID", "Search Name");
+        searchComboBox.setValue("Search by ID");
+
+        TextField idField = new TextField();
+        GridPane itemTable = new GridPane();
+        itemTable.setAlignment(Pos.CENTER);
+
+        VBox searchTable = new VBox();
+
+        Button searchButton = new Button("Search");
+        searchButton.setOnAction(e ->{
+            String selectedOption = searchComboBox.getValue();
+            if (selectedOption.equals("Search by ID")) {
+                String ID = idField.getText();
+                searchTable.getChildren().clear();
+                vsm.searchCustomerID(itemTable, ID);
+                searchTable.getChildren().addAll(itemTable);
+            } else if (selectedOption.equals("Search by Name")) {
+                String ID = idField.getText();
+                searchTable.getChildren().clear();
+                vsm.searchCustomerName(itemTable, ID);
+                searchTable.getChildren().addAll(itemTable);
+            }
+        });
+
+        GridPane searchBox = new GridPane();
+        searchBox.setHgap(5);
+        searchBox.setVgap(5);
+        searchBox.setAlignment(Pos.CENTER);
+        searchBox.add(idField, 0, 0);
+        searchBox.add(searchButton, 1, 0);
+        searchBox.add(searchComboBox, 2, 0);
+
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.getChildren().addAll(adminPageButtonBox(primaryStage), searchBox, searchTable);
+
+        Scene scene = new Scene(vBox, 900, 600);
+
+        primaryStage.setTitle("Test");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
