@@ -1300,7 +1300,6 @@ public class VideoStoreManagement {
             return;
         }
 
-        Collections.sort(customers, new NameSortCustomer());
         boolean found = false;
         int l = 0, r = customers.size() - 1;
         while (l <= r) {

@@ -18,6 +18,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.Collections;
 import java.util.Objects;
 
 public class VideoStoreApp extends Application {
@@ -27,7 +28,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        loginStage(primaryStage);
+        searchCustomerStage(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -1148,7 +1149,7 @@ public class VideoStoreApp extends Application {
     public void searchCustomerStage(Stage primaryStage) {
         // TODO: Implement stage
         ComboBox<String> searchComboBox = new ComboBox<>();
-        searchComboBox.getItems().addAll("Search by ID", "Search Name");
+        searchComboBox.getItems().addAll("Search by ID", "Search by Name");
         searchComboBox.setValue("Search by ID");
 
         TextField searchField = new TextField();
@@ -1161,14 +1162,14 @@ public class VideoStoreApp extends Application {
         searchButton.setOnAction(e ->{
             String selectedOption = searchComboBox.getValue();
             if (selectedOption.equals("Search by ID")) {
-                String ID = searchField.getText();
+                String search = searchField.getText();
                 searchTable.getChildren().clear();
-                vsm.searchCustomerID(itemTable, ID);
+                vsm.searchCustomerID(itemTable, search);
                 searchTable.getChildren().addAll(itemTable);
             } else if (selectedOption.equals("Search by Name")) {
-                String ID = searchButton.getText();
+                String search = searchButton.getText();
                 searchTable.getChildren().clear();
-                vsm.searchCustomerName(itemTable, ID);
+                vsm.searchCustomerName(itemTable, search);
                 searchTable.getChildren().addAll(itemTable);
             }
         });
