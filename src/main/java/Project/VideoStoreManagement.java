@@ -1124,59 +1124,55 @@ public class VideoStoreManagement {
         }
 
         boolean found = false;
-        int l = 0, r = items.size() - 1;
-        while (l <= r) {
-            int m = l + (r - l) / 2;
+        for (Item item : items) {
+            if (Objects.equals(item.getTitle(), input)) {
+                found = true;
 
-            int res = input.compareTo(items.get(m).getTitle());
-
-            if (res == 0) {
                 gridPane.setHgap(15);
                 gridPane.setAlignment(Pos.CENTER);
 
-                Text[][] text = new Text[8][2];
+                String[] labels = { "ID", "Title", "Rental type", "Loan type", "Number of copies", "Rental fee",
+                        "Rental status", "Genre"};
 
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 2; j++) {
-                        text[i][j] = new Text(); // Initialize each element of the array
+                for (int i = 0; i < labels.length; i++) {
+                    Text label = new Text(labels[i]);
+                    Text value = new Text();
+
+                    switch (i) {
+                        case 0:
+                            value.setText(item.getID());
+                            break;
+                        case 1:
+                            value.setText(item.getTitle());
+                            break;
+                        case 2:
+                            value.setText(item.getRentalType());
+                            break;
+                        case 3:
+                            value.setText(item.getLoanType());
+                            break;
+                        case 4:
+                            value.setText(String.valueOf(item.getNoOfCopy()));
+                            break;
+                        case 5:
+                            value.setText(String.valueOf(item.getRentalFee()));
+                            break;
+                        case 6:
+                            value.setText(item.getRentalStatus());
+                            break;
+                        case 7:
+                            value.setText(item.getGenre());
+                            break;
                     }
+
+                    gridPane.add(label, i, 0);
+                    gridPane.add(value, i, 1);
+                    GridPane.setHalignment(label, HPos.CENTER);
+                    GridPane.setHalignment(value, HPos.CENTER);
                 }
-
-                text[0][0].setText("ID");
-                text[1][0].setText("Title");
-                text[2][0].setText("Rental Type");
-                text[3][0].setText("Loan Type");
-                text[4][0].setText("Number of Copies");
-                text[5][0].setText("Rental Fee");
-                text[6][0].setText("Rental Status");
-                text[7][0].setText("Genre");
-
-                for (int i = 0; i < 8; i++) {
-                    gridPane.add(text[i][0], i, 0);
-                    GridPane.setHalignment(text[i][0], HPos.CENTER);
-                }
-
-                text[0][1].setText(items.get(m).getID());
-                text[1][1].setText(items.get(m).getTitle());
-                text[2][1].setText(items.get(m).getRentalType());
-                text[3][1].setText(items.get(m).getLoanType());
-                text[4][1].setText(String.valueOf(items.get(m).getNoOfCopy()));
-                text[5][1].setText(String.valueOf(items.get(m).getRentalFee()));
-                text[6][1].setText(items.get(m).getRentalStatus());
-                text[7][1].setText(items.get(m).getGenre());
-
-                for (int i = 0; i < 8; i++) {
-                    gridPane.add(text[i][1], i, 1);
-                }
-
-                found = true;
             }
-
-            if (res > 0) {
-                l = m + 1;
-            } else
-                r = m - 1;
         }
+
         if (!found) {
                 Text warningText = new Text();
                 warningText.setFill(Color.RED);
