@@ -370,14 +370,6 @@ public class VideoStoreManagement {
         }
     }
 
-    public boolean promptForRewardPointsUsage() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Congratulations! You have earned a free rental. Would you like to use your reward " +
-                "points?" + " (Y/N)");
-        String input = scanner.nextLine().toLowerCase();
-        return input.equals("Y");
-    }
-
     //Implement available item
     public ArrayList<Item> getAvailableItems() {
         ArrayList<Item> availableItems = new ArrayList<Item>();
@@ -387,29 +379,6 @@ public class VideoStoreManagement {
             }
         }
         return availableItems;
-    }
-
-    public void chooseFreeRental() {
-        Scanner scanner = new Scanner(System.in);
-        if (currentUser.getCustomerType().equals("VIP") && currentUser.getRewardPoints() >= 100) {
-            System.out.println("Congratulations! You have earned a free rental.");
-            System.out.println("Please choose an item from the following list:");
-            ArrayList<Item> availableItems = getAvailableItems();
-            for (int i = 0; i < availableItems.size(); i++) {
-                System.out.println((i + 1) + ". " + availableItems.get(i).toString());
-            }
-            int selection = scanner.nextInt();
-            Item selectedItem = availableItems.get(selection - 1);
-
-            Item item = findItemByID(selectedItem.getID());     // This item will not be null
-            currentUser.addItem(item);
-            item.setNoOfCopy(item.getNoOfCopy() - 1);
-            item.setRentalStatus("borrowed");
-            currentUser.setRewardPoints(currentUser.getRewardPoints() - 100);
-            System.out.println("Item rented successfully.");
-        } else {
-            System.out.println("Error: You do not have enough reward points to rent a free item.");
-        }
     }
 
     /* Return an item (increase the number of copies held in stock)

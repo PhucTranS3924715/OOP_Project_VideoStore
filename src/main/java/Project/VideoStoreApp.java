@@ -21,10 +21,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 
 
-import java.util.Collections;
-import java.util.Objects;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 public class VideoStoreApp extends Application {
@@ -175,7 +172,7 @@ public class VideoStoreApp extends Application {
         rewardPointsIcon.setFitWidth(20);
         rewardPointsButton.setGraphic(rewardPointsIcon);
         rewardPointsButton.setOnAction(actionEvent -> {
-            rewardPointsStage(primaryStage);
+            rewardPointsStage(primaryStage,vsm.getCurrentUser());
         });
 
         Button viewUpdateInfoButton = new Button("View/Update\ninformation");
@@ -238,7 +235,7 @@ public class VideoStoreApp extends Application {
 
         Button rewardPointsButton = new Button("Reward points");
         rewardPointsButton.setOnAction(actionEvent -> {
-            rewardPointsStage(primaryStage);
+            rewardPointsStage(primaryStage,vsm.getCurrentUser());
         });
 
         Button viewUpdateInfoButton = new Button("View/Update info");
@@ -501,13 +498,119 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
+    //REWARD POINTS
+    public void rewardPointsStage(Stage primaryStage, Customer currentUser) {
+        // Create a label to display the reward points
+        Label rewardPointsLabel = new Label("Total Reward Points: " + currentUser.getRewardPoints());
+        rewardPointsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
+        // Create a button to redeem reward points
+        Button redeemButton = new Button("Redeem Points");
 
+        // Set up the action for the redeem button
+        redeemButton.setOnAction(e -> {
+            int rewardPoints = currentUser.getRewardPoints();
+            if (rewardPoints >= 100) {
+                // Ask the user whether they want to spend the points or continue accumulating
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Redeem Reward Points");
+                alert.setHeaderText("You have " + rewardPoints + " reward points.");
+                alert.setContentText("Do you want to spend 100 reward points to rent an item for free?");
 
+                // Add buttons to the alert dialog
+                ButtonType spendPointsButton = new ButtonType("Spend Points");
+                ButtonType continueButton = new ButtonType("Continue Accumulating");
+                alert.getButtonTypes().setAll(spendPointsButton, continueButton);
 
-    public void rewardPointsStage(Stage primaryStage) {
-        // TODO: Implement rewardPointsStage
+                // Handle the user's choice
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == spendPointsButton) {
+                    // Deduct 100 reward points
+                    currentUser.setRewardPoints(rewardPoints - 100);
+                    // Show the rent item stage
+                    showRentItemStage(primaryStage, currentUser);
+                }
+            }
+        });
+
+        // Set up the layout
+        VBox vBox = new VBox(10, rewardPointsLabel, redeemButton);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setPadding(new Insets(10));
+
+        // Set up the scene and stage
+        Scene scene = new Scene(vBox);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Reward Points");
+        primaryStage.show();
     }
+
+
+
+    public void showRentItemStage(Stage primaryStage, Customer currentUser) {
+        // Number of columns to display items
+        int numColumns = 3;
+
+        // Create grid to store items
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setAlignment(Pos.CENTER);
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        // Add items to the grid
+        for (int i = 0; i < vsm.getItems().size(); i++) {
+            Item item = vsm.getItems().get(i);
+
+            // Calculate the row and column indices
+            int row = i / numColumns + 1;
+            int column = i % numColumns;
+
+            // Item ID label
+            Label itemIDLabel = new Label(item.getID());
+
+            // Item title label
+            Label itemTitleLabel = new Label(item.getTitle());
+
+            // Item image view
+            ImageView itemImageView =
+                    new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" + ".jpg")).toExternalForm());
+            itemImageView.setFitWidth(200);
+            itemImageView.setFitHeight(200);
+
+            // Rent button
+            Button rentButton = new Button("Rent");
+            rentButton.setVisible(false);
+
+            // Show the rent button when the mouse enters the VBox
+            VBox itemBox = new VBox(5);
+            itemBox.setAlignment(Pos.CENTER);
+            itemBox.getChildren().addAll(itemImageView, itemIDLabel, itemTitleLabel, rentButton);
+            itemBox.setOnMouseEntered(e -> rentButton.setVisible(true));
+            itemBox.setOnMouseExited(e -> rentButton.setVisible(false));
+
+            // Show the item information window when the rent button is clicked
+            rentButton.setOnAction(e -> showItemInformation(item));
+
+            // Add the VBox to the grid
+            grid.add(itemBox, column, row);
+        }
+
+        // Create a scroll pane to add the grid
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(grid);
+
+        // Vertical box to store everything
+        VBox vBox = new VBox(10, customerPageButtonBox(primaryStage), scrollPane);
+        vBox.setAlignment(Pos.TOP_CENTER);
+
+        // Set up the scene and stage
+        Scene scene = new Scene(vBox);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Rent Item");
+        primaryStage.show();
+    }
+    //END OF REWARD POINTS
 
     public void viewUpdateInfoStage(Stage primaryStage) {
         // Create labels and fields
