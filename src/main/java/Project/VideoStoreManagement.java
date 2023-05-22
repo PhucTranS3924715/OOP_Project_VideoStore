@@ -345,24 +345,37 @@ public class VideoStoreManagement {
             return false;
         }
 
+        // Guest user cannot rent 2-day items
         if (currentUser.getCustomerType().equals("Guest") && item.getLoanType().equals("2-day")) {
             messageLabel.setText("Error: Guest customers cannot borrow 2-day items.");
             return false;
-        } else if (item.getRentalStatus().equals("not available")) {
+        }
+        // Cannot rent unavailable items
+        else if (item.getRentalStatus().equals("not available")) {
             messageLabel.setText("Error: This item is not available for rent.");
             return false;
-        } else if (item.getRentalStatus().equals("borrowed")) {
+        }
+        // Cannot rent borrowed items
+        else if (item.getRentalStatus().equals("borrowed")) {
             messageLabel.setText("Error: This item is already borrowed.");
             return false;
-        } else {
+        }
+        // After all invalid cases, customer can rent item
+        else {
+            // Guest cannot rent more than 2 items at a time
             if (currentUser.getCustomerType().equals("Guest") && currentUser.getItems().size() >= 2) {
                 messageLabel.setText("Error: Guest customers can only rent a maximum of 2 items.");
                 return false;
             } else {
                 currentUser.getItems().add(item);
                 item.setNoOfCopy(item.getNoOfCopy() - 1);
+                // If it is the last item, change the status to "borrowed"
                 if (item.getNoOfCopy() == 0) {
                     item.setRentalStatus("borrowed");
+                }
+                // If the customer is a VIP, increase reward points
+                if (Objects.equals(currentUser.getCustomerType(), "VIP")){
+                    currentUser.setRewardPoints(currentUser.getRewardPoints() + 10);
                 }
                 messageLabel.setText("Item rented successfully.");
                 return true;
@@ -407,7 +420,6 @@ public class VideoStoreManagement {
                     currentUser.setNoOfRental(0);
                     System.out.println("Congratulations! You have been promoted to a VIP customer.");
                 }
-
                 System.out.println("Return successful!");
                 return true;
             }
@@ -415,8 +427,6 @@ public class VideoStoreManagement {
         System.out.println("You did not rent this item.");
         return false;
     }
-
-
 
     // Promote the customer to the next customer type if they meet the criteria
     public boolean promote() {
