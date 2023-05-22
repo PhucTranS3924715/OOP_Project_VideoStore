@@ -31,7 +31,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        searchItemStage(primaryStage);
+        loginStage(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -172,7 +172,7 @@ public class VideoStoreApp extends Application {
         rewardPointsIcon.setFitWidth(20);
         rewardPointsButton.setGraphic(rewardPointsIcon);
         rewardPointsButton.setOnAction(actionEvent -> {
-            rewardPointsStage(primaryStage,vsm.getCurrentUser());
+            rewardPointsStage(primaryStage, vsm.getCurrentUser());
         });
 
         Button viewUpdateInfoButton = new Button("View/Update\ninformation");
@@ -230,12 +230,12 @@ public class VideoStoreApp extends Application {
 
         Button returnItemButton = new Button("Return item");
         returnItemButton.setOnAction(actionEvent -> {
-            returnItemStage(primaryStage,vsm.getCurrentUser());
+            returnItemStage(primaryStage, vsm.getCurrentUser());
         });
 
         Button rewardPointsButton = new Button("Reward points");
         rewardPointsButton.setOnAction(actionEvent -> {
-            rewardPointsStage(primaryStage,vsm.getCurrentUser());
+            rewardPointsStage(primaryStage, vsm.getCurrentUser());
         });
 
         Button viewUpdateInfoButton = new Button("View/Update info");
@@ -426,9 +426,8 @@ public class VideoStoreApp extends Application {
         if (rentedItems.isEmpty()) {
             // Display message if inventory is empty
             Label emptyLabel = new Label("Your inventory is currently empty.");
-            emptyLabel.setStyle("-fx-font-family: 'Times New Roman';" +
-                    "-fx-font-weight: bold;" +
-                    "-fx-font-size: 30px;");
+            emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " +
+                    "30px;");
             GridPane.setHalignment(emptyLabel, HPos.CENTER); // Center the label horizontally
             GridPane.setValignment(emptyLabel, VPos.CENTER); // Center the label vertically
 
@@ -448,7 +447,8 @@ public class VideoStoreApp extends Application {
                 Label itemTitleLabel = new Label(item.getTitle());
 
                 // Item image view
-                ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup.jpg")).toExternalForm());
+                ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" +
+                        "/dvdmockup.jpg")).toExternalForm());
                 itemImageView.setFitWidth(200);
                 itemImageView.setFitHeight(200);
 
@@ -539,13 +539,11 @@ public class VideoStoreApp extends Application {
         vBox.setPadding(new Insets(10));
 
         // Set up the scene and stage
-        Scene scene = new Scene(vBox);
+        Scene scene = new Scene(vBox, 900, 600);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Reward Points");
         primaryStage.show();
     }
-
-
 
     public void showRentItemStage(Stage primaryStage, Customer currentUser) {
         // Number of columns to display items
@@ -792,8 +790,8 @@ public class VideoStoreApp extends Application {
 
         Button updateCustomerButton = new Button("Update\ncustomer");
         updateCustomerButton.setPrefSize(120, 50);
-        ImageView updateCustomerIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/update" +
-                ".png")).toExternalForm());
+        ImageView updateCustomerIcon =
+                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/update" + ".png")).toExternalForm());
         updateCustomerIcon.setFitHeight(20);
         updateCustomerIcon.setFitWidth(20);
         updateCustomerButton.setGraphic(updateCustomerIcon);
@@ -803,8 +801,8 @@ public class VideoStoreApp extends Application {
 
         Button displayCustomerButton = new Button("Display\ncustomer");
         displayCustomerButton.setPrefSize(120, 50);
-        ImageView displayCustomerIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display" +
-                ".png")).toExternalForm());
+        ImageView displayCustomerIcon =
+                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display" + ".png")).toExternalForm());
         displayCustomerIcon.setFitHeight(20);
         displayCustomerIcon.setFitWidth(20);
         displayCustomerButton.setGraphic(displayCustomerIcon);
@@ -814,8 +812,8 @@ public class VideoStoreApp extends Application {
 
         Button searchCustomerButton = new Button("Search\ncustomer");
         searchCustomerButton.setPrefSize(120, 50);
-        ImageView searchCustomerIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search" +
-                ".png")).toExternalForm());
+        ImageView searchCustomerIcon =
+                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search" + ".png")).toExternalForm());
         searchCustomerIcon.setFitHeight(20);
         searchCustomerIcon.setFitWidth(20);
         searchCustomerButton.setGraphic(searchCustomerIcon);
