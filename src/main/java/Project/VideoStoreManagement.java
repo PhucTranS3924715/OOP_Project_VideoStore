@@ -31,11 +31,11 @@ public class VideoStoreManagement {
         this.adminUsername = "admin";
         this.adminPassword = "password";
     }
+
     //Allow VideoStoreApp to access the instance
     public Customer getCurrentUser() {
         return currentUser;
     }
-
 
     public boolean login(String username, String password) {
         for (Customer customer : customers) {
