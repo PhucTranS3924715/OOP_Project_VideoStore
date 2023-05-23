@@ -79,112 +79,59 @@ public class VideoStoreManagement {
         return id.matches("C\\d{3}");
     }
 
-    public boolean addItem() {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter item ID: ");
-        String ID = scan.nextLine();
-        Item item = findItemByID(ID);
-        if (item == null) {
-            System.out.print("Enter item title: ");
-            String title = scan.nextLine();
-            System.out.print("Enter rental type (DVD/Blu-ray/Game): ");
-            String rentalType = scan.nextLine();
-            System.out.print("Enter loan type (2-day/1-week): ");
-            String loanType = scan.nextLine();
-            System.out.print("Enter number of copies: ");
-            int noOfCopies = scan.nextInt();
-            System.out.print("Enter rental fee:");
-            float rentalFee = scan.nextFloat();
-            scan.nextLine();
-            if (Objects.equals(rentalType, "Record") || Objects.equals(rentalType, "DVD")) {
-                System.out.print("Enter genre(Action/Horror/Drama/Comedy:");
-                String genre = scan.nextLine();
-                items.add(new Item(ID, title, rentalType, loanType, noOfCopies, rentalFee, "available", genre));
-            } else {
-                items.add(new Item(ID, title, rentalType, loanType, noOfCopies, rentalFee, "available", ""));
-            }
-            System.out.println("Item added!");
-            return true;
-        }
-        System.out.println("The item already existed!");
-        return false;
-    }
 
-    public boolean updateItem() {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter item ID: ");
-        String ID = scan.nextLine();
-        Item item = findItemByID(ID);
-        if (item != null) {
-            System.out.print("Enter new ID: ");
-            String newID = scan.nextLine();
-            System.out.print("Enter new item title: ");
-            String title = scan.nextLine();
-            System.out.print("Enter new rental type (DVD/Blu-ray/Game): ");
-            String rentalType = scan.nextLine();
-            System.out.print("Enter new loan type (2-day/1-week): ");
-            String loanType = scan.nextLine();
-            System.out.print("Enter new number of copies: ");
-            int noOfCopies = scan.nextInt();
-            System.out.print("Enter new rental fee:");
-            float rentalFee = scan.nextFloat();
-            System.out.print("Enter new rental status (available/rented): ");
-            String rentalStatus = scan.nextLine();
-            System.out.print("Enter new genre(Action/Horror/Drama/Comedy:");
-            String genre = scan.nextLine();
-            item.setID(newID);
-            item.setTitle(title);
-            item.setRentalType(rentalType);
-            item.setLoanType(loanType);
-            item.setNoOfCopy(noOfCopies);
-            item.setRentalFee(rentalFee);
-            item.setRentalStatus(rentalStatus);
-            item.setGenre(genre);
-            System.out.println("Item updated!");
-            return true;
-        }
-        System.out.println("No item found!");
-        return false;
-    }
 
-    public boolean deleteItem() {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter item ID you want to delete: ");
-        String ID = scan.nextLine();
-        Item item = findItemByID(ID);
-        if (item != null) {
-            items.remove(item);
-            System.out.println("Item deleted");
-            return true;
-        }
-        System.out.println("No item found");
-        return false;
-    }
 
-    public boolean addCustomer() {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter customer ID: ");
-        String ID = scan.nextLine();
-        Customer customer = findCustomerByID(ID);
+    public void addCustomer(String idField, Text infoText, String nameField, String addressField,
+                        String phoneField, String customerTypeField, String usernameField, String passwordField,
+                        String rewardPointField ){
+        Customer customer = findCustomerByID(idField);
         if (customer == null) {
-            System.out.print("Enter name: ");
-            String name = scan.nextLine();
-            System.out.print("Enter address: ");
-            String address = scan.nextLine();
-            System.out.print("Enter phone number: ");
-            String phone = scan.nextLine();
-            System.out.print("Enter username: ");
-            String username = scan.nextLine();
-            System.out.print("Enter password: ");
-            String password = scan.nextLine();
-            customers.add(new Customer(ID, name, address, phone, 0, "guest", username, password, 0));
-            System.out.println("Customer added!");
-            return true;
-        }
-        System.out.println("The customer ID already existed!");
-        return false;
-    }
+            infoText.setText(customer.customerInfo());
 
+            customer.setName(nameField);
+
+            customer.setAddress(addressField);
+
+            customer.setPhone(phoneField);
+
+            customer.setCustomerType(customerTypeField);
+
+            customer.setUsername(usernameField);
+
+            customer.setPassword(passwordField);
+
+            customer.setRewardPoints(Integer.parseInt(rewardPointField));
+
+            // check if there are blank fields
+            if (nameField.isEmpty() || addressField.isEmpty() || phoneField.isEmpty() || customerTypeField.isEmpty()
+                    || usernameField.isEmpty() || passwordField.isEmpty() || rewardPointField.isEmpty()) {
+                infoText.setText("All sections must be filled");
+
+                infoText.setText(customer.customerInfo());
+                if (nameField.isEmpty())
+                    customer.setName(nameField);
+                if (addressField.isEmpty())
+                    customer.setAddress(addressField);
+                if (phoneField.isEmpty())
+                    customer.setPhone(phoneField);
+                if(customerTypeField.isEmpty())
+                    customer.setCustomerType(customerTypeField);
+                if (usernameField.isEmpty())
+                    customer.setUsername(usernameField);
+                if (passwordField.isEmpty())
+                    customer.setPassword(passwordField);
+                if (rewardPointField.isEmpty())
+                    customer.setRewardPoints(Integer.parseInt(rewardPointField));
+                return;
+            }
+
+            infoText.setText("Customer added!");
+            infoText.setFill(Color.GREEN);
+            return;
+        }
+        infoText.setText("The customer ID already existed!");
+    }
     public void updateCustomer(String idField, Text infoText, String nameField, String addressField,
                                String phoneField, String noOfRentalField, String customerTypeField,
                                String usernameField, String passwordField, String rewardPointField) {
@@ -225,6 +172,114 @@ public class VideoStoreManagement {
         }
         infoText.setText("No customer found!");
     }
+
+
+    public void addItem(String idField, Text infoText, String titleField, String rentalTypeField,
+                           String loanTypeField, String noOfCopiesField, String rentalFeeField,
+                           String rentalStatusField, String genreField) {
+        Item item = findItemByID(idField);
+        if (item == null) {
+            infoText.setText(item.itemInfo());
+
+                item.setTitle(titleField);
+
+                item.setRentalType(rentalTypeField);
+
+                item.setLoanType(loanTypeField);
+
+                item.setNoOfCopy(Integer.parseInt(noOfCopiesField));
+
+                item.setRentalFee(Float.parseFloat(rentalFeeField));
+
+                item.setRentalStatus(rentalStatusField);
+
+                item.setGenre(genreField);
+
+            if (titleField.isEmpty() || rentalTypeField.isEmpty() || loanTypeField.isEmpty()
+                    || noOfCopiesField.isEmpty() || rentalFeeField.isEmpty() || rentalStatusField.isEmpty()
+                    || genreField.isEmpty()) {
+                infoText.setText("All sections must be filled");
+
+                infoText.setText(item.itemInfo());
+                if (titleField.isEmpty())
+                item.setTitle(titleField);
+                if (rentalTypeField.isEmpty())
+                item.setRentalType(rentalTypeField);
+                if (loanTypeField.isEmpty())
+                item.setLoanType(loanTypeField);
+                if (noOfCopiesField.isEmpty())
+                item.setNoOfCopy(Integer.parseInt(noOfCopiesField));
+                if (rentalFeeField.isEmpty())
+                item.setRentalFee(Float.parseFloat(rentalFeeField));
+                if (rentalStatusField.isEmpty())
+                item.setRentalStatus(rentalStatusField);
+                if (genreField.isEmpty())
+                item.setGenre(genreField);
+                return;
+            }
+
+            infoText.setText("Item added!");
+            infoText.setFill(Color.GREEN);
+            return;
+        }
+        infoText.setText("The item ID already existed!");
+    }
+
+    public void updateItem(String idField, Text infoText, String titleField, String rentalTypeField,
+                               String loanTypeField, String noOfCopiesField, String rentalFeeField,
+                               String rentalStatusField, String genreField) {
+        Item item = findItemByID(idField);
+        if (item != null) {
+            infoText.setText(item.itemInfo());
+
+
+            if (!titleField.isEmpty()) {
+                item.setTitle(titleField);
+            }
+            if (!rentalTypeField.isEmpty()) {
+                item.setRentalType(rentalTypeField);
+            }
+            if (!loanTypeField.isEmpty()) {
+                item.setLoanType(loanTypeField);
+            }
+            if (!noOfCopiesField.isEmpty()) {
+                item.setNoOfCopy(Integer.parseInt(noOfCopiesField));
+            }
+            if (!rentalFeeField.isEmpty()) {
+                item.setRentalFee(Float.parseFloat(rentalFeeField));
+            }
+            if (!rentalStatusField.isEmpty()) {
+                item.setRentalStatus(rentalStatusField);
+            }
+            if (!genreField.isEmpty()) {
+                item.setGenre(genreField);
+            }
+
+
+            infoText.setText("Item updated!");
+            infoText.setFill(Color.GREEN);
+            return;
+        }
+        infoText.setText("No item found!");
+    }
+
+    public void deleteItem(String idField, Text infoText) {
+        // Find item by ID
+        Item item = findItemByID(idField);
+        if (item != null) {
+            // Remove item from items
+            items.remove(item);
+
+            infoText.setText("Item deleted!");
+            infoText.setFill(Color.GREEN);
+            return;
+        }
+
+        // Set status information if item is not found
+        infoText.setText("No item found!");
+    }
+
+
 
     public void increaseNoOfCopies(String idField, Text infoText, String numberField) {
         // Get the item using ID
