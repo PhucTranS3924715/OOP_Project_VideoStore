@@ -447,14 +447,23 @@ public class VideoStoreApp extends Application {
         // Add items to the grid
         if (rentedItems.isEmpty()) {
             // Display message if inventory is empty
-            Label emptyLabel = new Label("Your inventory is currently empty.");
-            emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " +
-                    "30px;");
-            GridPane.setHalignment(emptyLabel, HPos.CENTER); // Center the label horizontally
-            GridPane.setValignment(emptyLabel, VPos.CENTER); // Center the label vertically
+            Label emptyLabel = new Label("Your inventory is currently empty");
+            emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " + "30px;");
+            VBox.setMargin(emptyLabel, new Insets(10));
 
-            grid.add(emptyLabel, 0, 0, numColumns, 1); // Span the label across all columns
-        } else {
+            ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/pompomsayno.png")).toExternalForm());
+            emptyImageView.setFitWidth(200);
+            emptyImageView.setFitHeight(200);
+
+            VBox emptyBox = new VBox(emptyLabel, emptyImageView);
+            emptyBox.setAlignment(Pos.CENTER);
+            emptyBox.setSpacing(10);
+
+            GridPane.setHalignment(emptyBox, HPos.CENTER); // Center the VBox horizontally
+            GridPane.setValignment(emptyBox, VPos.CENTER); // Center the VBox vertically
+
+            grid.add(emptyBox, 0, 0, numColumns, 1); // Span the VBox across all columns
+    } else {
             for (int i = 0; i < rentedItems.size(); i++) {
                 Item item = rentedItems.get(i);
 
@@ -471,8 +480,8 @@ public class VideoStoreApp extends Application {
                 // Item image view
                 ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" +
                         "/dvdmockup.jpg")).toExternalForm());
-                itemImageView.setFitWidth(200);
-                itemImageView.setFitHeight(200);
+                itemImageView.setFitWidth(300);
+                itemImageView.setFitHeight(300);
 
                 // Return button
                 Button returnButton = new Button("Return");
@@ -487,24 +496,59 @@ public class VideoStoreApp extends Application {
                 // Perform return action when the return button is clicked
                 returnButton.setOnAction(e -> {
                     Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmationDialog.setTitle("Return Confirmation");
-                    confirmationDialog.setHeaderText("Return Item");
-                    confirmationDialog.setContentText("Are you sure you want to return this item?");
+                    confirmationDialog.setTitle("Are you sure you want to return this item?");
                     Optional<ButtonType> result = confirmationDialog.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         boolean success = vsm.returnItem(item.getID());
                         if (success) {
                             // Remove the returned item from the grid
                             grid.getChildren().remove(itemBox);
+                            // Check if the customer is eligible for promotion
+                            if (currentUser.getCustomerType().equals("Guest") && currentUser.getNoOfRental() > 3) {
+                                currentUser.setCustomerType("Regular");
+                                currentUser.setNoOfRental(0);
+                                Alert promotionAlert = new Alert(Alert.AlertType.INFORMATION);
+                                promotionAlert.setTitle("Promotion");
+                                promotionAlert.setHeaderText(null);
+                                promotionAlert.setContentText("Congratulations! You have been promoted to a Regular customer.");
+                                promotionAlert.showAndWait();
+                            } else if (currentUser.getCustomerType().equals("Regular") && currentUser.getNoOfRental() > 5) {
+                                currentUser.setCustomerType("VIP");
+                                currentUser.setNoOfRental(0);
+                                Alert promotionAlert = new Alert(Alert.AlertType.INFORMATION);
+                                promotionAlert.setTitle("Promotion");
+                                promotionAlert.setHeaderText(null);
+                                promotionAlert.setContentText("Congratulations! You have been promoted to a VIP customer.");
+                                promotionAlert.showAndWait();
+                            }
+                            // Check if inventory is empty after returning the item
+                            if (grid.getChildren().isEmpty()) {
+                                Label emptyLabel = new Label("Your inventory is currently empty");
+                                emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " +
+                                        "30px;");
+                                VBox.setMargin(emptyLabel, new Insets(10));
+
+                                ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/pompomsayno.png")).toExternalForm());
+                                emptyImageView.setFitWidth(300);
+                                emptyImageView.setFitHeight(300);
+
+                                VBox emptyBox = new VBox(emptyLabel, emptyImageView);
+                                emptyBox.setAlignment(Pos.CENTER);
+                                emptyBox.setSpacing(10);
+                                GridPane.setHalignment(emptyLabel, HPos.CENTER);
+                                GridPane.setValignment(emptyLabel, VPos.CENTER);
+                                grid.add(emptyBox, 0, 0, numColumns, 1);
+                            }
+                            return;
                         }
                     }
                 });
+
 
                 // Add the VBox to the grid
                 grid.add(itemBox, column, row);
             }
         }
-
         // Create a scroll pane to add the grid
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(grid);
@@ -527,7 +571,7 @@ public class VideoStoreApp extends Application {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Access Denied");
             alert.setHeaderText(null);
-            alert.setContentText("Sorry!! This playground is for VIP.");
+            alert.setContentText("Sorry!! This section is VIP only.");
             alert.showAndWait();
             return;
         }
@@ -576,6 +620,13 @@ public class VideoStoreApp extends Application {
                     // Show the rent item stage
                     showRentItemStage(primaryStage, currentUser);
                 }
+            } else {
+                // Display a warning message if the user doesn't have enough reward points
+                Alert warning = new Alert(Alert.AlertType.WARNING);
+                warning.setTitle("Insufficient Reward Points");
+                warning.setHeaderText(null);
+                warning.setContentText("You don't have enough reward points to redeem.");
+                warning.showAndWait();
             }
         });
 
@@ -653,8 +704,15 @@ public class VideoStoreApp extends Application {
             itemBox.setOnMouseExited(e -> rentButton.setVisible(false));
 
             // Show the item information window when the rent button is clicked
-            rentButton.setOnAction(e -> showItemInformation(item));
-
+            rentButton.setOnAction(e -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Rental Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Congratulations! You have successfully rented an item for free.");
+            alert.showAndWait();
+            // Return to the home page
+            customerHome(primaryStage);
+        });
             // Add the VBox to the grid
             grid.add(itemBox, column, row);
         }
