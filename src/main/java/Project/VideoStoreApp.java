@@ -504,8 +504,20 @@ public class VideoStoreApp extends Application {
         Label rewardPointsLabel = new Label("Total Reward Points: " + currentUser.getRewardPoints());
         rewardPointsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
+        // Create an ImageView for the image
+        ImageView image = new ImageView(getClass().getResource("/Images/pompomicon" + "png").toExternalForm());
+        image.setFitWidth(50);
+        image.setFitHeight(50);
+
         // Create a button to redeem reward points
         Button redeemButton = new Button("Redeem Points");
+        redeemButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-family: Arial; " +
+                "-fx-font-size: 14px; -fx-padding: 10px 20px;");
+
+        // Create a button to go back to the main menu
+        Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-family: Arial; " +
+                "-fx-font-size: 14px; -fx-padding: 10px 20px;");
 
         // Set up the action for the redeem button
         redeemButton.setOnAction(e -> {
@@ -532,11 +544,19 @@ public class VideoStoreApp extends Application {
                 }
             }
         });
+        // Set up the action for the back button
+        backButton.setOnAction(e -> {
+            customerHome(primaryStage);
+        });
+        // Create an HBox to contain the image and buttons
+        HBox hbox = new HBox(10);
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        hbox.getChildren().addAll(image, redeemButton, backButton);
 
         // Set up the layout
-        VBox vBox = new VBox(10, rewardPointsLabel, redeemButton);
+        VBox vBox = new VBox(20, rewardPointsLabel, redeemButton, backButton);
         vBox.setAlignment(Pos.CENTER);
-        vBox.setPadding(new Insets(10));
+        vBox.setPadding(new Insets(20));
 
         // Set up the scene and stage
         Scene scene = new Scene(vBox, 900, 600);
