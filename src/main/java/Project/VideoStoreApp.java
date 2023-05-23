@@ -33,7 +33,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        addItemStage(primaryStage);
+        adminHome(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -218,37 +218,53 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
+    private void buttonDesign(Button button){
+        button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2;");
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2;"));
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2;"));
+    }
+
     private HBox customerPageButtonBox(Stage primaryStage) {
         // Create the buttons
         Button homeButton = new Button("Home");
         homeButton.setOnAction(actionEvent -> {
             customerHome(primaryStage);
         });
+        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;");
+        homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2; -fx-font-weight: bold;"));
+        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         Button rentItemButton = new Button("Rent item");
         rentItemButton.setOnAction(actionEvent -> {
             rentItemStage(primaryStage);
         });
+        buttonDesign(rentItemButton);
 
         Button returnItemButton = new Button("Return item");
         returnItemButton.setOnAction(actionEvent -> {
             returnItemStage(primaryStage, vsm.getCurrentUser());
         });
+        buttonDesign(returnItemButton);
 
         Button rewardPointsButton = new Button("Reward points");
         rewardPointsButton.setOnAction(actionEvent -> {
             rewardPointsStage(primaryStage, vsm.getCurrentUser());
         });
+        buttonDesign(rewardPointsButton);
 
         Button viewUpdateInfoButton = new Button("View/Update info");
         viewUpdateInfoButton.setOnAction(actionEvent -> {
             viewUpdateInfoStage(primaryStage);
         });
+        buttonDesign(viewUpdateInfoButton);
 
         Button logoutButton = new Button("Logout");
         logoutButton.setOnAction(actionEvent -> {
             loginStage(primaryStage);
         });
+        logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;");
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2; -fx-font-weight: bold;"));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         // Create an HBox to group the buttons together
         HBox buttonBox = new HBox();
@@ -256,6 +272,8 @@ public class VideoStoreApp extends Application {
         buttonBox.setSpacing(20);
         buttonBox.getChildren().addAll(homeButton, rentItemButton, returnItemButton, rewardPointsButton,
                 viewUpdateInfoButton, logoutButton);
+        buttonBox.setStyle("-fx-background-color: #00abe4;");
+        buttonBox.setPrefHeight(50);
 
         return buttonBox;
     }
@@ -311,7 +329,9 @@ public class VideoStoreApp extends Application {
 
         // Create a scroll pane to add the grid
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(grid);
+        StackPane stackPane = new StackPane(grid);
+        scrollPane.setContent(stackPane);
+
 
         // Vertical box to store everything
         VBox vBox = new VBox(10, customerPageButtonBox(primaryStage), scrollPane);
@@ -507,7 +527,7 @@ public class VideoStoreApp extends Application {
         rewardPointsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
         // Create an ImageView for the image
-        ImageView image = new ImageView(getClass().getResource("/Images/pompomicon" + "png").toExternalForm());
+        ImageView image = new ImageView(getClass().getResource("/Images/pompomicon.png").toExternalForm());
         image.setFitWidth(50);
         image.setFitHeight(50);
 
@@ -594,7 +614,7 @@ public class VideoStoreApp extends Application {
 
             // Item image view
             ImageView itemImageView =
-                    new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" + ".jpg")).toExternalForm());
+                    new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup.jpg")).toExternalForm());
             itemImageView.setFitWidth(200);
             itemImageView.setFitHeight(200);
 
@@ -887,41 +907,53 @@ public class VideoStoreApp extends Application {
         homeButton.setOnAction(actionEvent -> {
             adminHome(primaryStage);
         });
+        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;");
+        homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2; -fx-font-weight: bold;"));
+        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         Button addItemButton = new Button("Add item");
         addItemButton.setOnAction(actionEvent -> {
             addItemStage(primaryStage);
         });
+        buttonDesign(addItemButton);
 
         Button updateItemButton = new Button("Update item");
         updateItemButton.setOnAction(actionEvent -> {
             updateItemStage(primaryStage);
         });
+        buttonDesign(updateItemButton);
 
         Button increaseItemButton = new Button("Increase item");
         increaseItemButton.setOnAction(actionEvent -> {
             increaseItemStage(primaryStage);
         });
+        buttonDesign(increaseItemButton);
 
         Button deleteItemButton = new Button("Delete item");
         deleteItemButton.setOnAction(actionEvent -> {
             deleteItemStage(primaryStage);
         });
+        buttonDesign(deleteItemButton);
 
         Button displayItemButton = new Button("Display item");
         displayItemButton.setOnAction(actionEvent -> {
             displayItemStage(primaryStage);
         });
+        buttonDesign(displayItemButton);
 
         Button searchItemButton = new Button("Search item");
         searchItemButton.setOnAction(actionEvent -> {
             searchItemStage(primaryStage);
         });
+        buttonDesign(searchItemButton);
 
         Button logoutButton = new Button("Logout");
         logoutButton.setOnAction(actionEvent -> {
             loginStage(primaryStage);
         });
+        logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;");
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2; -fx-font-weight: bold;"));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         // Create an HBox to group the buttons together
         HBox buttonBox = new HBox();
@@ -929,6 +961,8 @@ public class VideoStoreApp extends Application {
         buttonBox.setSpacing(20);
         buttonBox.getChildren().addAll(homeButton, addItemButton, updateItemButton, increaseItemButton,
                 deleteItemButton, displayItemButton, searchItemButton, logoutButton);
+        buttonBox.setStyle("-fx-background-color: #00abe4;");
+        buttonBox.setPrefHeight(50);
 
         return buttonBox;
     }
@@ -1031,8 +1065,10 @@ public class VideoStoreApp extends Application {
     }
 
     public void displayItemStage(Stage primaryStage) {
-        // TODO: Implement stage
         Button sortButton = new Button("Display item");
+        sortButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 2;");
+        sortButton.setOnMouseEntered(e -> sortButton.setStyle("-fx-background-color: #00abe4; -fx-border-color: #00abe4; -fx-border-width: 2;"));
+        sortButton.setOnMouseExited(e -> sortButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 2;"));
         ComboBox<String> sortComboBox = new ComboBox<>();
         sortComboBox.getItems().addAll("Sort by ID", "Sort by Title", "With no Copies");
         sortComboBox.setValue("Sort by ID");
