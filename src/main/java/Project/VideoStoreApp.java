@@ -1489,13 +1489,14 @@ public class VideoStoreApp extends Application {
         Label idLabel = new Label("Enter item ID:");
         TextField idField = new TextField();
         Button deleteButton = new Button("Delete");
-        Button checkButton = new Button();
+        Button checkButton = new Button("Check");
         HBox idBox = new HBox(10, idLabel, idField, checkButton,deleteButton);
         idBox.setAlignment(Pos.CENTER);
 
         // Create info text box to display item information or error messages
         Text infoText = new Text();
         infoText.setVisible(false);
+        deleteButton.setVisible(false);
 
         checkButton.setOnAction(event -> {
             infoText.setText("");
@@ -1510,6 +1511,7 @@ public class VideoStoreApp extends Application {
                 if (item != null) {
                     infoText.setFill(Color.BLACK);
                     infoText.setText(item.itemInfo());
+                    infoText.setVisible(true);
                 } else {
                     infoText.setFill(Color.RED);
                     infoText.setText("No item found!");
