@@ -19,10 +19,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-
-
 import java.util.*;
-
 
 public class VideoStoreApp extends Application {
     private VideoStoreManagement vsm = new VideoStoreManagement();
@@ -31,7 +28,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        loginStage(primaryStage);
+        addItemStage(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -426,8 +423,7 @@ public class VideoStoreApp extends Application {
         if (rentedItems.isEmpty()) {
             // Display message if inventory is empty
             Label emptyLabel = new Label("Your inventory is currently empty.");
-            emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " +
-                    "30px;");
+            emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " + "30px;");
             GridPane.setHalignment(emptyLabel, HPos.CENTER); // Center the label horizontally
             GridPane.setValignment(emptyLabel, VPos.CENTER); // Center the label vertically
 
@@ -511,13 +507,11 @@ public class VideoStoreApp extends Application {
 
         // Create a button to redeem reward points
         Button redeemButton = new Button("Redeem Points");
-        redeemButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-family: Arial; " +
-                "-fx-font-size: 14px; -fx-padding: 10px 20px;");
+        redeemButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-family: Arial; " + "-fx" + "-font-size: 14px; -fx-padding: 10px 20px;");
 
         // Create a button to go back to the main menu
         Button backButton = new Button("Back");
-        backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-family: Arial; " +
-                "-fx-font-size: 14px; -fx-padding: 10px 20px;");
+        backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-family: Arial; " + "-fx" + "-font-size: 14px; -fx-padding: 10px 20px;");
 
         // Set up the action for the redeem button
         redeemButton.setOnAction(e -> {
@@ -880,12 +874,14 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    private HBox adminPageButtonBox(Stage primaryStage) {
+    private VBox adminPageButtonBox(Stage primaryStage) {
+        // Home button
         Button homeButton = new Button("Home");
         homeButton.setOnAction(actionEvent -> {
             adminHome(primaryStage);
         });
 
+        // Buttons for items management
         Button addItemButton = new Button("Add item");
         addItemButton.setOnAction(actionEvent -> {
             addItemStage(primaryStage);
@@ -916,23 +912,216 @@ public class VideoStoreApp extends Application {
             searchItemStage(primaryStage);
         });
 
+        // Buttons for customers management
+        Button addCustomerButton = new Button("Add customer");
+        addCustomerButton.setOnAction(actionEvent -> {
+            addCustomerStage(primaryStage);
+        });
+
+        Button updateCustomerButton = new Button("Update customer");
+        updateCustomerButton.setOnAction(actionEvent -> {
+            updateCustomerStage(primaryStage);
+        });
+
+        Button displayCustomerButton = new Button("Display customer");
+        displayCustomerButton.setOnAction(actionEvent -> {
+            displayCustomerStage(primaryStage);
+        });
+
+        Button searchCustomerButton = new Button("Search customer");
+        searchCustomerButton.setOnAction(actionEvent -> {
+            searchCustomerStage(primaryStage);
+        });
+
+        // Logout button
         Button logoutButton = new Button("Logout");
         logoutButton.setOnAction(actionEvent -> {
             loginStage(primaryStage);
         });
 
         // Create an HBox to group the buttons together
-        HBox buttonBox = new HBox();
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(20);
-        buttonBox.getChildren().addAll(homeButton, addItemButton, updateItemButton, increaseItemButton,
+        HBox itemBox = new HBox();
+        itemBox.setAlignment(Pos.CENTER);
+        itemBox.setSpacing(20);
+        itemBox.getChildren().addAll(homeButton, addItemButton, updateItemButton, increaseItemButton,
                 deleteItemButton, displayItemButton, searchItemButton, logoutButton);
+
+        HBox customerBox = new HBox();
+        customerBox.setAlignment(Pos.CENTER);
+        customerBox.setSpacing(20);
+        customerBox.getChildren().addAll(addCustomerButton, updateCustomerButton, displayCustomerButton,
+                searchCustomerButton);
+
+        VBox buttonBox = new VBox(5, itemBox, customerBox);
+        buttonBox.setAlignment(Pos.CENTER);
 
         return buttonBox;
     }
 
     public void addItemStage(Stage primaryStage) {
-        // TODO: Implement stage
+        // Create ID label, field and check button
+        Label idLabel = new Label("Enter item ID:");
+        TextField idField = new TextField();
+        Button checkButton = new Button("Check");
+        HBox idBox = new HBox(10, idLabel, idField, checkButton);
+        idBox.setAlignment(Pos.CENTER);
+
+        // Create other labels and fields
+        Text infoText = new Text();
+        Label titleLabel = new Label("Enter title:");
+        TextField titleField = new TextField();
+
+        Label rentalTypeLabel = new Label("Enter rental type:");
+        ComboBox<String> rentalTypeComboBox = new ComboBox<>();
+        rentalTypeComboBox.getItems().addAll("Record", "DVD", "Game");
+        rentalTypeComboBox.setValue("");
+
+        Label loanTypeLabel = new Label("Enter loan type");
+        ComboBox<String> loanTypeComboBox = new ComboBox<>();
+        loanTypeComboBox.getItems().addAll("2-day", "1-week");
+        loanTypeComboBox.setValue("");
+
+        Label noOfCopyLabel = new Label("Enter number of copy:");
+        TextField noOfCopyField = new TextField();
+
+        Label rentalFeeLabel = new Label("Enter rental fee: ");
+        TextField rentalFeeField = new TextField();
+
+        Label genreLabel = new Label("Enter genre:");
+        ComboBox<String> genreComboBox = new ComboBox<>();
+        genreComboBox.getItems().addAll("Action", "Horror", "Drama", "Comedy");
+        genreComboBox.setValue("");
+
+        // Create add button
+        Button addButton = new Button("Add Item");
+        HBox addBox = new HBox(addButton);
+        addBox.setAlignment(Pos.CENTER);
+
+        // Initially hide all labels and fields
+        infoText.setVisible(false);
+        titleLabel.setVisible(false);
+        titleField.setVisible(false);
+        rentalTypeLabel.setVisible(false);
+        rentalTypeComboBox.setVisible(false);
+        loanTypeLabel.setVisible(false);
+        loanTypeComboBox.setVisible(false);
+        noOfCopyLabel.setVisible(false);
+        noOfCopyField.setVisible(false);
+        rentalFeeLabel.setVisible(false);
+        rentalFeeField.setVisible(false);
+        genreLabel.setVisible(false);
+        genreComboBox.setVisible(false);
+        addButton.setVisible(false);
+
+        // Set action for checkButton to check if the entered ID is valid
+        checkButton.setOnAction(event -> {
+            infoText.setText("");
+            String ID = idField.getText();
+            if (vsm.isValidItemID(ID)) {    // Check if the ID is valid
+                // Show all labels and fields
+                infoText.setVisible(true);
+                titleLabel.setVisible(true);
+                titleField.setVisible(true);
+                rentalTypeLabel.setVisible(true);
+                rentalTypeComboBox.setVisible(true);
+                loanTypeLabel.setVisible(true);
+                loanTypeComboBox.setVisible(true);
+                noOfCopyLabel.setVisible(true);
+                noOfCopyField.setVisible(true);
+                rentalFeeLabel.setVisible(true);
+                rentalFeeField.setVisible(true);
+
+                genreLabel.setVisible(true);
+                genreComboBox.setVisible(true);
+                addButton.setVisible(true);
+                Item customer = vsm.findItemByID(ID);
+
+                // If there are no IDs matched the current ID => can add new item to the list
+                if (customer == null) {
+                    infoText.setFill(Color.GREEN);
+                    infoText.setText("Customer ID is valid");
+                }
+                // If the ID already exist
+                else {
+                    // Hide all labels and fields
+                    titleLabel.setVisible(false);
+                    titleField.setVisible(false);
+                    rentalTypeLabel.setVisible(false);
+                    rentalTypeComboBox.setVisible(false);
+                    loanTypeLabel.setVisible(false);
+                    loanTypeComboBox.setVisible(false);
+                    noOfCopyLabel.setVisible(false);
+                    noOfCopyField.setVisible(false);
+                    rentalFeeLabel.setVisible(false);
+                    rentalFeeField.setVisible(false);
+                    genreLabel.setVisible(false);
+                    genreComboBox.setVisible(false);
+                    addButton.setVisible(false);
+
+                    infoText.setFill(Color.RED);
+                    infoText.setText("Item ID already exists!");
+                }
+            } else {
+                infoText.setVisible(true);
+                titleLabel.setVisible(false);
+                titleField.setVisible(false);
+                rentalTypeLabel.setVisible(false);
+                rentalTypeComboBox.setVisible(false);
+                loanTypeLabel.setVisible(false);
+                loanTypeComboBox.setVisible(false);
+                noOfCopyLabel.setVisible(false);
+                noOfCopyField.setVisible(false);
+                rentalFeeLabel.setVisible(false);
+                rentalFeeField.setVisible(false);
+                genreLabel.setVisible(false);
+                genreComboBox.setVisible(false);
+                addButton.setVisible(false);
+
+                infoText.setFill(Color.RED);
+                infoText.setText("Invalid item ID format! Must follow format \"Ixxx-yyyy\"");
+            }
+        });
+
+        // Set action for add button
+        addButton.setOnAction(actionEvent -> {
+            vsm.addItem(idField.getText(), infoText, titleField.getText(), rentalTypeComboBox.getValue(),
+                    loanTypeComboBox.getValue(), noOfCopyField.getText(), rentalFeeField.getText(),
+                    genreComboBox.getValue());
+        });
+
+        // Create a GridPane to hold text fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+        grid.add(titleLabel, 0, 0);
+        grid.add(titleField, 1, 0);
+        grid.add(rentalTypeLabel, 0, 1);
+        grid.add(rentalTypeComboBox, 1, 1);
+        grid.add(loanTypeLabel, 0, 2);
+        grid.add(loanTypeComboBox, 1, 2);
+        grid.add(noOfCopyLabel, 0, 3);
+        grid.add(noOfCopyField, 1, 3);
+        grid.add(rentalFeeLabel, 0, 4);
+        grid.add(rentalFeeField, 1, 4);
+        grid.add(genreLabel, 0, 5);
+        grid.add(genreComboBox, 1, 5);
+
+        // Create VBox to store the grid and infoText
+        VBox infoBox = new VBox(5, grid, infoText);
+        infoBox.setAlignment(Pos.CENTER);
+
+        // Create a VBox to store everything
+        VBox screen = new VBox();
+        screen.setAlignment(Pos.TOP_CENTER);
+        screen.setSpacing(10);
+        screen.getChildren().addAll(adminPageButtonBox(primaryStage), idBox, infoBox, addBox);
+
+        // Create a Scene and set it on the Stage
+        Scene scene = new Scene(screen, 800, 400);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Add Item");
+        primaryStage.show();
     }
 
     public void updateItemStage(Stage primaryStage) {
@@ -1029,7 +1218,6 @@ public class VideoStoreApp extends Application {
     }
 
     public void displayItemStage(Stage primaryStage) {
-        // TODO: Implement stage
         Button sortButton = new Button("Display item");
         ComboBox<String> sortComboBox = new ComboBox<>();
         sortComboBox.getItems().addAll("Sort by ID", "Sort by Title", "With no Copies");
@@ -1066,10 +1254,11 @@ public class VideoStoreApp extends Application {
         // Set up the scene and stage
         Scene scene = new Scene(vBox, 900, 500);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Video Store");
+        primaryStage.setTitle("Display items");
         primaryStage.show();
     }
 
+    // Old version of searchItemStage
     /*public void searchItemStage(Stage primaryStage) {
         ComboBox<String> searchComboBox = new ComboBox<>();
         searchComboBox.getItems().addAll("Search by ID", "Search by Title");
@@ -1158,7 +1347,7 @@ public class VideoStoreApp extends Application {
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.getChildren().addAll(adminPageButtonBox(primaryStage), searchBox, searchTable);
 
-        Scene scene = new Scene(vBox, 900, 600);
+        Scene scene = new Scene(vBox, 900, 500);
 
         primaryStage.setTitle("Search item");
         primaryStage.setScene(scene);
@@ -1166,7 +1355,143 @@ public class VideoStoreApp extends Application {
     }
 
     public void addCustomerStage(Stage primaryStage) {
-        // TODO: Implement stage
+        // Create ID label, field and check button
+        Label idLabel = new Label("Enter customer ID:");
+        TextField idField = new TextField();
+        Button checkButton = new Button("Check");
+        HBox idBox = new HBox(10, idLabel, idField, checkButton);
+        idBox.setAlignment(Pos.CENTER);
+
+        // Create other labels and fields
+        Text infoText = new Text();
+        Label nameLabel = new Label("Enter name:");
+        TextField nameField = new TextField();
+        Label addressLabel = new Label("Enter address:");
+        TextField addressField = new TextField();
+        Label phoneLabel = new Label("Enter phone number:");
+        TextField phoneField = new TextField();
+        Label usernameLabel = new Label("Create username:");
+        TextField usernameField = new TextField();
+        Label passwordLabel = new Label("Create password:");
+        TextField passwordField = new TextField();
+
+        // Create add button
+        Button addButton = new Button("Add Customer");
+        HBox addBox = new HBox(addButton);
+        addBox.setAlignment(Pos.CENTER);
+
+        // Initially hide all labels and fields
+        infoText.setVisible(false);
+        nameLabel.setVisible(false);
+        nameField.setVisible(false);
+        addressLabel.setVisible(false);
+        addressField.setVisible(false);
+        phoneLabel.setVisible(false);
+        phoneField.setVisible(false);
+        usernameLabel.setVisible(false);
+        usernameField.setVisible(false);
+        passwordLabel.setVisible(false);
+        passwordField.setVisible(false);
+        addButton.setVisible(false);
+
+        // Set action for checkButton to check if the entered ID is valid
+        checkButton.setOnAction(event -> {
+            infoText.setText("");
+            String ID = idField.getText();
+            if (vsm.isValidCustomerID(ID)) {    // Check if the ID is valid
+                // Show all labels and fields
+                infoText.setVisible(true);
+                nameLabel.setVisible(true);
+                nameField.setVisible(true);
+                addressLabel.setVisible(true);
+                addressField.setVisible(true);
+                phoneLabel.setVisible(true);
+                phoneField.setVisible(true);
+                usernameLabel.setVisible(true);
+                usernameField.setVisible(true);
+                passwordLabel.setVisible(true);
+                passwordField.setVisible(true);
+                addButton.setVisible(true);
+                Customer customer = vsm.findCustomerByID(ID);
+                // If there are no IDs matched the current ID => can add new customer to the list
+                if (customer == null) {
+                    infoText.setFill(Color.GREEN);
+                    infoText.setText("Customer ID is valid");
+                }
+                // If the ID already exist
+                else {
+                    // Hide all labels and fields
+                    nameLabel.setVisible(false);
+                    nameField.setVisible(false);
+                    addressLabel.setVisible(false);
+                    addressField.setVisible(false);
+                    phoneLabel.setVisible(false);
+                    phoneField.setVisible(false);
+                    usernameLabel.setVisible(false);
+                    usernameField.setVisible(false);
+                    passwordLabel.setVisible(false);
+                    passwordField.setVisible(false);
+                    addButton.setVisible(false);
+
+                    infoText.setFill(Color.RED);
+                    infoText.setText("Customer ID already exists!");
+                }
+            } else {
+                nameLabel.setVisible(false);
+                nameField.setVisible(false);
+                addressLabel.setVisible(false);
+                addressField.setVisible(false);
+                phoneLabel.setVisible(false);
+                phoneField.setVisible(false);
+                usernameLabel.setVisible(false);
+                usernameField.setVisible(false);
+                passwordLabel.setVisible(false);
+                passwordField.setVisible(false);
+                addButton.setVisible(false);
+
+                infoText.setVisible(true);
+                infoText.setFill(Color.RED);
+                infoText.setText("Invalid customer ID format! Must follow format \"Cxxx\"");
+            }
+        });
+
+        // Set action for add button
+        addButton.setOnAction(actionEvent -> {
+            vsm.addCustomer(idField.getText(), infoText, nameField.getText(), addressField.getText(),
+                    phoneField.getText(), usernameField.getText(), passwordField.getText());
+        });
+
+        // Create a GridPane to hold text fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+        grid.add(nameLabel, 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(addressLabel, 0, 1);
+        grid.add(addressField, 1, 1);
+        grid.add(phoneLabel, 0, 2);
+        grid.add(phoneField, 1, 2);
+        grid.add(usernameLabel, 0, 3);
+        grid.add(usernameField, 1, 3);
+        grid.add(passwordLabel, 0, 4);
+        grid.add(passwordField, 1, 4);
+
+        // Create VBox to store the grid and infoText
+        VBox infoBox = new VBox(5, grid, infoText);
+        infoBox.setAlignment(Pos.CENTER);
+
+        // Create a VBox to store everything
+        VBox screen = new VBox();
+        screen.setAlignment(Pos.TOP_CENTER);
+        screen.setSpacing(10);
+        screen.getChildren().addAll(adminPageButtonBox(primaryStage), idBox, infoBox, addBox);
+
+        // Create a Scene and set it on the Stage
+        Scene scene = new Scene(screen, 800, 400);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Add Customer");
+        primaryStage.show();
     }
 
     public void updateCustomerStage(Stage primaryStage) {
@@ -1189,7 +1514,7 @@ public class VideoStoreApp extends Application {
         TextField noOfRentalField = new TextField();
         Label customerTypeLabel = new Label("Choose new customer type:");
         ComboBox<String> customerTypeComboBox = new ComboBox<>();
-        customerTypeComboBox.getItems().addAll("", "Guest", "Regular", "VIP");
+        customerTypeComboBox.getItems().addAll("Guest", "Regular", "VIP");
         customerTypeComboBox.setValue("");
         Label usernameLabel = new Label("Enter new username:");
         TextField usernameField = new TextField();
@@ -1367,10 +1692,11 @@ public class VideoStoreApp extends Application {
         // Set up the scene and stage
         Scene scene = new Scene(vBox, 900, 500);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Video Store");
+        primaryStage.setTitle("Display Customers");
         primaryStage.show();
     }
 
+    // Old version of searchCustomerStage
     /*public void searchCustomerStage(Stage primaryStage) {
         ComboBox<String> searchComboBox = new ComboBox<>();
         searchComboBox.getItems().addAll("Search by ID", "Search by Name");
@@ -1455,7 +1781,7 @@ public class VideoStoreApp extends Application {
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.getChildren().addAll(adminPageButtonBox(primaryStage), searchBox, searchTable);
 
-        Scene scene = new Scene(vBox, 900, 600);
+        Scene scene = new Scene(vBox, 900, 500);
 
         primaryStage.setTitle("Search Customer");
         primaryStage.setScene(scene);
