@@ -79,59 +79,24 @@ public class VideoStoreManagement {
         return id.matches("C\\d{3}");
     }
 
-
-
-
-    public void addCustomer(String idField, Text infoText, String nameField, String addressField,
-                        String phoneField, String customerTypeField, String usernameField, String passwordField,
-                        String rewardPointField ){
+    public void addCustomer(String idField, Text infoText, String nameField, String addressField, String phoneField,
+                            String usernameField, String passwordField) {
         Customer customer = findCustomerByID(idField);
+        // If there are no customers found in the list => add this new customer
         if (customer == null) {
-            infoText.setText(customer.customerInfo());
-
-            customer.setName(nameField);
-
-            customer.setAddress(addressField);
-
-            customer.setPhone(phoneField);
-
-            customer.setCustomerType(customerTypeField);
-
-            customer.setUsername(usernameField);
-
-            customer.setPassword(passwordField);
-
-            customer.setRewardPoints(Integer.parseInt(rewardPointField));
-
-            // check if there are blank fields
-            if (nameField.isEmpty() || addressField.isEmpty() || phoneField.isEmpty() || customerTypeField.isEmpty()
-                    || usernameField.isEmpty() || passwordField.isEmpty() || rewardPointField.isEmpty()) {
-                infoText.setText("All sections must be filled");
-
-                infoText.setText(customer.customerInfo());
-                if (nameField.isEmpty())
-                    customer.setName(nameField);
-                if (addressField.isEmpty())
-                    customer.setAddress(addressField);
-                if (phoneField.isEmpty())
-                    customer.setPhone(phoneField);
-                if(customerTypeField.isEmpty())
-                    customer.setCustomerType(customerTypeField);
-                if (usernameField.isEmpty())
-                    customer.setUsername(usernameField);
-                if (passwordField.isEmpty())
-                    customer.setPassword(passwordField);
-                if (rewardPointField.isEmpty())
-                    customer.setRewardPoints(Integer.parseInt(rewardPointField));
-                return;
+            // Check if there are blank fields
+            if (nameField.isEmpty() || addressField.isEmpty() || phoneField.isEmpty() || usernameField.isEmpty() || passwordField.isEmpty()) {
+                infoText.setFill(Color.RED);
+                infoText.setText("All fields must be filled");
+            } else {
+                customers.add(new Customer(idField, nameField, addressField, phoneField, 0, "Guest", usernameField,
+                        passwordField, 0));
+                infoText.setFill(Color.GREEN);
+                infoText.setText("Customer added!");
             }
-
-            infoText.setText("Customer added!");
-            infoText.setFill(Color.GREEN);
-            return;
         }
-        infoText.setText("The customer ID already existed!");
     }
+
     public void updateCustomer(String idField, Text infoText, String nameField, String addressField,
                                String phoneField, String noOfRentalField, String customerTypeField,
                                String usernameField, String passwordField, String rewardPointField) {
@@ -175,54 +140,28 @@ public class VideoStoreManagement {
 
 
     public void addItem(String idField, Text infoText, String titleField, String rentalTypeField,
-                           String loanTypeField, String noOfCopiesField, String rentalFeeField,
-                           String rentalStatusField, String genreField) {
+                        String loanTypeField, String noOfCopiesField, String rentalFeeField, String genreField) {
         Item item = findItemByID(idField);
+        // If there are no items found in the list => add this new item
         if (item == null) {
-            infoText.setText(item.itemInfo());
-
-                item.setTitle(titleField);
-
-                item.setRentalType(rentalTypeField);
-
-                item.setLoanType(loanTypeField);
-
-                item.setNoOfCopy(Integer.parseInt(noOfCopiesField));
-
-                item.setRentalFee(Float.parseFloat(rentalFeeField));
-
-                item.setRentalStatus(rentalStatusField);
-
-                item.setGenre(genreField);
-
-            if (titleField.isEmpty() || rentalTypeField.isEmpty() || loanTypeField.isEmpty()
-                    || noOfCopiesField.isEmpty() || rentalFeeField.isEmpty() || rentalStatusField.isEmpty()
-                    || genreField.isEmpty()) {
-                infoText.setText("All sections must be filled");
-
-                infoText.setText(item.itemInfo());
-                if (titleField.isEmpty())
-                item.setTitle(titleField);
-                if (rentalTypeField.isEmpty())
-                item.setRentalType(rentalTypeField);
-                if (loanTypeField.isEmpty())
-                item.setLoanType(loanTypeField);
-                if (noOfCopiesField.isEmpty())
-                item.setNoOfCopy(Integer.parseInt(noOfCopiesField));
-                if (rentalFeeField.isEmpty())
-                item.setRentalFee(Float.parseFloat(rentalFeeField));
-                if (rentalStatusField.isEmpty())
-                item.setRentalStatus(rentalStatusField);
-                if (genreField.isEmpty())
-                item.setGenre(genreField);
-                return;
+            // Check if there are blank fields
+            if (titleField.isEmpty() || rentalTypeField.isEmpty() || loanTypeField.isEmpty() || noOfCopiesField.isEmpty() || rentalFeeField.isEmpty()) {
+                infoText.setFill(Color.RED);
+                infoText.setText("All fields must be filled");
+            } else {
+                // Check if genre is needed (for records and DVDs)
+                if (rentalTypeField.equals("Game")) {
+                    items.add(new Item(idField, titleField, rentalTypeField, loanTypeField,
+                            Integer.parseInt(noOfCopiesField), Float.parseFloat(rentalFeeField), "available", ""));
+                } else {
+                    items.add(new Item(idField, titleField, rentalTypeField, loanTypeField,
+                            Integer.parseInt(noOfCopiesField), Float.parseFloat(rentalFeeField), "available",
+                            genreField));
+                }
+                infoText.setFill(Color.GREEN);
+                infoText.setText("Item added!");
             }
-
-            infoText.setText("Item added!");
-            infoText.setFill(Color.GREEN);
-            return;
         }
-        infoText.setText("The item ID already existed!");
     }
 
     public void updateItem(String idField, Text infoText, String titleField, String rentalTypeField,
