@@ -33,7 +33,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        loginStage(primaryStage);
+        addItemStage(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -502,32 +502,25 @@ public class VideoStoreApp extends Application {
 
     //REWARD POINTS
     public void rewardPointsStage(Stage primaryStage, Customer currentUser) {
-        if (!currentUser.getCustomerType().equals("VIP")) {
-            // Show an alert dialog for non-VIP users
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Access Denied");
-            alert.setHeaderText(null);
-            alert.setContentText("Sorry!! This playground is for VIP.");
-            alert.showAndWait();
-            return;
-        }
         // Create a label to display the reward points
         Label rewardPointsLabel = new Label("Total Reward Points: " + currentUser.getRewardPoints());
         rewardPointsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+
         // Create an ImageView for the image
-        ImageView image = new ImageView();
-        String imagePath = "file:src/main/resources/Images/pompomicon.png";
-        image.setImage(new Image(imagePath));
-        image.setFitWidth(400);
-        image.setFitHeight(400);
+        ImageView image = new ImageView(getClass().getResource("/Images/pompomicon" + "png").toExternalForm());
+        image.setFitWidth(50);
+        image.setFitHeight(50);
+
         // Create a button to redeem reward points
         Button redeemButton = new Button("Redeem Points");
         redeemButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-family: Arial; " +
                 "-fx-font-size: 14px; -fx-padding: 10px 20px;");
+
         // Create a button to go back to the main menu
         Button backButton = new Button("Back");
         backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-family: Arial; " +
                 "-fx-font-size: 14px; -fx-padding: 10px 20px;");
+
         // Set up the action for the redeem button
         redeemButton.setOnAction(e -> {
             int rewardPoints = currentUser.getRewardPoints();
@@ -535,12 +528,14 @@ public class VideoStoreApp extends Application {
                 // Ask the user whether they want to spend the points or continue accumulating
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Redeem Reward Points");
-                alert.setHeaderText("You have " + rewardPoints + " reward points!!!");
+                alert.setHeaderText("You have " + rewardPoints + " reward points.");
                 alert.setContentText("Do you want to spend 100 reward points to rent an item for free?");
+
                 // Add buttons to the alert dialog
                 ButtonType spendPointsButton = new ButtonType("Spend Points");
                 ButtonType continueButton = new ButtonType("Continue Accumulating");
                 alert.getButtonTypes().setAll(spendPointsButton, continueButton);
+
                 // Handle the user's choice
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == spendPointsButton) {
@@ -555,27 +550,22 @@ public class VideoStoreApp extends Application {
         backButton.setOnAction(e -> {
             customerHome(primaryStage);
         });
-        // Create a VBox to contain the reward points label and buttons
-        VBox box = new VBox(25);
-        box.setAlignment(Pos.CENTER);
-        box.getChildren().addAll(rewardPointsLabel, redeemButton, backButton);
-        // Create a GridPane to position the elements
-        GridPane gridPane = new GridPane();
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setHgap(20);
-        gridPane.add(box, 0, 0);
-        gridPane.add(image, 1, 0);
-        // Create a StackPane and set the background color to white
-        StackPane stackPane = new StackPane(gridPane);
-        stackPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        // Create an HBox to contain the image and buttons
+        HBox hbox = new HBox(10);
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        hbox.getChildren().addAll(image, redeemButton, backButton);
+
         // Set up the layout
-        Scene scene = new Scene(stackPane, 900, 600);
-        // Set up the stage
+        VBox vBox = new VBox(20, rewardPointsLabel, redeemButton, backButton);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setPadding(new Insets(20));
+
+        // Set up the scene and stage
+        Scene scene = new Scene(vBox, 900, 600);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Reward Points");
         primaryStage.show();
     }
-
 
     public void showRentItemStage(Stage primaryStage, Customer currentUser) {
         // Number of columns to display items
