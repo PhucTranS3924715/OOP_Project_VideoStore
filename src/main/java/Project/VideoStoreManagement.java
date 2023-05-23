@@ -138,7 +138,6 @@ public class VideoStoreManagement {
         infoText.setText("No customer found!");
     }
 
-
     public void addItem(String idField, Text infoText, String titleField, String rentalTypeField,
                         String loanTypeField, String noOfCopiesField, String rentalFeeField, String genreField) {
         Item item = findItemByID(idField);
@@ -217,8 +216,6 @@ public class VideoStoreManagement {
         // Set status information if item is not found
         infoText.setText("No item found!");
     }
-
-
 
     public void increaseNoOfCopies(String idField, Text infoText, String numberField) {
         // Get the item using ID
@@ -1047,6 +1044,13 @@ public class VideoStoreManagement {
                 warningText.setFill(Color.RED);
                 warningText.setText("ID is invalid");
                 gridPane.getChildren().add(warningText);
+            }
+        }
+
+        // Set every text in the grid to be center
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Text || node instanceof Label) {
+                GridPane.setHalignment(node, HPos.CENTER);
             }
         }
     }
