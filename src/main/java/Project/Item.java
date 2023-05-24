@@ -127,6 +127,12 @@ public class Item {
 
     public String itemInfo() {
         return "ID: " + ID +
-                "\nTitle: " + title;
+                "\nTitle: " + title +
+                "\nRental type: " + rentalType +
+                "\nLoan type: " + loanType +
+                "\nNumber of copies: " + noOfCopy +
+                "\nRental fee: " + rentalFee +
+                "\nRental status: " + rentalStatus +
+                "\nGenre: " + genre;
     }
 }
