@@ -334,8 +334,8 @@ public class VideoStoreManagement {
         }
     }
 
-    /* Rent an item (decrease the number of copies held in stock)
-     Return true if the item is successfully rented, false otherwise*/
+    //Rent an item (decrease the number of copies held in stock)
+    //Return true if the item is successfully rented, false otherwise
     public boolean rentItem(String itemID, Label messageLabel) {
         Item item = findItemByID(itemID);
 
@@ -423,8 +423,8 @@ public class VideoStoreManagement {
         return availableItems;
     }
 
-    /* Return an item (increase the number of copies held in stock)
-     Return true if the item is successfully returned, false otherwise*/
+    //Return an item (increase the number of copies held in stock)
+    //Return true if the item is successfully returned, false otherwise
     public boolean returnItem(String itemID) {
         // Find the item in the customer item list
         for (Item currentItem : currentUser.getItems()) {
@@ -438,51 +438,10 @@ public class VideoStoreManagement {
                 Item item = findItemByID(currentItem.getID());
                 item.setRentalStatus("available");
                 item.setNoOfCopy(item.getNoOfCopy() + 1);
-
-                // Check if the customer is eligible for promotion
-                if (currentUser.getCustomerType().equals("Guest") && currentUser.getNoOfRental() > 3) {
-                    currentUser.setCustomerType("Regular");
-                    currentUser.setNoOfRental(0);
-                    System.out.println("Congratulations! You have been promoted to a Regular customer.");
-                } else if (currentUser.getCustomerType().equals("Regular") && currentUser.getNoOfRental() > 5) {
-                    currentUser.setCustomerType("VIP");
-                    currentUser.setNoOfRental(0);
-                    System.out.println("Congratulations! You have been promoted to a VIP customer.");
-                }
-                System.out.println("Return successful!");
                 return true;
             }
         }
-        System.out.println("You did not rent this item.");
         return false;
-    }
-
-    // Promote the customer to the next customer type if they meet the criteria
-    public boolean promote() {
-        Scanner scan = new Scanner(System.in);
-
-        System.out.print("Enter customer ID for promotion: ");
-        String ID = scan.nextLine();
-        Customer customer = findCustomerByID(ID);
-
-        if (customer == null) {
-            System.out.println("No customer found!");
-            return false;
-        }
-
-        if (customer.getCustomerType().equals("Guest") && customer.getNoOfRental() > 3) {
-            customer.setCustomerType("Regular");
-            customer.setNoOfRental(0);
-        } else if (customer.getCustomerType().equals("Regular") && customer.getNoOfRental() > 5) {
-            customer.setCustomerType("VIP");
-            customer.setNoOfRental(0);
-        } else {
-            System.out.println("Customer cannot be promoted.");
-            return false;
-        }
-
-        System.out.println("Customer promoted successfully.");
-        return true;
     }
 
     public void displayIDSortItem(GridPane gridPane) {
@@ -1093,78 +1052,6 @@ public class VideoStoreManagement {
         }
     }
 
-    // Old version
-    /*public void searchItemTitle(GridPane gridPane, String input) {
-        Collections.sort(items, new TitleSortItem());
-
-        gridPane.getChildren().clear();
-
-        if (items.isEmpty()) {
-            Text text = new Text();
-            text.setText("No item available");
-            gridPane.getChildren().add(text);
-            return;
-        }
-
-        boolean found = false;
-        for (Item item : items) {
-            if (item.getTitle().contains(input)) {
-                found = true;
-
-                gridPane.setAlignment(Pos.CENTER);
-                gridPane.setStyle("-fx-grid-lines-visible: true");
-
-                String[] labels = {"  ID  ", "  Title  ", "  Rental type  ", "  Loan type  ", "  Number of copies  ",
-                        "  Rental fee  ",
-                        "  Rental status  ", "  Genre  "};
-
-                for (int i = 0; i < labels.length; i++) {
-                    Text label = new Text(labels[i]);
-                    Text value = new Text();
-
-                    switch (i) {
-                        case 0:
-                            value.setText( item.getID());
-                            break;
-                        case 1:
-                            value.setText( item.getTitle());
-                            break;
-                        case 2:
-                            value.setText( item.getRentalType());
-                            break;
-                        case 3:
-                            value.setText( item.getLoanType());
-                            break;
-                        case 4:
-                            value.setText( String.valueOf(item.getNoOfCopy()));
-                            break;
-                        case 5:
-                            value.setText( String.valueOf(item.getRentalFee()));
-                            break;
-                        case 6:
-                            value.setText( item.getRentalStatus());
-                            break;
-                        case 7:
-                            value.setText( item.getGenre());
-                            break;
-                    }
-
-                    gridPane.add(label, i, 0);
-                    gridPane.add(value, i, 1);
-                    GridPane.setHalignment(label, HPos.CENTER);
-                    GridPane.setHalignment(value, HPos.CENTER);
-                }
-            }
-        }
-
-        if (!found) {
-            Text warningText = new Text();
-            warningText.setFill(Color.RED);
-            warningText.setText("No item found");
-            gridPane.getChildren().add(warningText);
-        }
-    }*/
-
     // Modified version of searchItemTitle
     public void searchItemTitle(GridPane itemTable, String input) {
         Collections.sort(items, new TitleSortItem());
@@ -1337,82 +1224,6 @@ public class VideoStoreManagement {
             }
         }
     }
-
-    // Old version
-    /*public void searchCustomerName(GridPane gridPane, String input) {
-        Collections.sort(customers, new NameSortCustomer());
-
-        gridPane.getChildren().clear();
-
-        if (customers.isEmpty()) {
-            Text text = new Text();
-            text.setText("No customer available");
-            gridPane.getChildren().add(text);
-            return;
-        }
-
-        boolean found = false;
-
-        for (Customer customer : customers) {
-            if (customer.getName().contains(input)) {
-                found = true;
-
-                //gridPane.setHgap(15);
-                gridPane.setAlignment(Pos.CENTER);
-                gridPane.setStyle("-fx-grid-lines-visible: true");
-
-                String[] labels = {"  ID  ", "  Name  ", "  Address  ", "  Phone  ", "  Number of Rental  ",
-                        "Customer type  ", "  Username  ", "  Password  ", "  Reward Points  "};
-
-                for (int i = 0; i < labels.length; i++) {
-                    Text label = new Text(labels[i]);
-                    Text value = new Text();
-
-                    switch (i) {
-                        case 0:
-                            value.setText(customer.getID());
-                            break;
-                        case 1:
-                            value.setText(customer.getName());
-                            break;
-                        case 2:
-                            value.setText(customer.getAddress());
-                            break;
-                        case 3:
-                            value.setText(customer.getPhone());
-                            break;
-                        case 4:
-                            value.setText(String.valueOf(customer.getNoOfRental()));
-                            break;
-                        case 5:
-                            value.setText(customer.getCustomerType());
-                            break;
-                        case 6:
-                            value.setText(customer.getUsername());
-                            break;
-                        case 7:
-                            value.setText(customer.getPassword());
-                            break;
-                        case 8:
-                            value.setText(String.valueOf(customer.getRewardPoints()));
-                            break;
-                    }
-
-                    gridPane.add(label, i, 0);
-                    gridPane.add(value, i, 1);
-                    GridPane.setHalignment(label, HPos.CENTER);
-                    GridPane.setHalignment(value, HPos.CENTER);
-                }
-            }
-        }
-
-        if (!found) {
-            Text warningText = new Text();
-            warningText.setFill(Color.RED);
-            warningText.setText("No customer found");
-            gridPane.getChildren().add(warningText);
-        }
-    }*/
 
     // Modified version of searchCustomerName
     public void searchCustomerName(GridPane customerTable, String input) {
