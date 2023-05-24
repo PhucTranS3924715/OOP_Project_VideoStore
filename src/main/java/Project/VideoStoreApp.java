@@ -42,33 +42,49 @@ public class VideoStoreApp extends Application {
         // Create the login form
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
-        grid.setVgap(5);
-        grid.setHgap(5);
+        grid.setVgap(10);
+        grid.setHgap(10);
+        grid.setPadding(new Insets(25));
+        grid.setStyle("-fx-background-color: #F8F8F8; -fx-background-radius: 20;");
 
         // Login type label and combo box
         Label loginTypeLabel = new Label("Login as:");
+        loginTypeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        GridPane.setHalignment(loginTypeLabel, HPos.RIGHT);
         grid.add(loginTypeLabel, 0, 0);
+
         ComboBox<String> loginTypeComboBox = new ComboBox<>();
         loginTypeComboBox.getItems().addAll("Customer", "Admin");
         loginTypeComboBox.setValue("Customer");
+        loginTypeComboBox.setStyle("-fx-font-size: 14px;");
         grid.add(loginTypeComboBox, 1, 0);
 
         // Username label and field
         Label usernameLabel = new Label("Username:");
+        usernameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        GridPane.setHalignment(usernameLabel, HPos.RIGHT);
         grid.add(usernameLabel, 0, 1);
+
         TextField usernameField = new TextField();
+        usernameField.setStyle("-fx-font-size: 14px;");
         grid.add(usernameField, 1, 1);
 
         // Password label and field
         Label passwordLabel = new Label("Password:");
+        passwordLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        GridPane.setHalignment(passwordLabel, HPos.RIGHT);
         grid.add(passwordLabel, 0, 2);
+
         PasswordField passwordField = new PasswordField();
+        passwordField.setStyle("-fx-font-size: 14px;");
         grid.add(passwordField, 1, 2);
 
         // Login button
         Button loginButton = new Button("Login");
-        buttonDesignForStage(loginButton);
+        loginButton.setStyle("-fx-font-size: 14px; -fx-background-color: #333333; -fx-text-fill: white;");
         grid.add(loginButton, 1, 3);
+        GridPane.setMargin(loginButton, new Insets(10, 0, 0, 0));
+
         loginButton.setOnAction(e -> {
             String loginType = loginTypeComboBox.getValue();
             String username = usernameField.getText();
@@ -101,8 +117,9 @@ public class VideoStoreApp extends Application {
         });
 
         // Create title and student info
-        Text courseTitle = new Text("RMIT University – INTE2512 Object-Oriented Programming\nFINAL PROJECT – A VIDEO " + "STORE");
+        Text courseTitle = new Text("RMIT University – INTE2512 Object-Oriented Programming\nFINAL PROJECT – A VIDEO STORE");
         courseTitle.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        courseTitle.setFill(Color.WHITE);
         courseTitle.setTextAlignment(TextAlignment.CENTER);
 
         Text student1 = new Text("Tran Dai Phuc – S3924715");
@@ -110,19 +127,14 @@ public class VideoStoreApp extends Application {
         Text student3 = new Text("Vo Hong Trien – S3907397");
         Text student4 = new Text("Vo Hoang Khanh – S3926310");
 
-        GridPane studentInfo = new GridPane();
+        VBox studentInfo = new VBox(5);
         studentInfo.setAlignment(Pos.CENTER);
-        studentInfo.setHgap(10);
-        studentInfo.setVgap(10);
+        studentInfo.getChildren().addAll(student1, student2, student3, student4);
 
-        studentInfo.add(student1, 0, 0);
-        studentInfo.add(student2, 0, 1);
-        studentInfo.add(student3, 1, 0);
-        studentInfo.add(student4, 1, 1);
-
-        VBox screen = new VBox();
+        VBox screen = new VBox(20);
         screen.setAlignment(Pos.CENTER);
-        screen.setSpacing(10);
+        screen.setPadding(new Insets(50));
+        screen.setStyle("-fx-background-color: #63E5FF;");
         screen.getChildren().addAll(courseTitle, studentInfo, grid);
 
         // Set up the scene and stage
