@@ -163,14 +163,23 @@ public class VideoStoreManagement {
         }
     }
 
-    public void updateItem(String idField, Text infoText, String titleField, String rentalTypeField,
-                               String loanTypeField, String noOfCopiesField, String rentalFeeField,
-                               String rentalStatusField, String genreField) {
+    public void updateItem(String idField, Text infoText, String newIDField, String titleField,
+                           String rentalTypeField, String loanTypeField, String noOfCopiesField,
+                           String rentalFeeField, String rentalStatusField, String genreField) {
         Item item = findItemByID(idField);
+
+        // If item is found in the list => update the item
         if (item != null) {
             infoText.setText(item.itemInfo());
 
-
+            if (!isValidItemID(newIDField)) {
+                infoText.setFill(Color.RED);
+                infoText.setText("New item ID is invalid!");
+                return;
+            }
+            if (!newIDField.isEmpty()) {
+                item.setID(newIDField);
+            }
             if (!titleField.isEmpty()) {
                 item.setTitle(titleField);
             }
@@ -192,7 +201,6 @@ public class VideoStoreManagement {
             if (!genreField.isEmpty()) {
                 item.setGenre(genreField);
             }
-
 
             infoText.setText("Item updated!");
             infoText.setFill(Color.GREEN);
@@ -365,12 +373,42 @@ public class VideoStoreManagement {
                     item.setRentalStatus("borrowed");
                 }
                 // If the customer is a VIP, increase reward points
-                if (Objects.equals(currentUser.getCustomerType(), "VIP")){
+                if (Objects.equals(currentUser.getCustomerType(), "VIP")) {
                     currentUser.setRewardPoints(currentUser.getRewardPoints() + 10);
                 }
                 messageLabel.setText("Item rented successfully.");
                 return true;
             }
+        }
+    }
+
+    // Rent item using reward points
+    public boolean rentItemRewardPoint(String itemID, Label messageLabel) {
+        Item item = findItemByID(itemID);
+
+        // Cannot rent unavailable items
+        if (item.getRentalStatus().equals("not available")) {
+            messageLabel.setText("Error: This item is not available for rent.");
+            return false;
+        }
+        // Cannot rent borrowed items
+        else if (item.getRentalStatus().equals("borrowed")) {
+            messageLabel.setText("Error: This item is already borrowed.");
+            return false;
+        }
+        // After all invalid cases, customer can rent item
+        else {
+            currentUser.getItems().add(item);
+            currentUser.setRewardPoints(currentUser.getRewardPoints() - 100);
+            item.setNoOfCopy(item.getNoOfCopy() - 1);
+
+            // If it is the last item, change the status to "borrowed"
+            if (item.getNoOfCopy() == 0) {
+                item.setRentalStatus("borrowed");
+            }
+
+            messageLabel.setText("Item rented successfully.");
+            return true;
         }
     }
 
@@ -1224,7 +1262,6 @@ public class VideoStoreManagement {
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(15);
         gridPane.setVgap(5);
-
 
         if (customers.isEmpty()) {
             Text text = new Text();
