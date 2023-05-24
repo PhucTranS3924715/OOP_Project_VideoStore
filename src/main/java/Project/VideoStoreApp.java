@@ -430,7 +430,7 @@ public class VideoStoreApp extends Application {
         showItemInformationStage.show();
     }
 
-    public void returnItemStage(Stage primaryStage, Customer currentUser) {
+    public void returnItemStage(Stage primaryStage, Customer currentUser)   {
         // Number of columns to display items
         int numColumns = 3;
 
@@ -1215,8 +1215,238 @@ public class VideoStoreApp extends Application {
     }
 
     public void updateItemStage(Stage primaryStage) {
-        // TODO: Implement stage
+        // Create ID label, field and check button
+        Label idLabel = new Label("Enter customer ID:");
+        TextField idField = new TextField();
+        Button checkButton = new Button("Check");
+        HBox idBox = new HBox(10, idLabel, idField, checkButton);
+        idBox.setAlignment(Pos.CENTER);
+
+
+        // Create other labels and fields
+        Text infoText = new Text();
+        Label titleLabel = new Label("Enter new title:");
+        TextField titleField = new TextField();
+
+
+        Label rentalTypeLabel = new Label("Enter new rental type:");
+        ComboBox<String> itemRentalTypeComboBox = new ComboBox<>();
+        itemRentalTypeComboBox.getItems().addAll("", "Record", "DVD", "Game");
+        itemRentalTypeComboBox.setValue("");
+
+
+        Label loanTypeLabel = new Label("Enter new loan type:");
+        ComboBox<String> itemLoanTypeComboBox = new ComboBox<>();
+        itemLoanTypeComboBox.getItems().addAll("", "2-day", "1-week");
+        itemLoanTypeComboBox.setValue("");
+
+
+        Label noOfCopiesLabel = new Label("Enter new no. of copies :");
+        TextField noOfCopiesField = new TextField();
+
+
+
+        Label rentalFeeLabel = new Label("Enter new rental fee:");
+        TextField rentalFeeField = new TextField();
+
+
+        Label rentaStatusLabel = new Label("Enter new rental status:");
+        ComboBox<String> itemrentalStatusComboBox = new ComboBox<>();
+        itemrentalStatusComboBox.getItems().addAll("", "borrowed ", "available");
+        itemrentalStatusComboBox.setValue("");
+
+
+        Label genreLabel = new Label("Enter new genre:");
+        ComboBox<String> genreComboBox = new ComboBox<>();
+        genreComboBox.getItems().addAll("", "Action", "Horror","Drama" ,"Comedy");
+        genreComboBox.setValue("");
+
+
+
+
+
+
+        // Create update button
+        Button updateButton = new Button("Update Item");
+        HBox updateBox = new HBox(updateButton);
+        updateBox.setAlignment(Pos.CENTER);
+
+
+        // Initially hide all fields below the ID field
+        infoText.setVisible(false);
+
+
+        titleLabel.setVisible(false);
+        titleField.setVisible(false);
+
+
+        rentalTypeLabel.setVisible(false);
+        itemRentalTypeComboBox.setVisible(false);
+
+
+        loanTypeLabel.setVisible(false);
+        itemLoanTypeComboBox.setVisible(false);
+
+
+        noOfCopiesLabel.setVisible(false);
+        noOfCopiesField.setVisible(false);
+
+
+
+
+        rentalFeeLabel.setVisible(false);
+        rentalFeeField.setVisible(false);
+
+
+        rentaStatusLabel.setVisible(false);
+        itemrentalStatusComboBox.setVisible(false);
+
+
+        genreLabel.setVisible(false);
+        genreComboBox.setVisible(false);
+
+
+
+
+
+
+        updateButton.setVisible(false);
+
+
+        // Set action for checkButton to check if the entered ID is valid
+        checkButton.setOnAction(event -> {
+            infoText.setText("");
+            String ID = idField.getText();
+            if (vsm.isValidItemID(ID)) {    // If the ID is valid
+                // Show all fields below the ID field
+                infoText.setVisible(true);
+                titleLabel.setVisible(true);
+                titleField.setVisible(true);
+                rentalTypeLabel.setVisible(true);
+                itemRentalTypeComboBox.setVisible(true);
+                loanTypeLabel.setVisible(true);
+                itemLoanTypeComboBox.setVisible(true);
+                noOfCopiesLabel.setVisible(true);
+                noOfCopiesField.setVisible(true);
+
+
+                rentalFeeLabel.setVisible(true);
+                rentalFeeField.setVisible(true);
+
+
+                rentaStatusLabel.setVisible(true);
+                itemrentalStatusComboBox.setVisible(true);
+
+
+                genreLabel.setVisible(true);
+                genreComboBox.setVisible(true);
+
+
+                updateButton.setVisible(true);
+
+
+                // Display current customer info
+                Item item = vsm.findItemByID(ID);
+                if (item != null) {
+                    infoText.setFill(Color.BLACK);
+                    infoText.setText(item.itemInfo());
+                } else {
+                    infoText.setFill(Color.RED);
+                    infoText.setText("No item found!");
+                }
+            } else {
+                // Hide all labels and fields if ID is invalid
+                infoText.setVisible(false);
+
+
+                titleLabel.setVisible(false);
+                titleField.setVisible(false);
+
+
+                rentalTypeLabel.setVisible(false);
+                itemRentalTypeComboBox.setVisible(false);
+
+
+                loanTypeLabel.setVisible(false);
+                itemLoanTypeComboBox.setVisible(false);
+
+
+                noOfCopiesLabel.setVisible(false);
+                noOfCopiesField.setVisible(false);
+
+
+                rentalFeeLabel.setVisible(false);
+                rentalFeeField.setVisible(false);
+
+
+                rentaStatusLabel.setVisible(false);
+                itemrentalStatusComboBox.setVisible(false);
+
+
+                genreLabel.setVisible(false);
+                genreComboBox.setVisible(false);
+
+
+                updateButton.setVisible(false);
+
+
+                infoText.setFill(Color.RED);
+                infoText.setText("Invalid item ID!");
+                infoText.setVisible(true);
+            }
+        });
+
+
+        // Set action for updateButton to call updateCustomer method
+        updateButton.setOnAction(event -> {
+            vsm.updateItem(idField.getText(), infoText, titleField.getText(), itemRentalTypeComboBox.getValue(),
+                    itemLoanTypeComboBox.getValue(), noOfCopiesField.getText(), rentalFeeField.getText(), itemrentalStatusComboBox.getValue(), genreComboBox.getValue());
+        });
+
+
+        // Create a GridPane to hold text fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+        grid.add(titleLabel, 0, 0);
+        grid.add(titleField, 1, 0);
+        grid.add(rentalTypeLabel, 0, 1);
+        grid.add(itemRentalTypeComboBox, 1, 1);
+        grid.add(loanTypeLabel, 0, 2);
+        grid.add(itemLoanTypeComboBox, 1, 2);
+        grid.add(noOfCopiesLabel, 0, 3);
+        grid.add(noOfCopiesField, 1, 3);
+        grid.add(rentalFeeLabel, 0, 4);
+        grid.add(rentalFeeField, 1, 4);
+        grid.add(rentaStatusLabel, 0, 5);
+        grid.add(itemrentalStatusComboBox, 1, 5);
+        grid.add(genreLabel, 0, 6);
+        grid.add(genreComboBox, 1, 6);
+
+
+
+
+        // Create info box to store infoText and grid
+        HBox infoBox = new HBox(15, infoText, grid);
+        infoBox.setAlignment(Pos.CENTER);
+
+
+        // Create a VBox to store everything
+        VBox screen = new VBox();
+        screen.setAlignment(Pos.TOP_CENTER);
+        screen.setSpacing(10);
+        screen.getChildren().addAll(adminPageButtonBox(primaryStage), idBox, infoBox, updateBox);
+
+
+        // Create a Scene and set it on the Stage
+        Scene scene = new Scene(screen, 800, 400);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Update Item");
+        primaryStage.show();
     }
+
+
 
     public void increaseItemStage(Stage primaryStage) {
         // Create ID label, field and check button
@@ -1304,8 +1534,76 @@ public class VideoStoreApp extends Application {
     }
 
     public void deleteItemStage(Stage primaryStage) {
-        // TODO: Implement stage
+        Label idLabel = new Label("Enter item ID:");
+        TextField idField = new TextField();
+        Button deleteButton = new Button("Delete");
+        Button checkButton = new Button("Check");
+        HBox idBox = new HBox(10, idLabel, idField, checkButton,deleteButton);
+        idBox.setAlignment(Pos.CENTER);
+
+
+        // Create info text box to display item information or error messages
+        Text infoText = new Text();
+        infoText.setVisible(false);
+
+
+        checkButton.setOnAction(event -> {
+            infoText.setText("");
+            String ID = idField.getText();
+            if (vsm.isValidItemID(ID)) {    // If the ID is valid
+                // Show all fields below the ID field
+
+                deleteButton.setVisible(true);
+
+                // Display current customer info
+                Item item = vsm.findItemByID(ID);
+                if (item != null) {
+                    infoText.setVisible(true);
+                    infoText.setFill(Color.BLACK);
+                    infoText.setText(item.itemInfo());
+                } else {
+                    infoText.setFill(Color.RED);
+                    infoText.setText("No item found!");
+                }
+            } else {
+                // Hide all labels and fields if ID is invalid
+                infoText.setVisible(false);
+
+                deleteButton.setVisible(false);
+                infoText.setFill(Color.RED);
+                infoText.setText("Invalid item ID!");
+                infoText.setVisible(true);
+            }
+        });
+
+        deleteButton.setOnAction(event -> {
+            String ID = idField.getText();
+            vsm.deleteItem(ID,infoText);    // Call deleteItem method with entered ID
+            infoText.setFill(Color.BLACK);
+            infoText.setText("Item with ID " + ID + " has been deleted.");
+            infoText.setVisible(true);
+        });
+
+
+
+
+        // Create a VBox to store everything
+        VBox screen = new VBox();
+        screen.setAlignment(Pos.TOP_CENTER);
+        screen.setSpacing(10);
+        screen.getChildren().addAll(adminPageButtonBox(primaryStage), idBox, infoText,deleteButton);
+
+
+        // Create a Scene and set it on the Stage
+        Scene scene = new Scene(screen, 800, 400);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Delete Item");
+        primaryStage.show();
+
+
     }
+
+
 
     public void displayItemStage(Stage primaryStage) {
         Button sortButton = new Button("Display item");
