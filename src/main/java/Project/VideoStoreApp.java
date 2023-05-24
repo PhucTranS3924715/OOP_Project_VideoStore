@@ -1216,7 +1216,7 @@ public class VideoStoreApp extends Application {
 
     public void updateItemStage(Stage primaryStage) {
         // Create ID label, field and check button
-        Label idLabel = new Label("Enter customer ID:");
+        Label idLabel = new Label("Enter item ID:");
         TextField idField = new TextField();
         Button checkButton = new Button("Check");
         HBox idBox = new HBox(10, idLabel, idField, checkButton);
@@ -1545,6 +1545,7 @@ public class VideoStoreApp extends Application {
         // Create info text box to display item information or error messages
         Text infoText = new Text();
         infoText.setVisible(false);
+        deleteButton.setVisible(false);
 
 
         checkButton.setOnAction(event -> {
@@ -1553,11 +1554,12 @@ public class VideoStoreApp extends Application {
             if (vsm.isValidItemID(ID)) {    // If the ID is valid
                 // Show all fields below the ID field
 
-                deleteButton.setVisible(true);
 
                 // Display current customer info
                 Item item = vsm.findItemByID(ID);
                 if (item != null) {
+                    deleteButton.setVisible(true);
+
                     infoText.setVisible(true);
                     infoText.setFill(Color.BLACK);
                     infoText.setText(item.itemInfo());
