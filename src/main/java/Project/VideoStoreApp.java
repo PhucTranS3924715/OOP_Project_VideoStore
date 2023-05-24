@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.geometry.HPos;
@@ -21,10 +22,7 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-
-
 import java.util.*;
-
 
 public class VideoStoreApp extends Application {
     private VideoStoreManagement vsm = new VideoStoreManagement();
@@ -33,7 +31,7 @@ public class VideoStoreApp extends Application {
     public void start(Stage primaryStage) {
         if (vsm.loadData()) System.out.println("Load successful");
 
-        adminHome(primaryStage);
+        loginStage(primaryStage);
 
         primaryStage.setOnCloseRequest(windowEvent -> {
             if (vsm.saveData()) System.out.println("Save successful");
@@ -70,6 +68,7 @@ public class VideoStoreApp extends Application {
 
         // Login button
         Button loginButton = new Button("Login");
+        buttonDesignForStage(loginButton);
         grid.add(loginButton, 1, 3);
         loginButton.setOnAction(e -> {
             String loginType = loginTypeComboBox.getValue();
@@ -82,6 +81,8 @@ public class VideoStoreApp extends Application {
                 } else {
                     Text warningText = new Text();
                     warningText.setFill(Color.RED);
+                    usernameField.setStyle("-fx-border-color: red;");
+                    passwordField.setStyle("-fx-border-color: red;");
                     warningText.setText("Invalid username or password.");
                     grid.add(warningText, 1, 4);
                 }
@@ -92,6 +93,8 @@ public class VideoStoreApp extends Application {
                 } else {
                     Text warningText = new Text();
                     warningText.setFill(Color.RED);
+                    usernameField.setStyle("-fx-border-color: red;");
+                    passwordField.setStyle("-fx-border-color: red;");
                     warningText.setText("Invalid username or password.");
                     grid.add(warningText, 1, 4);
                 }
@@ -146,6 +149,7 @@ public class VideoStoreApp extends Application {
         // Create the buttons
         Button rentItemButton = new Button("Rent item");
         rentItemButton.setPrefSize(120, 50);
+        buttonDesignForStage(rentItemButton);
         ImageView rentItemIcon =
                 new ImageView(Objects.requireNonNull(getClass().getResource("/Images/rentItem.png")).toExternalForm());
         rentItemIcon.setFitHeight(20);
@@ -157,8 +161,9 @@ public class VideoStoreApp extends Application {
 
         Button returnItemButton = new Button("Return item");
         returnItemButton.setPrefSize(120, 50);
+        buttonDesignForStage(returnItemButton);
         ImageView returnItemIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/returnItem" + ".png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/returnItem" + ".png")).toExternalForm());
         returnItemIcon.setFitHeight(20);
         returnItemIcon.setFitWidth(20);
         returnItemButton.setGraphic(returnItemIcon);
@@ -168,8 +173,9 @@ public class VideoStoreApp extends Application {
 
         Button rewardPointsButton = new Button("Reward points");
         rewardPointsButton.setPrefSize(120, 50);
+        buttonDesignForStage(rewardPointsButton);
         ImageView rewardPointsIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" +
-                "/rewardPoints.png")).toExternalForm());
+        "/rewardPoints.png")).toExternalForm());
         rewardPointsIcon.setFitHeight(20);
         rewardPointsIcon.setFitWidth(20);
         rewardPointsButton.setGraphic(rewardPointsIcon);
@@ -179,6 +185,7 @@ public class VideoStoreApp extends Application {
 
         Button viewUpdateInfoButton = new Button("View/Update\ninformation");
         viewUpdateInfoButton.setPrefSize(120, 50);
+        buttonDesignForStage(viewUpdateInfoButton);
         viewUpdateInfoButton.setAlignment(Pos.CENTER);
         ImageView viewInfoIcon =
                 new ImageView(Objects.requireNonNull(getClass().getResource("/Images/info.png")).toExternalForm());
@@ -191,8 +198,9 @@ public class VideoStoreApp extends Application {
 
         Button logoutButton = new Button("Logout");
         logoutButton.setPrefWidth(120);
+        buttonDesignForStage(logoutButton);
         ImageView logoutIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/logout.png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/logout.png")).toExternalForm());
         logoutIcon.setFitHeight(20);
         logoutIcon.setFitWidth(20);
         logoutButton.setGraphic(logoutIcon);
@@ -218,10 +226,18 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    private void buttonDesign(Button button){
+    private void buttonDesignForHeader(Button button) {
         button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2;");
-        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2;"));
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2;"));
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: white; -fx-border-color: white; " + "-fx"
+         + "-border-width: 2;"));
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; " + "-fx-border-width: 2;"));
+    }
+
+    private void buttonDesignForStage(Button button) {
+        button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2;");
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #00abe4; -fx-border-color: #00abe4; " +
+        "-fx-border-width: 2;"));
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; " + "-fx-border-width: 2;"));
     }
 
     private HBox customerPageButtonBox(Stage primaryStage) {
@@ -230,48 +246,50 @@ public class VideoStoreApp extends Application {
         homeButton.setOnAction(actionEvent -> {
             customerHome(primaryStage);
         });
-        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;");
-        homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2; -fx-font-weight: bold;"));
-        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
+        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; " +
+        "-fx-font-weight: bold;");
+        homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: white; -fx-border-color: white; "
+         + "-fx-border-width: 2; -fx-font-weight: bold;"));
+        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + "#00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         Button rentItemButton = new Button("Rent item");
         rentItemButton.setOnAction(actionEvent -> {
             rentItemStage(primaryStage);
         });
-        buttonDesign(rentItemButton);
+        buttonDesignForHeader(rentItemButton);
 
         Button returnItemButton = new Button("Return item");
         returnItemButton.setOnAction(actionEvent -> {
             returnItemStage(primaryStage, vsm.getCurrentUser());
         });
-        buttonDesign(returnItemButton);
+        buttonDesignForHeader(returnItemButton);
 
         Button rewardPointsButton = new Button("Reward points");
         rewardPointsButton.setOnAction(actionEvent -> {
             rewardPointsStage(primaryStage, vsm.getCurrentUser());
         });
-        buttonDesign(rewardPointsButton);
+        buttonDesignForHeader(rewardPointsButton);
 
         Button viewUpdateInfoButton = new Button("View/Update info");
         viewUpdateInfoButton.setOnAction(actionEvent -> {
             viewUpdateInfoStage(primaryStage);
         });
-        buttonDesign(viewUpdateInfoButton);
+        buttonDesignForHeader(viewUpdateInfoButton);
 
         Button logoutButton = new Button("Logout");
         logoutButton.setOnAction(actionEvent -> {
             loginStage(primaryStage);
         });
-        logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;");
-        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2; -fx-font-weight: bold;"));
-        logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
+        logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; " + "-fx-font-weight: bold;");
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle("-fx-background-color: white; -fx-border-color: " + "white; -fx-border-width: 2; -fx-font-weight: bold;"));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; " + "-fx-border" + "-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         // Create an HBox to group the buttons together
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(20);
         buttonBox.getChildren().addAll(homeButton, rentItemButton, returnItemButton, rewardPointsButton,
-                viewUpdateInfoButton, logoutButton);
+         viewUpdateInfoButton, logoutButton);
         buttonBox.setStyle("-fx-background-color: #00abe4;");
         buttonBox.setPrefHeight(50);
 
@@ -305,12 +323,13 @@ public class VideoStoreApp extends Application {
 
             // Item image view
             ImageView itemImageView =
-                    new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" + ".jpg")).toExternalForm());
+             new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" + ".jpg")).toExternalForm());
             itemImageView.setFitWidth(200);
             itemImageView.setFitHeight(200);
 
             // Rent button
             Button rentButton = new Button("Rent");
+            buttonDesignForStage(rentButton);
             rentButton.setVisible(false);
 
             // Show the rent button when the mouse enters the VBox
@@ -332,7 +351,6 @@ public class VideoStoreApp extends Application {
         StackPane stackPane = new StackPane(grid);
         scrollPane.setContent(stackPane);
 
-
         // Vertical box to store everything
         VBox vBox = new VBox(10, customerPageButtonBox(primaryStage), scrollPane);
         vBox.setAlignment(Pos.TOP_CENTER);
@@ -346,6 +364,7 @@ public class VideoStoreApp extends Application {
 
     private void showItemInformation(Item item) {
         Stage showItemInformationStage = new Stage();
+        showItemInformationStage.initModality(Modality.APPLICATION_MODAL);
 
         // Create the item information window
         GridPane grid = new GridPane();
@@ -392,8 +411,11 @@ public class VideoStoreApp extends Application {
 
         // Rent button
         Button rentButton = new Button("Rent");
+        buttonDesignForStage(rentButton);
         GridPane.setConstraints(rentButton, 0, 6);
+
         Label messageText = new Label();
+
         rentButton.setOnAction(e -> {
             boolean success = vsm.rentItem(item.getID(), messageText);
             if (success) {
@@ -409,6 +431,11 @@ public class VideoStoreApp extends Application {
 
         // Close button
         Button closeButton = new Button("Close");
+        closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: red; -fx-border-width: 2;");
+        closeButton.setOnMouseEntered(e -> closeButton.setStyle("-fx-background-color: red; -fx-border-color: red; " + "-fx-border-width: 2;"));
+        closeButton.setOnMouseExited(e -> closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: "
+         + "red; " + "-fx-border-width: 2;"));
+
         GridPane.setConstraints(closeButton, 1, 6);
         closeButton.setOnAction(e -> {
             showItemInformationStage.close();
@@ -416,8 +443,8 @@ public class VideoStoreApp extends Application {
 
         // Add all components to the grid
         grid.getChildren().addAll(itemIDLabel, itemIDField, itemTitleLabel, itemTitleField, itemRentalTypeLabel,
-                itemRentalTypeField, itemLoanTypeLabel, itemLoanTypeField, itemNoOfCopiesLabel, itemNoOfCopiesField,
-                itemRentalFeeLabel, itemRentalFeeField, rentButton, closeButton);
+         itemRentalTypeField, itemLoanTypeLabel, itemLoanTypeField, itemNoOfCopiesLabel, itemNoOfCopiesField,
+          itemRentalFeeLabel, itemRentalFeeField, rentButton, closeButton);
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
@@ -430,7 +457,7 @@ public class VideoStoreApp extends Application {
         showItemInformationStage.show();
     }
 
-    public void returnItemStage(Stage primaryStage, Customer currentUser)   {
+    public void returnItemStage(Stage primaryStage, Customer currentUser) {
         // Number of columns to display items
         int numColumns = 3;
 
@@ -451,7 +478,8 @@ public class VideoStoreApp extends Application {
             emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " + "30px;");
             VBox.setMargin(emptyLabel, new Insets(10));
 
-            ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/pompomsayno.png")).toExternalForm());
+            ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" +
+                    "/pompomsayno.png")).toExternalForm());
             emptyImageView.setFitWidth(200);
             emptyImageView.setFitHeight(200);
 
@@ -463,7 +491,7 @@ public class VideoStoreApp extends Application {
             GridPane.setValignment(emptyBox, VPos.CENTER); // Center the VBox vertically
 
             grid.add(emptyBox, 0, 0, numColumns, 1); // Span the VBox across all columns
-    } else {
+        } else {
             for (int i = 0; i < rentedItems.size(); i++) {
                 Item item = rentedItems.get(i);
 
@@ -479,12 +507,14 @@ public class VideoStoreApp extends Application {
 
                 // Item image view
                 ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" +
-                        "/dvdmockup.jpg")).toExternalForm());
+                "/dvdmockup.jpg")).toExternalForm());
                 itemImageView.setFitWidth(300);
                 itemImageView.setFitHeight(300);
 
                 // Return button
                 Button returnButton = new Button("Return");
+                returnButton.setVisible(false);
+                buttonDesignForStage(returnButton);
 
                 // Show the return button when the mouse enters the VBox
                 VBox itemBox = new VBox(5);
@@ -494,7 +524,7 @@ public class VideoStoreApp extends Application {
                 itemBox.setOnMouseExited(e -> returnButton.setVisible(false));
 
                 // Perform return action when the return button is clicked
-                returnButton.setOnAction(e -> {
+                /*returnButton.setOnAction(e -> {
                     Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmationDialog.setTitle("Are you sure you want to return this item?");
                     Optional<ButtonType> result = confirmationDialog.showAndWait();
@@ -510,25 +540,30 @@ public class VideoStoreApp extends Application {
                                 Alert promotionAlert = new Alert(Alert.AlertType.INFORMATION);
                                 promotionAlert.setTitle("Promotion");
                                 promotionAlert.setHeaderText(null);
-                                promotionAlert.setContentText("Congratulations! You have been promoted to a Regular customer.");
+                                promotionAlert.setContentText("Congratulations! You have been promoted to a Regular
+                                customer.");
                                 promotionAlert.showAndWait();
-                            } else if (currentUser.getCustomerType().equals("Regular") && currentUser.getNoOfRental() > 5) {
+                            } else if (currentUser.getCustomerType().equals("Regular") && currentUser.getNoOfRental()
+                             > 5) {
                                 currentUser.setCustomerType("VIP");
                                 currentUser.setNoOfRental(0);
                                 Alert promotionAlert = new Alert(Alert.AlertType.INFORMATION);
                                 promotionAlert.setTitle("Promotion");
                                 promotionAlert.setHeaderText(null);
-                                promotionAlert.setContentText("Congratulations! You have been promoted to a VIP customer.");
+                                promotionAlert.setContentText("Congratulations! You have been promoted to a VIP
+                                customer.");
                                 promotionAlert.showAndWait();
                             }
                             // Check if inventory is empty after returning the item
                             if (grid.getChildren().isEmpty()) {
                                 Label emptyLabel = new Label("Your inventory is currently empty");
-                                emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " +
+                                emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" +
+                                "-fx-font-size: " +
                                         "30px;");
                                 VBox.setMargin(emptyLabel, new Insets(10));
 
-                                ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/pompomsayno.png")).toExternalForm());
+                                ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass()
+                                .getResource("/Images/pompomsayno.png")).toExternalForm());
                                 emptyImageView.setFitWidth(300);
                                 emptyImageView.setFitHeight(300);
 
@@ -542,13 +577,84 @@ public class VideoStoreApp extends Application {
                             return;
                         }
                     }
-                });
+                });*/
 
+                returnButton.setOnAction(e -> {
+                    Stage warningStage = new Stage();
+                    warningStage.initModality(Modality.APPLICATION_MODAL);
+
+                    Label warningLabel = new Label("Are you sure you want to return this item?");
+                    Button yesButton = new Button("Yes");
+                    Button noButton = new Button("No");
+
+                    HBox buttonBox = new HBox(10, yesButton, noButton);
+                    buttonBox.setAlignment(Pos.CENTER);
+
+                    VBox warningBox = new VBox(10, warningLabel, buttonBox);
+                    warningBox.setAlignment(Pos.CENTER);
+
+                    Scene warningScene = new Scene(warningBox, 300, 100);
+                    warningStage.setScene(warningScene);
+                    warningStage.show();
+
+                    yesButton.setOnAction(event -> {
+                        boolean success = vsm.returnItem(item.getID());
+                        if (success) {
+                            // Remove the returned item from the grid
+                            grid.getChildren().remove(itemBox);
+                            // Check if the customer is eligible for promotion
+                            if (currentUser.getCustomerType().equals("Guest") && currentUser.getNoOfRental() > 3) {
+                                currentUser.setCustomerType("Regular");
+                                currentUser.setNoOfRental(0);
+                                Alert promotionAlert = new Alert(Alert.AlertType.INFORMATION);
+                                promotionAlert.setTitle("Promotion");
+                                promotionAlert.setHeaderText(null);
+                                promotionAlert.setContentText("Congratulations! You have been promoted to a Regular " + "customer.");
+                                promotionAlert.showAndWait();
+                            } else if (currentUser.getCustomerType().equals("Regular") && currentUser.getNoOfRental() > 5) {
+                                currentUser.setCustomerType("VIP");
+                                currentUser.setNoOfRental(0);
+                                Alert promotionAlert = new Alert(Alert.AlertType.INFORMATION);
+                                promotionAlert.setTitle("Promotion");
+                                promotionAlert.setHeaderText(null);
+                                promotionAlert.setContentText("Congratulations! You have been promoted to a VIP " +
+                                "customer.");
+                                promotionAlert.showAndWait();
+                            }
+                            // Check if inventory is empty after returning the item
+                            if (grid.getChildren().isEmpty()) {
+                                Label emptyLabel = new Label("Your inventory is currently empty");
+                                emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx" +
+                                "-font-size: " + "30px;");
+                                VBox.setMargin(emptyLabel, new Insets(10));
+
+                                ImageView emptyImageView =
+                                 new ImageView(Objects.requireNonNull(getClass().getResource("/Images/pompomsayno" +
+                                 ".png")).toExternalForm());
+                                emptyImageView.setFitWidth(300);
+                                emptyImageView.setFitHeight(300);
+
+                                VBox emptyBox = new VBox(emptyLabel, emptyImageView);
+                                emptyBox.setAlignment(Pos.CENTER);
+                                emptyBox.setSpacing(10);
+                                GridPane.setHalignment(emptyLabel, HPos.CENTER);
+                                GridPane.setValignment(emptyLabel, VPos.CENTER);
+                                grid.add(emptyBox, 0, 0, numColumns, 1);
+                            }
+                            warningStage.close();
+                        }
+                    });
+
+                    noButton.setOnAction(event -> {
+                        warningStage.close();
+                    });
+                });
 
                 // Add the VBox to the grid
                 grid.add(itemBox, column, row);
             }
         }
+
         // Create a scroll pane to add the grid
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(grid);
@@ -589,16 +695,24 @@ public class VideoStoreApp extends Application {
 
         // Create a button to redeem reward points
         Button redeemButton = new Button("Redeem Points");
-        redeemButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-family: Arial; " +
-                "-fx-font-size: 14px; -fx-padding: 10px 20px;");
+        redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #4CAF50; " + "-fx"
+         + "-font-family: Arial; " + "-fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
+        redeemButton.setOnMouseEntered(e -> redeemButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: " +
+        "white; -fx-border-color: #4CAF50; -fx-font-family: Arial; " + "-fx-font-size: 14px; -fx-padding: 10px 20px;" + " -fx-border-width: 2;"));
+        redeemButton.setOnMouseExited(e -> redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; "
+         + "-fx-border-color: #4CAF50; -fx-font-family: Arial; " + "-fx-font-size: 14px; -fx-padding: 10px 20px; " +
+         "-fx-border-width: 2;"));
 
         // Create a button to go back to the main menu
         Button backButton = new Button("Back");
-        backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-family: Arial; " +
-                "-fx-font-size: 14px; -fx-padding: 10px 20px;");
+        backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #f44336; " + "-fx" + "-font-family: Arial; " + "-fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
+        backButton.setOnMouseEntered(e -> backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; " + "-fx-border-color: #f44336; -fx-font-family: Arial; " + "-fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
+        backButton.setOnMouseExited(e -> backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; " +
+        "-fx-border-color: #f44336; -fx-font-family: Arial; " + "-fx-font-size: 14px; -fx-padding: 10px 20px; " +
+        "-fx-border-width: 2;"));
 
         // Set up the action for the redeem button
-        redeemButton.setOnAction(e -> {
+        /*redeemButton.setOnAction(e -> {
             int rewardPoints = currentUser.getRewardPoints();
             if (rewardPoints >= 100) {
                 // Ask the user whether they want to spend the points or continue accumulating
@@ -628,6 +742,74 @@ public class VideoStoreApp extends Application {
                 warning.setContentText("You don't have enough reward points to redeem.");
                 warning.showAndWait();
             }
+        });*/
+
+        redeemButton.setOnAction(e -> {
+            int rewardPoints = currentUser.getRewardPoints();
+            if (rewardPoints >= 100) {
+                // Create a new stage for the confirmation dialog
+                Stage dialogStage = new Stage();
+                dialogStage.initModality(Modality.APPLICATION_MODAL);
+                dialogStage.setTitle("Redeem Reward Points");
+
+                // Create the confirmation message
+                Text messageText = new Text("You have " + rewardPoints + " reward points!!!\nDo you want to spend " + "100" + " reward "
+                  + "points to rent an item for free?");
+                messageText.setTextAlignment(TextAlignment.CENTER);
+
+                // Create the buttons
+                Button spendPointsButton = new Button("Spend Points");
+                spendPointsButton.setStyle("-fx-background-color: transparent; -fx-border-color: #4CAF50; " + "-fx" + "-border-width: 2;");
+                spendPointsButton.setOnMouseEntered(actionEvent -> spendPointsButton.setStyle("-fx-background-color: "
+                 + "#4CAF50; -fx-border-color: #4CAF50; " + "-fx-border-width: 2;"));
+                spendPointsButton.setOnMouseExited(actionEvent -> spendPointsButton.setStyle("-fx-background-color: " + "transparent; -fx-border-color: #4CAF50; " + "-fx-border-width: 2;"));
+
+                spendPointsButton.setOnAction(event -> {
+                    // Show the rent item stage
+                    showRentItemStage(primaryStage);
+                    // Close the dialog stage
+                    dialogStage.close();
+                });
+                Button continueButton = new Button("Continue Accumulating");
+                buttonDesignForStage(continueButton);
+                continueButton.setOnAction(event -> dialogStage.close());
+
+                // Create the layout and add the controls
+                HBox buttonBox = new HBox(10, spendPointsButton, continueButton);
+                buttonBox.setAlignment(Pos.CENTER);
+                VBox root = new VBox(10, messageText, buttonBox);
+                root.setAlignment(Pos.CENTER);
+                root.setPadding(new Insets(10));
+
+                // Set the scene and show the stage
+                Scene scene = new Scene(root);
+                dialogStage.setScene(scene);
+                dialogStage.show();
+            } else {
+                // Display a warning message if the user doesn't have enough reward points
+                Stage warningStage = new Stage();
+                warningStage.initModality(Modality.APPLICATION_MODAL);
+                warningStage.setTitle("Insufficient Reward Points");
+
+                // Create the warning message
+                Text warningLabel = new Text("You don't have enough reward points to redeem.");
+                warningLabel.setTextAlignment(TextAlignment.CENTER);
+
+                // Create the close button
+                Button closeButton = new Button("Close");
+                buttonDesignForStage(closeButton);
+                closeButton.setOnAction(event -> warningStage.close());
+
+                // Create the layout and add the controls
+                VBox root = new VBox(10, warningLabel, closeButton);
+                root.setAlignment(Pos.CENTER);
+                root.setPadding(new Insets(10));
+
+                // Set the scene and show the stage
+                Scene scene = new Scene(root);
+                warningStage.setScene(scene);
+                warningStage.show();
+            }
         });
 
         // Set up the action for the back button
@@ -651,8 +833,11 @@ public class VideoStoreApp extends Application {
         StackPane stackPane = new StackPane(gridPane);
         stackPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
+        // Create a VBox to store everything
+        VBox vBox = new VBox(10, customerPageButtonBox(primaryStage), stackPane);
+
         // Set up the layout
-        Scene scene = new Scene(stackPane, 900, 600);
+        Scene scene = new Scene(vBox, 900, 600);
 
         // Set up the stage
         primaryStage.setScene(scene);
@@ -660,8 +845,7 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-
-    public void showRentItemStage(Stage primaryStage, Customer currentUser) {
+    public void showRentItemStage(Stage primaryStage) {
         // Number of columns to display items
         int numColumns = 3;
 
@@ -675,7 +859,6 @@ public class VideoStoreApp extends Application {
         // Add items to the grid
         for (int i = 0; i < vsm.getItems().size(); i++) {
             Item item = vsm.getItems().get(i);
-
             // Calculate the row and column indices
             int row = i / numColumns + 1;
             int column = i % numColumns;
@@ -688,12 +871,13 @@ public class VideoStoreApp extends Application {
 
             // Item image view
             ImageView itemImageView =
-                    new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup.jpg")).toExternalForm());
+             new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup.jpg")).toExternalForm());
             itemImageView.setFitWidth(200);
             itemImageView.setFitHeight(200);
 
             // Rent button
             Button rentButton = new Button("Rent");
+            buttonDesignForStage(rentButton);
             rentButton.setVisible(false);
 
             // Show the rent button when the mouse enters the VBox
@@ -704,15 +888,83 @@ public class VideoStoreApp extends Application {
             itemBox.setOnMouseExited(e -> rentButton.setVisible(false));
 
             // Show the item information window when the rent button is clicked
-            rentButton.setOnAction(e -> {
+            /*rentButton.setOnAction(e -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Rental Successful");
-            alert.setHeaderText(null);
-            alert.setContentText("Congratulations! You have successfully rented an item for free.");
-            alert.showAndWait();
-            // Return to the home page
-            customerHome(primaryStage);
-        });
+                alert.setTitle("Rental Successful");
+                alert.setHeaderText(null);
+                alert.setContentText("Congratulations! You have successfully rented an item for free.");
+                alert.showAndWait();
+                // Return to the home page
+                customerHome(primaryStage);
+            });*/
+
+            Label messageText = new Label();
+
+            rentButton.setOnAction(e -> {
+                boolean success = vsm.rentItemRewardPoint(item.getID(), messageText);
+                if (success){
+                    // Create a new stage for the information message
+                    Stage infoStage = new Stage();
+                    infoStage.initModality(Modality.WINDOW_MODAL);
+
+                    infoStage.setTitle("Rental Successful");
+
+                    // Create the information message
+                    Label infoLabel = new Label("Congratulations! You have successfully rented an item for free.");
+                    infoLabel.setWrapText(true);
+
+                    // Create the close button
+                    Button closeButton = new Button("Close");
+                    buttonDesignForStage(closeButton);
+                    closeButton.setOnAction(event -> {
+                        // Close the information stage
+                        infoStage.close();
+                        // Return to the home page
+                        customerHome(primaryStage);
+                    });
+
+                    // Create the layout and add the controls
+                    VBox root = new VBox(10, infoLabel, closeButton);
+                    root.setAlignment(Pos.CENTER);
+                    root.setPadding(new Insets(10));
+
+                    // Set the scene and show the stage
+                    Scene scene = new Scene(root);
+                    infoStage.setScene(scene);
+                    infoStage.show();
+                } else {
+                    // Create a new stage for the information message
+                    Stage infoStage = new Stage();
+                    infoStage.initModality(Modality.WINDOW_MODAL);
+
+                    infoStage.setTitle("Rental Failed");
+
+                    // Create the information message
+                    Label infoLabel = new Label(messageText.getText());
+                    infoLabel.setWrapText(true);
+
+                    // Create the close button
+                    Button closeButton = new Button("Close");
+                    buttonDesignForStage(closeButton);
+                    closeButton.setOnAction(event -> {
+                        // Close the information stage
+                        infoStage.close();
+                        // Return to the home page
+                        showRentItemStage(primaryStage);
+                    });
+
+                    // Create the layout and add the controls
+                    VBox root = new VBox(10, infoLabel, closeButton);
+                    root.setAlignment(Pos.CENTER);
+                    root.setPadding(new Insets(10));
+
+                    // Set the scene and show the stage
+                    Scene scene = new Scene(root);
+                    infoStage.setScene(scene);
+                    infoStage.show();
+                }
+            });
+
             // Add the VBox to the grid
             grid.add(itemBox, column, row);
         }
@@ -762,7 +1014,7 @@ public class VideoStoreApp extends Application {
         // Set action for updateButton to call updateCustomer method
         updateButton.setOnAction(event -> {
             vsm.updateCustomer(vsm.getCurrentUserID(), infoText, nameField.getText(), addressField.getText(),
-                    phoneField.getText(), "", "", usernameField.getText(), passwordField.getText(), "");
+             phoneField.getText(), "", "", usernameField.getText(), passwordField.getText(), "");
         });
 
         // Create a grid to hold the text fields
@@ -814,8 +1066,9 @@ public class VideoStoreApp extends Application {
         // Create the buttons for item management
         Button addItemButton = new Button("Add item");
         addItemButton.setPrefSize(120, 50);
+        buttonDesignForStage(addItemButton);
         ImageView addItemIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/add.png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/add.png")).toExternalForm());
         addItemIcon.setFitHeight(20);
         addItemIcon.setFitWidth(20);
         addItemButton.setGraphic(addItemIcon);
@@ -825,8 +1078,9 @@ public class VideoStoreApp extends Application {
 
         Button updateItemButton = new Button("Update item");
         updateItemButton.setPrefSize(120, 50);
+        buttonDesignForStage(updateItemButton);
         ImageView updateItemIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/update.png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/update.png")).toExternalForm());
         updateItemIcon.setFitHeight(20);
         updateItemIcon.setFitWidth(20);
         updateItemButton.setGraphic(updateItemIcon);
@@ -836,8 +1090,9 @@ public class VideoStoreApp extends Application {
 
         Button increaseItemButton = new Button("Increase\ncopies");
         increaseItemButton.setPrefSize(120, 50);
+        buttonDesignForStage(increaseItemButton);
         ImageView increaseItemIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/add.png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/add.png")).toExternalForm());
         increaseItemIcon.setFitHeight(20);
         increaseItemIcon.setFitWidth(20);
         increaseItemButton.setGraphic(increaseItemIcon);
@@ -847,8 +1102,9 @@ public class VideoStoreApp extends Application {
 
         Button deleteItemButton = new Button("Delete item");
         deleteItemButton.setPrefSize(120, 50);
+        buttonDesignForStage(deleteItemButton);
         ImageView deleteItemIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/delete.png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/delete.png")).toExternalForm());
         deleteItemIcon.setFitHeight(20);
         deleteItemIcon.setFitWidth(20);
         deleteItemButton.setGraphic(deleteItemIcon);
@@ -858,8 +1114,9 @@ public class VideoStoreApp extends Application {
 
         Button displayItemButton = new Button("Display item");
         displayItemButton.setPrefSize(120, 50);
+        buttonDesignForStage(displayItemButton);
         ImageView displayItemIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display.png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display.png")).toExternalForm());
         displayItemIcon.setFitHeight(20);
         displayItemIcon.setFitWidth(20);
         displayItemButton.setGraphic(displayItemIcon);
@@ -869,8 +1126,9 @@ public class VideoStoreApp extends Application {
 
         Button searchItemButton = new Button("Search item");
         searchItemButton.setPrefSize(120, 50);
+        buttonDesignForStage(searchItemButton);
         ImageView searchItemIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search.png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search.png")).toExternalForm());
         searchItemIcon.setFitHeight(20);
         searchItemIcon.setFitWidth(20);
         searchItemButton.setGraphic(searchItemIcon);
@@ -902,8 +1160,9 @@ public class VideoStoreApp extends Application {
         // Create the buttons for customer management
         Button addCustomerButton = new Button("Add customer");
         addCustomerButton.setPrefSize(120, 50);
+        buttonDesignForStage(addCustomerButton);
         ImageView addCustomerIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/add.png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/add.png")).toExternalForm());
         addCustomerIcon.setFitHeight(20);
         addCustomerIcon.setFitWidth(20);
         addCustomerButton.setGraphic(addCustomerIcon);
@@ -913,8 +1172,9 @@ public class VideoStoreApp extends Application {
 
         Button updateCustomerButton = new Button("Update\ncustomer");
         updateCustomerButton.setPrefSize(120, 50);
+        buttonDesignForStage(updateCustomerButton);
         ImageView updateCustomerIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/update" + ".png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/update" + ".png")).toExternalForm());
         updateCustomerIcon.setFitHeight(20);
         updateCustomerIcon.setFitWidth(20);
         updateCustomerButton.setGraphic(updateCustomerIcon);
@@ -924,8 +1184,9 @@ public class VideoStoreApp extends Application {
 
         Button displayCustomerButton = new Button("Display\ncustomer");
         displayCustomerButton.setPrefSize(120, 50);
+        buttonDesignForStage(displayCustomerButton);
         ImageView displayCustomerIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display" + ".png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/display" + ".png")).toExternalForm());
         displayCustomerIcon.setFitHeight(20);
         displayCustomerIcon.setFitWidth(20);
         displayCustomerButton.setGraphic(displayCustomerIcon);
@@ -935,8 +1196,9 @@ public class VideoStoreApp extends Application {
 
         Button searchCustomerButton = new Button("Search\ncustomer");
         searchCustomerButton.setPrefSize(120, 50);
+        buttonDesignForStage(searchCustomerButton);
         ImageView searchCustomerIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search" + ".png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/search" + ".png")).toExternalForm());
         searchCustomerIcon.setFitHeight(20);
         searchCustomerIcon.setFitWidth(20);
         searchCustomerButton.setGraphic(searchCustomerIcon);
@@ -946,8 +1208,9 @@ public class VideoStoreApp extends Application {
 
         Button logoutButton = new Button("Logout");
         logoutButton.setPrefWidth(120);
+        buttonDesignForStage(logoutButton);
         ImageView logoutIcon =
-                new ImageView(Objects.requireNonNull(getClass().getResource("/Images/logout.png")).toExternalForm());
+         new ImageView(Objects.requireNonNull(getClass().getResource("/Images/logout.png")).toExternalForm());
         logoutIcon.setFitHeight(20);
         logoutIcon.setFitWidth(20);
         logoutButton.setGraphic(logoutIcon);
@@ -983,65 +1246,104 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    private HBox adminPageButtonBox(Stage primaryStage) {
+    private VBox adminPageButtonBox(Stage primaryStage) {
+        // Home button
         Button homeButton = new Button("Home");
         homeButton.setOnAction(actionEvent -> {
             adminHome(primaryStage);
         });
-        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;");
-        homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2; -fx-font-weight: bold;"));
-        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
+        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; " +
+        "-fx-font-weight: bold;");
+        homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: white; -fx-border-color: white; "
+         + "-fx-border-width: 2; -fx-font-weight: bold;"));
+        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + "#00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
 
+        // Buttons for items management
         Button addItemButton = new Button("Add item");
         addItemButton.setOnAction(actionEvent -> {
             addItemStage(primaryStage);
         });
-        buttonDesign(addItemButton);
+        buttonDesignForHeader(addItemButton);
 
         Button updateItemButton = new Button("Update item");
         updateItemButton.setOnAction(actionEvent -> {
             updateItemStage(primaryStage);
         });
-        buttonDesign(updateItemButton);
+        buttonDesignForHeader(updateItemButton);
 
         Button increaseItemButton = new Button("Increase item");
         increaseItemButton.setOnAction(actionEvent -> {
             increaseItemStage(primaryStage);
         });
-        buttonDesign(increaseItemButton);
+        buttonDesignForHeader(increaseItemButton);
 
         Button deleteItemButton = new Button("Delete item");
         deleteItemButton.setOnAction(actionEvent -> {
             deleteItemStage(primaryStage);
         });
-        buttonDesign(deleteItemButton);
+        buttonDesignForHeader(deleteItemButton);
 
         Button displayItemButton = new Button("Display item");
         displayItemButton.setOnAction(actionEvent -> {
             displayItemStage(primaryStage);
         });
-        buttonDesign(displayItemButton);
+        buttonDesignForHeader(displayItemButton);
 
         Button searchItemButton = new Button("Search item");
         searchItemButton.setOnAction(actionEvent -> {
             searchItemStage(primaryStage);
         });
-        buttonDesign(searchItemButton);
+        buttonDesignForHeader(searchItemButton);
 
+        // Buttons for customers management
+        Button addCustomerButton = new Button("Add customer");
+        addCustomerButton.setOnAction(actionEvent -> {
+            addCustomerStage(primaryStage);
+        });
+        buttonDesignForHeader(addCustomerButton);
+
+        Button updateCustomerButton = new Button("Update customer");
+        updateCustomerButton.setOnAction(actionEvent -> {
+            updateCustomerStage(primaryStage);
+        });
+        buttonDesignForHeader(updateCustomerButton);
+
+        Button displayCustomerButton = new Button("Display customer");
+        displayCustomerButton.setOnAction(actionEvent -> {
+            displayCustomerStage(primaryStage);
+        });
+        buttonDesignForHeader(displayCustomerButton);
+
+        Button searchCustomerButton = new Button("Search customer");
+        searchCustomerButton.setOnAction(actionEvent -> {
+            searchCustomerStage(primaryStage);
+        });
+        buttonDesignForHeader(searchCustomerButton);
+
+        // Logout button
         Button logoutButton = new Button("Logout");
         logoutButton.setOnAction(actionEvent -> {
             loginStage(primaryStage);
         });
-        logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;");
-        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle("-fx-background-color: white; -fx-border-color: white; -fx-border-width: 2; -fx-font-weight: bold;"));
-        logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
+        logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; " + "-fx-font-weight: bold;");
+        logoutButton.setOnMouseEntered(e -> logoutButton.setStyle("-fx-background-color: white; -fx-border-color: " + "white; -fx-border-width: 2; -fx-font-weight: bold;"));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; " + "-fx-border" + "-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         // Create an HBox to group the buttons together
-        HBox buttonBox = new HBox();
+        HBox itemBox = new HBox();
+        itemBox.setAlignment(Pos.CENTER);
+        itemBox.setSpacing(20);
+        itemBox.getChildren().addAll(homeButton, addItemButton, updateItemButton, increaseItemButton,
+         deleteItemButton, displayItemButton, searchItemButton, logoutButton);
+
+        HBox customerBox = new HBox();
+        customerBox.setAlignment(Pos.CENTER);
+        customerBox.setSpacing(20);
+        customerBox.getChildren().addAll(addCustomerButton, updateCustomerButton, displayCustomerButton,
+         searchCustomerButton);
+
+        VBox buttonBox = new VBox(5, itemBox, customerBox);
         buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(20);
-        buttonBox.getChildren().addAll(homeButton, addItemButton, updateItemButton, increaseItemButton,
-                deleteItemButton, displayItemButton, searchItemButton, logoutButton);
         buttonBox.setStyle("-fx-background-color: #00abe4;");
         buttonBox.setPrefHeight(50);
 
@@ -1052,7 +1354,10 @@ public class VideoStoreApp extends Application {
         // Create ID label, field and check button
         Label idLabel = new Label("Enter item ID:");
         TextField idField = new TextField();
+
         Button checkButton = new Button("Check");
+        buttonDesignForStage(checkButton);
+
         HBox idBox = new HBox(10, idLabel, idField, checkButton);
         idBox.setAlignment(Pos.CENTER);
 
@@ -1129,7 +1434,8 @@ public class VideoStoreApp extends Application {
                 // If there are no IDs matched the current ID => can add new item to the list
                 if (customer == null) {
                     infoText.setFill(Color.GREEN);
-                    infoText.setText("Customer ID is valid");
+                    idField.setStyle("-fx-border-color: green;");
+                    infoText.setText("Item ID is valid");
                 }
                 // If the ID already exist
                 else {
@@ -1149,6 +1455,7 @@ public class VideoStoreApp extends Application {
                     addButton.setVisible(false);
 
                     infoText.setFill(Color.RED);
+                    idField.setStyle("-fx-border-color: red;");
                     infoText.setText("Item ID already exists!");
                 }
             } else {
@@ -1168,6 +1475,7 @@ public class VideoStoreApp extends Application {
                 addButton.setVisible(false);
 
                 infoText.setFill(Color.RED);
+                idField.setStyle("-fx-border-color: red;");
                 infoText.setText("Invalid item ID format! Must follow format \"Ixxx-yyyy\"");
             }
         });
@@ -1175,8 +1483,7 @@ public class VideoStoreApp extends Application {
         // Set action for add button
         addButton.setOnAction(actionEvent -> {
             vsm.addItem(idField.getText(), infoText, titleField.getText(), rentalTypeComboBox.getValue(),
-                    loanTypeComboBox.getValue(), noOfCopyField.getText(), rentalFeeField.getText(),
-                    genreComboBox.getValue());
+             loanTypeComboBox.getValue(), noOfCopyField.getText(), rentalFeeField.getText(), genreComboBox.getValue());
         });
 
         // Create a GridPane to hold text fields
@@ -1218,100 +1525,72 @@ public class VideoStoreApp extends Application {
         // Create ID label, field and check button
         Label idLabel = new Label("Enter item ID:");
         TextField idField = new TextField();
+
         Button checkButton = new Button("Check");
+        buttonDesignForStage(checkButton);
+
         HBox idBox = new HBox(10, idLabel, idField, checkButton);
         idBox.setAlignment(Pos.CENTER);
 
-
         // Create other labels and fields
         Text infoText = new Text();
+
+        Label newIDLabel = new Label("Enter new ID:");
+        TextField newIDField = new TextField();
+
         Label titleLabel = new Label("Enter new title:");
         TextField titleField = new TextField();
 
-
         Label rentalTypeLabel = new Label("Enter new rental type:");
         ComboBox<String> itemRentalTypeComboBox = new ComboBox<>();
-        itemRentalTypeComboBox.getItems().addAll("", "Record", "DVD", "Game");
+        itemRentalTypeComboBox.getItems().addAll("Record", "DVD", "Game");
         itemRentalTypeComboBox.setValue("");
-
 
         Label loanTypeLabel = new Label("Enter new loan type:");
         ComboBox<String> itemLoanTypeComboBox = new ComboBox<>();
-        itemLoanTypeComboBox.getItems().addAll("", "2-day", "1-week");
+        itemLoanTypeComboBox.getItems().addAll("2-day", "1-week");
         itemLoanTypeComboBox.setValue("");
-
 
         Label noOfCopiesLabel = new Label("Enter new no. of copies :");
         TextField noOfCopiesField = new TextField();
 
-
-
         Label rentalFeeLabel = new Label("Enter new rental fee:");
         TextField rentalFeeField = new TextField();
 
-
         Label rentaStatusLabel = new Label("Enter new rental status:");
         ComboBox<String> itemrentalStatusComboBox = new ComboBox<>();
-        itemrentalStatusComboBox.getItems().addAll("", "borrowed ", "available");
+        itemrentalStatusComboBox.getItems().addAll("borrowed ", "available", "not available");
         itemrentalStatusComboBox.setValue("");
-
 
         Label genreLabel = new Label("Enter new genre:");
         ComboBox<String> genreComboBox = new ComboBox<>();
-        genreComboBox.getItems().addAll("", "Action", "Horror","Drama" ,"Comedy");
+        genreComboBox.getItems().addAll("Action", "Horror", "Drama", "Comedy");
         genreComboBox.setValue("");
-
-
-
-
-
 
         // Create update button
         Button updateButton = new Button("Update Item");
         HBox updateBox = new HBox(updateButton);
         updateBox.setAlignment(Pos.CENTER);
 
-
         // Initially hide all fields below the ID field
         infoText.setVisible(false);
-
-
+        newIDLabel.setVisible(false);
+        newIDField.setVisible(false);
         titleLabel.setVisible(false);
         titleField.setVisible(false);
-
-
         rentalTypeLabel.setVisible(false);
         itemRentalTypeComboBox.setVisible(false);
-
-
         loanTypeLabel.setVisible(false);
         itemLoanTypeComboBox.setVisible(false);
-
-
         noOfCopiesLabel.setVisible(false);
         noOfCopiesField.setVisible(false);
-
-
-
-
         rentalFeeLabel.setVisible(false);
         rentalFeeField.setVisible(false);
-
-
         rentaStatusLabel.setVisible(false);
         itemrentalStatusComboBox.setVisible(false);
-
-
         genreLabel.setVisible(false);
         genreComboBox.setVisible(false);
-
-
-
-
-
-
         updateButton.setVisible(false);
-
 
         // Set action for checkButton to check if the entered ID is valid
         checkButton.setOnAction(event -> {
@@ -1320,6 +1599,8 @@ public class VideoStoreApp extends Application {
             if (vsm.isValidItemID(ID)) {    // If the ID is valid
                 // Show all fields below the ID field
                 infoText.setVisible(true);
+                newIDLabel.setVisible(true);
+                newIDField.setVisible(true);
                 titleLabel.setVisible(true);
                 titleField.setVisible(true);
                 rentalTypeLabel.setVisible(true);
@@ -1328,109 +1609,86 @@ public class VideoStoreApp extends Application {
                 itemLoanTypeComboBox.setVisible(true);
                 noOfCopiesLabel.setVisible(true);
                 noOfCopiesField.setVisible(true);
-
-
                 rentalFeeLabel.setVisible(true);
                 rentalFeeField.setVisible(true);
-
-
                 rentaStatusLabel.setVisible(true);
                 itemrentalStatusComboBox.setVisible(true);
-
-
                 genreLabel.setVisible(true);
                 genreComboBox.setVisible(true);
-
-
                 updateButton.setVisible(true);
-
 
                 // Display current customer info
                 Item item = vsm.findItemByID(ID);
                 if (item != null) {
                     infoText.setFill(Color.BLACK);
+                    idField.setStyle("-fx-border-color: green;");
                     infoText.setText(item.itemInfo());
                 } else {
                     infoText.setFill(Color.RED);
+                    idField.setStyle("-fx-border-color: red;");
                     infoText.setText("No item found!");
                 }
             } else {
                 // Hide all labels and fields if ID is invalid
                 infoText.setVisible(false);
-
-
+                newIDLabel.setVisible(false);
+                newIDField.setVisible(false);
                 titleLabel.setVisible(false);
                 titleField.setVisible(false);
-
-
                 rentalTypeLabel.setVisible(false);
                 itemRentalTypeComboBox.setVisible(false);
-
-
                 loanTypeLabel.setVisible(false);
                 itemLoanTypeComboBox.setVisible(false);
-
-
                 noOfCopiesLabel.setVisible(false);
                 noOfCopiesField.setVisible(false);
-
-
                 rentalFeeLabel.setVisible(false);
                 rentalFeeField.setVisible(false);
-
-
                 rentaStatusLabel.setVisible(false);
                 itemrentalStatusComboBox.setVisible(false);
-
-
                 genreLabel.setVisible(false);
                 genreComboBox.setVisible(false);
-
-
                 updateButton.setVisible(false);
 
-
                 infoText.setFill(Color.RED);
+                idField.setStyle("-fx-border-color: red;");
                 infoText.setText("Invalid item ID!");
                 infoText.setVisible(true);
             }
         });
 
-
         // Set action for updateButton to call updateCustomer method
         updateButton.setOnAction(event -> {
-            vsm.updateItem(idField.getText(), infoText, titleField.getText(), itemRentalTypeComboBox.getValue(),
-                    itemLoanTypeComboBox.getValue(), noOfCopiesField.getText(), rentalFeeField.getText(), itemrentalStatusComboBox.getValue(), genreComboBox.getValue());
+            vsm.updateItem(idField.getText(), infoText, newIDField.getText(), titleField.getText(),
+             itemRentalTypeComboBox.getValue(), itemLoanTypeComboBox.getValue(), noOfCopiesField.getText(),
+              rentalFeeField.getText(), itemrentalStatusComboBox.getValue(), genreComboBox.getValue());
         });
-
 
         // Create a GridPane to hold text fields
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setAlignment(Pos.CENTER);
-        grid.add(titleLabel, 0, 0);
-        grid.add(titleField, 1, 0);
-        grid.add(rentalTypeLabel, 0, 1);
-        grid.add(itemRentalTypeComboBox, 1, 1);
-        grid.add(loanTypeLabel, 0, 2);
-        grid.add(itemLoanTypeComboBox, 1, 2);
-        grid.add(noOfCopiesLabel, 0, 3);
-        grid.add(noOfCopiesField, 1, 3);
-        grid.add(rentalFeeLabel, 0, 4);
-        grid.add(rentalFeeField, 1, 4);
-        grid.add(rentaStatusLabel, 0, 5);
-        grid.add(itemrentalStatusComboBox, 1, 5);
-        grid.add(genreLabel, 0, 6);
-        grid.add(genreComboBox, 1, 6);
 
-
-
+        grid.add(newIDLabel, 0, 0);
+        grid.add(newIDField, 1, 0);
+        grid.add(titleLabel, 0, 1);
+        grid.add(titleField, 1, 1);
+        grid.add(rentalTypeLabel, 0, 2);
+        grid.add(itemRentalTypeComboBox, 1, 2);
+        grid.add(loanTypeLabel, 0, 3);
+        grid.add(itemLoanTypeComboBox, 1, 3);
+        grid.add(noOfCopiesLabel, 0, 4);
+        grid.add(noOfCopiesField, 1, 4);
+        grid.add(rentalFeeLabel, 0, 5);
+        grid.add(rentalFeeField, 1, 5);
+        grid.add(rentaStatusLabel, 0, 6);
+        grid.add(itemrentalStatusComboBox, 1, 6);
+        grid.add(genreLabel, 0, 7);
+        grid.add(genreComboBox, 1, 7);
 
         // Create info box to store infoText and grid
         HBox infoBox = new HBox(15, infoText, grid);
         infoBox.setAlignment(Pos.CENTER);
-
 
         // Create a VBox to store everything
         VBox screen = new VBox();
@@ -1438,21 +1696,21 @@ public class VideoStoreApp extends Application {
         screen.setSpacing(10);
         screen.getChildren().addAll(adminPageButtonBox(primaryStage), idBox, infoBox, updateBox);
 
-
         // Create a Scene and set it on the Stage
-        Scene scene = new Scene(screen, 800, 400);
+        Scene scene = new Scene(screen, 800, 500);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Update Item");
         primaryStage.show();
     }
 
-
-
     public void increaseItemStage(Stage primaryStage) {
         // Create ID label, field and check button
-        Label idLabel = new Label("Enter customer ID:");
+        Label idLabel = new Label("Enter item ID:");
         TextField idField = new TextField();
+
         Button checkButton = new Button("Check");
+        buttonDesignForStage(checkButton);
+
         HBox idBox = new HBox(10, idLabel, idField, checkButton);
         idBox.setAlignment(Pos.CENTER);
 
@@ -1463,6 +1721,7 @@ public class VideoStoreApp extends Application {
 
         // Create a button to increase the copies
         Button increaseButton = new Button("Increase copies");
+        buttonDesignForStage(increaseButton);
 
         // Initially hide all fields below the ID field
         infoText.setVisible(false);
@@ -1480,7 +1739,7 @@ public class VideoStoreApp extends Application {
                 numberLabel.setVisible(true);
                 numberField.setVisible(true);
                 increaseButton.setVisible(true);
-
+                idField.setStyle("-fx-border-color: green;");
                 // Display current customer info
                 Item item = vsm.findItemByID(ID);
                 if (item != null) {
@@ -1488,6 +1747,7 @@ public class VideoStoreApp extends Application {
                     infoText.setText(item.itemInfo());
                 } else {
                     infoText.setFill(Color.RED);
+                    idField.setStyle("-fx-border-color: red;");
                     infoText.setText("No item found!");
                 }
             } else {
@@ -1498,6 +1758,7 @@ public class VideoStoreApp extends Application {
                 increaseButton.setVisible(false);
 
                 infoText.setFill(Color.RED);
+                idField.setStyle("-fx-border-color: red;");
                 infoText.setText("Invalid item ID!");
                 infoText.setVisible(true);
             }
@@ -1517,7 +1778,7 @@ public class VideoStoreApp extends Application {
         grid.add(numberField, 1, 0);
 
         // Create info box to store infoText and grid
-        HBox infoBox = new HBox(15, infoText, grid);
+        VBox infoBox = new VBox(15, infoText, grid);
         infoBox.setAlignment(Pos.CENTER);
 
         // Create a VBox to store everything
@@ -1536,24 +1797,29 @@ public class VideoStoreApp extends Application {
     public void deleteItemStage(Stage primaryStage) {
         Label idLabel = new Label("Enter item ID:");
         TextField idField = new TextField();
-        Button deleteButton = new Button("Delete");
-        Button checkButton = new Button("Check");
-        HBox idBox = new HBox(10, idLabel, idField, checkButton,deleteButton);
-        idBox.setAlignment(Pos.CENTER);
 
+        Button deleteButton = new Button("Delete");
+        deleteButton.setStyle("-fx-background-color: transparent; -fx-border-color: red; -fx-border-width: 2;");
+        deleteButton.setOnMouseEntered(e -> deleteButton.setStyle("-fx-background-color: red; -fx-border-color: red; "
+         + "-fx-border-width: 2;"));
+        deleteButton.setOnMouseExited(e -> deleteButton.setStyle("-fx-background-color: transparent; " + "-fx-border" + "-color: red; " + "-fx-border-width: 2;"));
+
+        Button checkButton = new Button("Check");
+        buttonDesignForStage(checkButton);
+
+        HBox idBox = new HBox(10, idLabel, idField, checkButton, deleteButton);
+        idBox.setAlignment(Pos.CENTER);
 
         // Create info text box to display item information or error messages
         Text infoText = new Text();
         infoText.setVisible(false);
         deleteButton.setVisible(false);
 
-
         checkButton.setOnAction(event -> {
             infoText.setText("");
             String ID = idField.getText();
-            if (vsm.isValidItemID(ID)) {    // If the ID is valid
+            if (vsm.isValidItemID(ID)) { // If the ID is valid
                 // Show all fields below the ID field
-
 
                 // Display current customer info
                 Item item = vsm.findItemByID(ID);
@@ -1562,9 +1828,11 @@ public class VideoStoreApp extends Application {
 
                     infoText.setVisible(true);
                     infoText.setFill(Color.BLACK);
+                    idField.setStyle("-fx-border-color: green;");
                     infoText.setText(item.itemInfo());
                 } else {
                     infoText.setFill(Color.RED);
+                    idField.setStyle("-fx-border-color: red;");
                     infoText.setText("No item found!");
                 }
             } else {
@@ -1573,45 +1841,69 @@ public class VideoStoreApp extends Application {
 
                 deleteButton.setVisible(false);
                 infoText.setFill(Color.RED);
+                idField.setStyle("-fx-border-color: red;");
                 infoText.setText("Invalid item ID!");
                 infoText.setVisible(true);
             }
         });
 
         deleteButton.setOnAction(event -> {
-            String ID = idField.getText();
-            vsm.deleteItem(ID,infoText);    // Call deleteItem method with entered ID
-            infoText.setFill(Color.BLACK);
-            infoText.setText("Item with ID " + ID + " has been deleted.");
-            infoText.setVisible(true);
+            // Show warning window
+            Stage warningStage = new Stage();
+            warningStage.initModality(Modality.APPLICATION_MODAL);
+
+            Label warningLabel = new Label("Are you sure you want to delete this item?");
+
+            Button yesButton = new Button("Yes");
+            yesButton.setStyle("-fx-background-color: transparent; -fx-border-color: red; -fx-border-width: 2;");
+            yesButton.setOnMouseEntered(e -> yesButton.setStyle("-fx-background-color: red; -fx-border-color: red; " + "-fx-border-width: 2;"));
+            yesButton.setOnMouseExited(e -> yesButton.setStyle("-fx-background-color: transparent; -fx-border-color: "
+             + "red; " + "-fx-border-width: 2;"));
+
+            Button noButton = new Button("No");
+            buttonDesignForStage(noButton);
+
+            HBox buttonBox = new HBox(10, yesButton, noButton);
+            buttonBox.setAlignment(Pos.CENTER);
+
+            VBox warningBox = new VBox(10, warningLabel, buttonBox);
+            warningBox.setAlignment(Pos.CENTER);
+
+            Scene warningScene = new Scene(warningBox, 300, 100);
+            warningStage.setScene(warningScene);
+            warningStage.show();
+
+            yesButton.setOnAction(e -> {
+                String ID = idField.getText();
+                vsm.deleteItem(ID, infoText); // Call deleteItem method with entered ID
+                infoText.setFill(Color.GREEN);
+                infoText.setText("Item with ID " + ID + " has been deleted.");
+                infoText.setVisible(true);
+                warningStage.close();
+            });
+
+            noButton.setOnAction(e -> {
+                warningStage.close();
+            });
         });
-
-
-
 
         // Create a VBox to store everything
         VBox screen = new VBox();
         screen.setAlignment(Pos.TOP_CENTER);
         screen.setSpacing(10);
-        screen.getChildren().addAll(adminPageButtonBox(primaryStage), idBox, infoText,deleteButton);
-
+        screen.getChildren().addAll(adminPageButtonBox(primaryStage), idBox, infoText, deleteButton);
 
         // Create a Scene and set it on the Stage
         Scene scene = new Scene(screen, 800, 400);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Delete Item");
         primaryStage.show();
-
-
     }
-
-
 
     public void displayItemStage(Stage primaryStage) {
         Button sortButton = new Button("Display item");
-        sortButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 2;");
-        sortButton.setOnMouseEntered(e -> sortButton.setStyle("-fx-background-color: #00abe4; -fx-border-color: #00abe4; -fx-border-width: 2;"));
-        sortButton.setOnMouseExited(e -> sortButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 2;"));
+        buttonDesignForStage(sortButton);
+
         ComboBox<String> sortComboBox = new ComboBox<>();
         sortComboBox.getItems().addAll("Sort by ID", "Sort by Title", "With no Copies");
         sortComboBox.setValue("Sort by ID");
@@ -1750,7 +2042,10 @@ public class VideoStoreApp extends Application {
         // Create ID label, field and check button
         Label idLabel = new Label("Enter customer ID:");
         TextField idField = new TextField();
+
         Button checkButton = new Button("Check");
+        buttonDesignForStage(checkButton);
+
         HBox idBox = new HBox(10, idLabel, idField, checkButton);
         idBox.setAlignment(Pos.CENTER);
 
@@ -1808,6 +2103,7 @@ public class VideoStoreApp extends Application {
                 // If there are no IDs matched the current ID => can add new customer to the list
                 if (customer == null) {
                     infoText.setFill(Color.GREEN);
+                    idField.setStyle("-fx-border-color: green;");
                     infoText.setText("Customer ID is valid");
                 }
                 // If the ID already exist
@@ -1826,6 +2122,7 @@ public class VideoStoreApp extends Application {
                     addButton.setVisible(false);
 
                     infoText.setFill(Color.RED);
+                    idField.setStyle("-fx-border-color: red;");
                     infoText.setText("Customer ID already exists!");
                 }
             } else {
@@ -1843,6 +2140,7 @@ public class VideoStoreApp extends Application {
 
                 infoText.setVisible(true);
                 infoText.setFill(Color.RED);
+                idField.setStyle("-fx-border-color: red;");
                 infoText.setText("Invalid customer ID format! Must follow format \"Cxxx\"");
             }
         });
@@ -1850,7 +2148,7 @@ public class VideoStoreApp extends Application {
         // Set action for add button
         addButton.setOnAction(actionEvent -> {
             vsm.addCustomer(idField.getText(), infoText, nameField.getText(), addressField.getText(),
-                    phoneField.getText(), usernameField.getText(), passwordField.getText());
+             phoneField.getText(), usernameField.getText(), passwordField.getText());
         });
 
         // Create a GridPane to hold text fields
@@ -1890,7 +2188,10 @@ public class VideoStoreApp extends Application {
         // Create ID label, field and check button
         Label idLabel = new Label("Enter customer ID:");
         TextField idField = new TextField();
+
         Button checkButton = new Button("Check");
+        buttonDesignForStage(checkButton);
+
         HBox idBox = new HBox(10, idLabel, idField, checkButton);
         idBox.setAlignment(Pos.CENTER);
 
@@ -1968,10 +2269,12 @@ public class VideoStoreApp extends Application {
                 // Display current customer info
                 Customer customer = vsm.findCustomerByID(ID);
                 if (customer != null) {
+                    idField.setStyle("-fx-border-color: green;");
                     infoText.setFill(Color.BLACK);
                     infoText.setText(customer.customerInfo());
                 } else {
                     infoText.setFill(Color.RED);
+                    idField.setStyle("-fx-border-color: red;");
                     infoText.setText("No customer found!");
                 }
             } else {
@@ -1996,6 +2299,7 @@ public class VideoStoreApp extends Application {
                 updateButton.setVisible(false);
 
                 infoText.setFill(Color.RED);
+                idField.setStyle("-fx-border-color: red;");
                 infoText.setText("Invalid customer ID!");
                 infoText.setVisible(true);
             }
@@ -2004,8 +2308,8 @@ public class VideoStoreApp extends Application {
         // Set action for updateButton to call updateCustomer method
         updateButton.setOnAction(event -> {
             vsm.updateCustomer(idField.getText(), infoText, nameField.getText(), addressField.getText(),
-                    phoneField.getText(), noOfRentalField.getText(), customerTypeComboBox.getValue(),
-                    usernameField.getText(), passwordField.getText(), rewardPointField.getText());
+             phoneField.getText(), noOfRentalField.getText(), customerTypeComboBox.getValue(),
+              usernameField.getText(), passwordField.getText(), rewardPointField.getText());
         });
 
         // Create a GridPane to hold text fields
@@ -2041,7 +2345,7 @@ public class VideoStoreApp extends Application {
         screen.getChildren().addAll(adminPageButtonBox(primaryStage), idBox, infoBox, updateBox);
 
         // Create a Scene and set it on the Stage
-        Scene scene = new Scene(screen, 800, 400);
+        Scene scene = new Scene(screen, 800, 500);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Update Customer");
         primaryStage.show();
@@ -2049,6 +2353,8 @@ public class VideoStoreApp extends Application {
 
     public void displayCustomerStage(Stage primaryStage) {
         Button sortButton = new Button("Display customer");
+        buttonDesignForStage(sortButton);
+
         ComboBox<String> sortComboBox = new ComboBox<>();
         sortComboBox.getItems().addAll("Sort by ID", "Sort by Name", "Sort by Group");
         sortComboBox.setValue("Sort by ID");
