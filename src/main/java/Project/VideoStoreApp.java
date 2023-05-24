@@ -25,7 +25,6 @@ import java.util.Objects;
 
 public class VideoStoreApp extends Application {
     private VideoStoreManagement vsm = new VideoStoreManagement();
-    private List<Button> buttons = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) {
@@ -160,28 +159,24 @@ public class VideoStoreApp extends Application {
             rentItemStage(primaryStage);
         });
         buttonDesignForHeader(rentItemButton);
-        buttons.add(rentItemButton);
 
         Button returnItemButton = new Button("Return item");
         returnItemButton.setOnAction(actionEvent -> {
             returnItemStage(primaryStage, vsm.getCurrentUser());
         });
         buttonDesignForHeader(returnItemButton);
-        buttons.add(returnItemButton);
 
         Button rewardPointsButton = new Button("Reward points");
         rewardPointsButton.setOnAction(actionEvent -> {
             rewardPointsStage(primaryStage, vsm.getCurrentUser());
         });
         buttonDesignForHeader(rewardPointsButton);
-        buttons.add(rewardPointsButton);
 
         Button viewUpdateInfoButton = new Button("View/Update info");
         viewUpdateInfoButton.setOnAction(actionEvent -> {
             viewUpdateInfoStage(primaryStage);
         });
         buttonDesignForHeader(viewUpdateInfoButton);
-        buttons.add(viewUpdateInfoButton);
 
         Button logoutButton = new Button("Logout");
         logoutButton.setOnAction(actionEvent -> {
@@ -1349,7 +1344,6 @@ public class VideoStoreApp extends Application {
                 noOfCopyField.setVisible(true);
                 rentalFeeLabel.setVisible(true);
                 rentalFeeField.setVisible(true);
-
                 genreLabel.setVisible(true);
                 genreComboBox.setVisible(true);
                 addButton.setVisible(true);
@@ -1358,7 +1352,7 @@ public class VideoStoreApp extends Application {
                 // If there are no IDs matched the current ID => can add new item to the list
                 if (customer == null) {
                     infoText.setFill(Color.GREEN);
-                    idField.setStyle("-fx-border-color: green;");
+                    idField.setStyle("-fx-border-color: #4CAF50; -fx-border-width: 2;");
                     infoText.setText("Item ID is valid");
                 }
                 // If the ID already exist
@@ -1379,7 +1373,7 @@ public class VideoStoreApp extends Application {
                     addButton.setVisible(false);
 
                     infoText.setFill(Color.RED);
-                    idField.setStyle("-fx-border-color: red;");
+                    idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                     infoText.setText("Item ID already exists!");
                 }
             } else {
@@ -1399,7 +1393,7 @@ public class VideoStoreApp extends Application {
                 addButton.setVisible(false);
 
                 infoText.setFill(Color.RED);
-                idField.setStyle("-fx-border-color: red;");
+                idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                 infoText.setText("Invalid item ID format! Must follow format \"Ixxx-yyyy\"");
             }
         });
@@ -1544,11 +1538,11 @@ public class VideoStoreApp extends Application {
                 Item item = vsm.findItemByID(ID);
                 if (item != null) {
                     infoText.setFill(Color.BLACK);
-                    idField.setStyle("-fx-border-color: green;");
+                    idField.setStyle("-fx-border-color: #4CAF50; -fx-border-width: 2;");
                     infoText.setText(item.itemInfo());
                 } else {
                     infoText.setFill(Color.RED);
-                    idField.setStyle("-fx-border-color: red;");
+                    idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                     infoText.setText("No item found!");
                 }
             } else {
@@ -1573,7 +1567,7 @@ public class VideoStoreApp extends Application {
                 updateButton.setVisible(false);
 
                 infoText.setFill(Color.RED);
-                idField.setStyle("-fx-border-color: red;");
+                idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                 infoText.setText("Invalid item ID!");
                 infoText.setVisible(true);
             }
@@ -1608,7 +1602,7 @@ public class VideoStoreApp extends Application {
         grid.add(genreComboBox, 1, 7);
 
         // Create info box to store infoText and grid
-        HBox infoBox = new HBox(15, infoText, grid);
+        VBox infoBox = new VBox(15, infoText, grid);
         infoBox.setAlignment(Pos.CENTER);
 
         // Create a VBox to store everything
@@ -1660,7 +1654,7 @@ public class VideoStoreApp extends Application {
                 numberLabel.setVisible(true);
                 numberField.setVisible(true);
                 increaseButton.setVisible(true);
-                idField.setStyle("-fx-border-color: green;");
+                idField.setStyle("-fx-border-color: #4CAF50; -fx-border-width: 2;");
                 // Display current customer info
                 Item item = vsm.findItemByID(ID);
                 if (item != null) {
@@ -1668,7 +1662,7 @@ public class VideoStoreApp extends Application {
                     infoText.setText(item.itemInfo());
                 } else {
                     infoText.setFill(Color.RED);
-                    idField.setStyle("-fx-border-color: red;");
+                    idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                     infoText.setText("No item found!");
                 }
             } else {
@@ -1679,7 +1673,7 @@ public class VideoStoreApp extends Application {
                 increaseButton.setVisible(false);
 
                 infoText.setFill(Color.RED);
-                idField.setStyle("-fx-border-color: red;");
+                idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                 infoText.setText("Invalid item ID!");
                 infoText.setVisible(true);
             }
@@ -1748,11 +1742,11 @@ public class VideoStoreApp extends Application {
 
                     infoText.setVisible(true);
                     infoText.setFill(Color.BLACK);
-                    idField.setStyle("-fx-border-color: green;");
+                    idField.setStyle("-fx-border-color: #4CAF50; -fx-border-width: 2;");
                     infoText.setText(item.itemInfo());
                 } else {
                     infoText.setFill(Color.RED);
-                    idField.setStyle("-fx-border-color: red;");
+                    idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                     infoText.setText("No item found!");
                 }
             } else {
@@ -1761,7 +1755,7 @@ public class VideoStoreApp extends Application {
 
                 deleteButton.setVisible(false);
                 infoText.setFill(Color.RED);
-                idField.setStyle("-fx-border-color: red;");
+                idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                 infoText.setText("Invalid item ID!");
                 infoText.setVisible(true);
             }
@@ -1975,7 +1969,7 @@ public class VideoStoreApp extends Application {
                 // If there are no IDs matched the current ID => can add new customer to the list
                 if (customer == null) {
                     infoText.setFill(Color.GREEN);
-                    idField.setStyle("-fx-border-color: green;");
+                    idField.setStyle("-fx-border-color: #4CAF50; -fx-border-width: 2;");
                     infoText.setText("Customer ID is valid");
                 }
                 // If the ID already exist
@@ -1994,7 +1988,7 @@ public class VideoStoreApp extends Application {
                     addButton.setVisible(false);
 
                     infoText.setFill(Color.RED);
-                    idField.setStyle("-fx-border-color: red;");
+                    idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                     infoText.setText("Customer ID already exists!");
                 }
             } else {
@@ -2012,7 +2006,7 @@ public class VideoStoreApp extends Application {
 
                 infoText.setVisible(true);
                 infoText.setFill(Color.RED);
-                idField.setStyle("-fx-border-color: red;");
+                idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                 infoText.setText("Invalid customer ID format! Must follow format \"Cxxx\"");
             }
         });
@@ -2116,7 +2110,8 @@ public class VideoStoreApp extends Application {
         checkButton.setOnAction(event -> {
             infoText.setText("");
             String ID = idField.getText();
-            if (vsm.isValidCustomerID(ID)) {    // If the ID is valid
+            // If the ID is valid
+            if (vsm.isValidCustomerID(ID)) {
                 // Show all fields below the ID field
                 infoText.setVisible(true);
                 nameLabel.setVisible(true);
@@ -2140,12 +2135,12 @@ public class VideoStoreApp extends Application {
                 // Display current customer info
                 Customer customer = vsm.findCustomerByID(ID);
                 if (customer != null) {
-                    idField.setStyle("-fx-border-color: green;");
+                    idField.setStyle("-fx-border-color: #4CAF50; -fx-border-width: 2;");
                     infoText.setFill(Color.BLACK);
                     infoText.setText(customer.customerInfo());
                 } else {
                     infoText.setFill(Color.RED);
-                    idField.setStyle("-fx-border-color: red;");
+                    idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                     infoText.setText("No customer found!");
                 }
             } else {
@@ -2170,7 +2165,7 @@ public class VideoStoreApp extends Application {
                 updateButton.setVisible(false);
 
                 infoText.setFill(Color.RED);
-                idField.setStyle("-fx-border-color: red;");
+                idField.setStyle("-fx-border-color: red; -fx-border-width: 2;");
                 infoText.setText("Invalid customer ID!");
                 infoText.setVisible(true);
             }
@@ -2204,7 +2199,7 @@ public class VideoStoreApp extends Application {
         grid.add(rewardPointField, 1, 7);
 
         // Create info box to store infoText and grid
-        HBox infoBox = new HBox(15, infoText, grid);
+        VBox infoBox = new VBox(15, infoText, grid);
         infoBox.setAlignment(Pos.CENTER);
 
         // Create a VBox to store everything
@@ -2214,7 +2209,7 @@ public class VideoStoreApp extends Application {
         screen.getChildren().addAll(adminPageButtonBox(primaryStage), idBox, infoBox, updateBox);
 
         // Create a Scene and set it on the Stage
-        Scene scene = new Scene(screen, 900, 600);
+        Scene scene = new Scene(screen, 900, 700);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Update Customer");
         primaryStage.show();
