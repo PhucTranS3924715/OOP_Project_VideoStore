@@ -2,6 +2,7 @@ package Project;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,15 +20,14 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.util.ArrayList;
+
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
-import javafx.application.Platform;
-import java.io.InputStream;
 
 
 public class VideoStoreApp extends Application {
-    private VideoStoreManagement vsm = new VideoStoreManagement();
+    private final VideoStoreManagement vsm = new VideoStoreManagement();
 
     @Override
     public void start(Stage primaryStage) {
@@ -162,41 +162,29 @@ public class VideoStoreApp extends Application {
     private HBox customerPageButtonBox(Stage primaryStage) {
         // Create the buttons
         Button homeButton = new Button("Home");
-        homeButton.setOnAction(actionEvent -> {
-            customerHome(primaryStage);
-        });
+        homeButton.setOnAction(actionEvent -> customerHome(primaryStage));
         homeButton.setStyle("-fx-background-color: transparent; -fx-border-color:  #ffffff ; -fx-border-width: 2; " + "-fx-font-weight: bold;");
         homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: white; -fx-border-color: white; " + "-fx-border-width: 2; -fx-font-weight: bold;"));
         homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + " #ffffff ; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         Button rentItemButton = new Button("Rent item");
-        rentItemButton.setOnAction(actionEvent -> {
-            rentItemStage(primaryStage);
-        });
+        rentItemButton.setOnAction(actionEvent -> rentItemStage(primaryStage));
         buttonDesignForHeader(rentItemButton);
 
         Button returnItemButton = new Button("Return item");
-        returnItemButton.setOnAction(actionEvent -> {
-            returnItemStage(primaryStage, vsm.getCurrentUser());
-        });
+        returnItemButton.setOnAction(actionEvent -> returnItemStage(primaryStage, vsm.getCurrentUser()));
         buttonDesignForHeader(returnItemButton);
 
         Button rewardPointsButton = new Button("Reward points");
-        rewardPointsButton.setOnAction(actionEvent -> {
-            rewardPointsStage(primaryStage, vsm.getCurrentUser());
-        });
+        rewardPointsButton.setOnAction(actionEvent -> rewardPointsStage(primaryStage, vsm.getCurrentUser()));
         buttonDesignForHeader(rewardPointsButton);
 
         Button viewUpdateInfoButton = new Button("View/Update info");
-        viewUpdateInfoButton.setOnAction(actionEvent -> {
-            viewUpdateInfoStage(primaryStage);
-        });
+        viewUpdateInfoButton.setOnAction(actionEvent -> viewUpdateInfoStage(primaryStage));
         buttonDesignForHeader(viewUpdateInfoButton);
 
         Button logoutButton = new Button("Logout");
-        logoutButton.setOnAction(actionEvent -> {
-            loginStage(primaryStage);
-        });
+        logoutButton.setOnAction(actionEvent -> loginStage(primaryStage));
         logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color:  #ffffff ; -fx-border-width: 2; " + "-fx-font-weight: bold;");
         logoutButton.setOnMouseEntered(e -> logoutButton.setStyle("-fx-background-color: white; -fx-border-color: " + "white; -fx-border-width: 2; -fx-font-weight: bold;"));
         logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; " + "-fx-border" + "-color:  #ffffff ; -fx-border-width: 2; -fx-font-weight: bold;"));
@@ -237,25 +225,15 @@ public class VideoStoreApp extends Application {
         Button viewUpdateInfoButton = createStyledButton("View/Update\nInformation", "/Images/info.png");
         Button logoutButton = createStyledButton("Logout", "/Images/logout.png");
 
-        rentItemButton.setOnAction(actionEvent -> {
-            rentItemStage(primaryStage);
-        });
+        rentItemButton.setOnAction(actionEvent -> rentItemStage(primaryStage));
 
-        returnItemButton.setOnAction(actionEvent -> {
-            returnItemStage(primaryStage, vsm.getCurrentUser());
-        });
+        returnItemButton.setOnAction(actionEvent -> returnItemStage(primaryStage, vsm.getCurrentUser()));
 
-        rewardPointsButton.setOnAction(actionEvent -> {
-            rewardPointsStage(primaryStage, vsm.getCurrentUser());
-        });
+        rewardPointsButton.setOnAction(actionEvent -> rewardPointsStage(primaryStage, vsm.getCurrentUser()));
 
-        viewUpdateInfoButton.setOnAction(actionEvent -> {
-            viewUpdateInfoStage(primaryStage);
-        });
+        viewUpdateInfoButton.setOnAction(actionEvent -> viewUpdateInfoStage(primaryStage));
 
-        logoutButton.setOnAction(actionEvent -> {
-            loginStage(primaryStage);
-        });
+        logoutButton.setOnAction(actionEvent -> loginStage(primaryStage));
 
         grid.addColumn(0, rentItemButton, returnItemButton);
         grid.addColumn(1, rewardPointsButton, viewUpdateInfoButton);
@@ -348,9 +326,11 @@ public class VideoStoreApp extends Application {
 
             // Item ID label
             Label itemIDLabel = new Label(item.getID());
+            itemIDLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
             // Item title label
             Label itemTitleLabel = new Label(item.getTitle());
+            itemTitleLabel.setFont(Font.font("Arial"));
 
             // Item image view
             ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" + ".jpg")).toExternalForm());
@@ -403,49 +383,62 @@ public class VideoStoreApp extends Application {
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setAlignment(Pos.CENTER);
-        grid.setVgap(5);
+        grid.setVgap(10); // Increase the vertical gap for better separation
         grid.setHgap(5);
+
+        // Title label
+        Label titleLabel = new Label("Item Information");
+        titleLabel.setFont(Font.font("System", FontWeight.BOLD, 25)); // Set font weight and size
+        GridPane.setConstraints(titleLabel, 0, 0, 2, 1); // Span 2 columns
+        GridPane.setHalignment(titleLabel, HPos.CENTER); // Align to center
 
         // Item ID label and field
         Label itemIDLabel = new Label("ID:");
-        GridPane.setConstraints(itemIDLabel, 0, 0);
+        itemIDLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemIDLabel, 0, 1);
         Label itemIDField = new Label(item.getID());
-        GridPane.setConstraints(itemIDField, 1, 0);
+        GridPane.setConstraints(itemIDField, 1, 1);
 
         // Item title label and field
         Label itemTitleLabel = new Label("Title:");
-        GridPane.setConstraints(itemTitleLabel, 0, 1);
+        itemTitleLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemTitleLabel, 0, 2);
         Label itemTitleField = new Label(item.getTitle());
-        GridPane.setConstraints(itemTitleField, 1, 1);
+        GridPane.setConstraints(itemTitleField, 1, 2);
 
         // Item rental type label and field
         Label itemRentalTypeLabel = new Label("Rental Type:");
-        GridPane.setConstraints(itemRentalTypeLabel, 0, 2);
+        itemRentalTypeLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemRentalTypeLabel, 0, 3);
         Label itemRentalTypeField = new Label(item.getRentalType());
-        GridPane.setConstraints(itemRentalTypeField, 1, 2);
+        GridPane.setConstraints(itemRentalTypeField, 1, 3);
 
         // Item loan type label and field
         Label itemLoanTypeLabel = new Label("Loan Type:");
-        GridPane.setConstraints(itemLoanTypeLabel, 0, 3);
+        itemLoanTypeLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemLoanTypeLabel, 0, 4);
         Label itemLoanTypeField = new Label(item.getLoanType());
-        GridPane.setConstraints(itemLoanTypeField, 1, 3);
+        GridPane.setConstraints(itemLoanTypeField, 1, 4);
 
         // Item number of copies label and field
         Label itemNoOfCopiesLabel = new Label("Number of copies:");
-        GridPane.setConstraints(itemNoOfCopiesLabel, 0, 4);
+        itemNoOfCopiesLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemNoOfCopiesLabel, 0, 5);
         Label itemNoOfCopiesField = new Label(String.valueOf(item.getNoOfCopy()));
-        GridPane.setConstraints(itemNoOfCopiesField, 1, 4);
+        GridPane.setConstraints(itemNoOfCopiesField, 1, 5);
 
         // Item rental fee label and field
         Label itemRentalFeeLabel = new Label("Rental Fee:");
-        GridPane.setConstraints(itemRentalFeeLabel, 0, 5);
+        itemRentalFeeLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemRentalFeeLabel, 0, 6);
         Label itemRentalFeeField = new Label(String.valueOf(item.getRentalFee()));
-        GridPane.setConstraints(itemRentalFeeField, 1, 5);
+        GridPane.setConstraints(itemRentalFeeField, 1, 6);
 
         // Rent button
         Button rentButton = new Button("Rent");
         buttonDesignForStage(rentButton);
         GridPane.setConstraints(rentButton, 0, 6);
+        GridPane.setMargin(rentButton, new Insets(60, 0, 0, 0));
 
         Label messageText = new Label();
 
@@ -464,24 +457,36 @@ public class VideoStoreApp extends Application {
 
         // Close button
         Button closeButton = new Button("Close");
-        closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: red; -fx-border-width: 2;");
-        closeButton.setOnMouseEntered(e -> closeButton.setStyle("-fx-background-color: red; -fx-border-color: red; " + "-fx-border-width: 2;"));
-        closeButton.setOnMouseExited(e -> closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + "red; " + "-fx-border-width: 2;"));
+        closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #a792db; -fx-border-width: 2;");
+        closeButton.setOnMouseEntered(e -> closeButton.setStyle("-fx-background-color: #a792db; -fx-border-color: #a792db; " + "-fx-border-width: 2;"));
+        closeButton.setOnMouseExited(e -> closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + "#a792db; " + "-fx-border-width: 2;"));
 
         GridPane.setConstraints(closeButton, 1, 6);
-        closeButton.setOnAction(e -> {
-            showItemInformationStage.close();
-        });
+        GridPane.setMargin(closeButton, new Insets(60, 0, 0, 60));
+        closeButton.setOnAction(e -> showItemInformationStage.close());
+
+        // Set the row constraints
+        RowConstraints titleRow = new RowConstraints();
+        titleRow.setPrefHeight(40); // Increase the preferred height for the title row
+        RowConstraints contentRow = new RowConstraints();
+        contentRow.setPrefHeight(25); // Set the preferred height for the content rows
+        grid.getRowConstraints().addAll(titleRow, contentRow, contentRow, contentRow, contentRow, contentRow, contentRow);
 
         // Add all components to the grid
-        grid.getChildren().addAll(itemIDLabel, itemIDField, itemTitleLabel, itemTitleField, itemRentalTypeLabel, itemRentalTypeField, itemLoanTypeLabel, itemLoanTypeField, itemNoOfCopiesLabel, itemNoOfCopiesField, itemRentalFeeLabel, itemRentalFeeField, rentButton, closeButton);
+        grid.getChildren().addAll(
+                titleLabel,
+                itemIDLabel, itemIDField, itemTitleLabel, itemTitleField,
+                itemRentalTypeLabel, itemRentalTypeField, itemLoanTypeLabel, itemLoanTypeField,
+                itemNoOfCopiesLabel, itemNoOfCopiesField, itemRentalFeeLabel, itemRentalFeeField,
+                rentButton, closeButton
+        );
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(grid, messageText);
 
         // Set up the scene and stage
-        Scene scene = new Scene(vBox, 400, 200);
+        Scene scene = new Scene(vBox, 300, 400);
         showItemInformationStage.setScene(scene);
         showItemInformationStage.setTitle("Item Information");
         showItemInformationStage.show();
@@ -508,7 +513,7 @@ public class VideoStoreApp extends Application {
             emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " + "30px;");
             VBox.setMargin(emptyLabel, new Insets(10));
 
-            ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" + "/pompomsayno.png")).toExternalForm());
+            ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" + "/hertawonder.png")).toExternalForm());
             emptyImageView.setFitWidth(200);
             emptyImageView.setFitHeight(200);
 
@@ -530,9 +535,12 @@ public class VideoStoreApp extends Application {
 
                 // Item ID label
                 Label itemIDLabel = new Label(item.getID());
+                itemIDLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
                 // Item title label
                 Label itemTitleLabel = new Label(item.getTitle());
+                itemTitleLabel.setFont(Font.font("Arial"));
+
 
                 // Item image view
                 ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" + "/dvdmockup.jpg")).toExternalForm());
@@ -557,10 +565,12 @@ public class VideoStoreApp extends Application {
                     warningStage.initModality(Modality.APPLICATION_MODAL);
 
                     Label warningLabel = new Label("Are you sure you want to return this item?");
+                    warningLabel.setFont(Font.font("System", FontWeight.BOLD, 10));
+
                     Button yesButton = new Button("Yes");
-                    yesButton.setStyle("-fx-background-color: transparent; -fx-border-color: #f44336; " + "-fx-border-width: 2;");
-                    yesButton.setOnMouseEntered(e1 -> yesButton.setStyle("-fx-background-color: #f44336; " + "-fx-border-color: #f44336; " + "-fx-border-width: 2;"));
-                    yesButton.setOnMouseExited(e1 -> yesButton.setStyle("-fx-background-color: transparent; " + "-fx-border-color: #f44336; " + "-fx-border-width: 2;"));
+                    yesButton.setStyle("-fx-background-color: transparent; -fx-border-color: #a792db; " + "-fx-border-width: 2;");
+                    yesButton.setOnMouseEntered(e1 -> yesButton.setStyle("-fx-background-color: #a792db; " + "-fx-border-color: #a792db; " + "-fx-border-width: 2;"));
+                    yesButton.setOnMouseExited(e1 -> yesButton.setStyle("-fx-background-color: transparent; " + "-fx-border-color: #a792db; " + "-fx-border-width: 2;"));
 
                     Button noButton = new Button("No");
                     buttonDesignForStage(noButton);
@@ -641,7 +651,7 @@ public class VideoStoreApp extends Application {
                                 emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx" + "-font-size: " + "30px;");
                                 VBox.setMargin(emptyLabel, new Insets(10));
 
-                                ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/pompomsayno" + ".png")).toExternalForm());
+                                ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/hertawonder" + ".png")).toExternalForm());
                                 emptyImageView.setFitWidth(300);
                                 emptyImageView.setFitHeight(300);
 
@@ -655,9 +665,7 @@ public class VideoStoreApp extends Application {
                             warningStage.close();
                         }
                     });
-                    noButton.setOnAction(event -> {
-                        warningStage.close();
-                    });
+                    noButton.setOnAction(event -> warningStage.close());
                 });
 
                 // Add the VBox to the grid
@@ -712,26 +720,26 @@ public class VideoStoreApp extends Application {
 
         // Create a label to display the reward points
         Label rewardPointsLabel = new Label("Total Reward Points: " + currentUser.getRewardPoints());
-        rewardPointsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        rewardPointsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 35));
 
         // Create an ImageView for the image
         ImageView image = new ImageView();
-        String imagePath = "file:src/main/resources/Images/pompomicon.png";
+        String imagePath = "file:src/main/resources/Images/pompomreward.png";
         image.setImage(new Image(imagePath));
-        image.setFitWidth(400);
-        image.setFitHeight(400);
+        image.setFitWidth(350);
+        image.setFitHeight(350);
 
         // Create a button to redeem reward points
         Button redeemButton = new Button("Redeem Points");
-        redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #4CAF50; " + "-fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
-        redeemButton.setOnMouseEntered(e -> redeemButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: " + "white; -fx-border-color: #4CAF50; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
-        redeemButton.setOnMouseExited(e -> redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; " + "-fx-border-color: #4CAF50; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
+        redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #cc92db; " + "-fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
+        redeemButton.setOnMouseEntered(e -> redeemButton.setStyle("-fx-background-color: #cc92db; -fx-text-fill: " + "white; -fx-border-color: #cc92db; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
+        redeemButton.setOnMouseExited(e -> redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; " + "-fx-border-color: #cc92db; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
 
         // Create a button to go back to the main menu
         Button backButton = new Button("Back");
-        backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #f44336; " + "-fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
-        backButton.setOnMouseEntered(e1 -> backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; " + "-fx-border-color: #f44336; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
-        backButton.setOnMouseExited(e1 -> backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; " + "-fx-border-color: #f44336; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
+        backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #a792db; " + "-fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
+        backButton.setOnMouseEntered(e1 -> backButton.setStyle("-fx-background-color: #a792db; -fx-text-fill: white; " + "-fx-border-color: #a792db; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
+        backButton.setOnMouseExited(e1 -> backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; " + "-fx-border-color: #a792db; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
 
         // Set up the action for the redeem button
         redeemButton.setOnAction(e -> {
@@ -801,9 +809,7 @@ public class VideoStoreApp extends Application {
         });
 
         // Set up the action for the back button
-        backButton.setOnAction(e -> {
-            customerHome(primaryStage);
-        });
+        backButton.setOnAction(e -> customerHome(primaryStage));
 
         // Create a VBox to contain the reward points label and buttons
         VBox box = new VBox(25);
@@ -879,10 +885,10 @@ public class VideoStoreApp extends Application {
 
             rentButton.setOnAction(e -> {
                 boolean success = vsm.rentItemRewardPoint(item.getID(), messageText);
+                Stage infoStage = new Stage();
+                infoStage.initModality(Modality.WINDOW_MODAL);
                 if (success) {
                     // Create a new stage for the information message
-                    Stage infoStage = new Stage();
-                    infoStage.initModality(Modality.WINDOW_MODAL);
 
                     infoStage.setTitle("Rental Successful");
 
@@ -908,11 +914,8 @@ public class VideoStoreApp extends Application {
                     // Set the scene and show the stage
                     Scene scene = new Scene(root);
                     infoStage.setScene(scene);
-                    infoStage.show();
                 } else {
                     // Create a new stage for the information message
-                    Stage infoStage = new Stage();
-                    infoStage.initModality(Modality.WINDOW_MODAL);
 
                     infoStage.setTitle("Rental Failed");
 
@@ -938,8 +941,8 @@ public class VideoStoreApp extends Application {
                     // Set the scene and show the stage
                     Scene scene = new Scene(root);
                     infoStage.setScene(scene);
-                    infoStage.show();
                 }
+                infoStage.show();
             });
 
             // Add the VBox to the grid
@@ -974,12 +977,18 @@ public class VideoStoreApp extends Application {
         Label usernameLabel = new Label("Enter new username:");
         TextField usernameField = new TextField();
         Label passwordLabel = new Label("Enter new password:");
-        TextField passwordField = new TextField();
+        PasswordField passwordField = new PasswordField();
 
-        Button updateButton = new Button("Update information");
-        buttonDesignForStage(updateButton);
-        HBox updateBox = new HBox(updateButton);
-        updateBox.setAlignment(Pos.CENTER);
+        Button updateButton = new Button("Update Information");
+        updateButton.setStyle("-fx-background-color: #92a2db; -fx-text-fill: white; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 0;");
+        updateButton.setOnAction(event -> {
+            try {
+                validateInputFields(nameField, addressField, phoneField, usernameField, passwordField);
+                vsm.updateCustomer(vsm.getCurrentUserID(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), "", "", usernameField.getText(), passwordField.getText(), "");
+            } catch (IllegalArgumentException e) {
+                showErrorMessage("Invalid input: " + e.getMessage());
+            }
+        });
 
         // Display current customer info
         Customer customer = vsm.findCustomerByID(vsm.getCurrentUserID());
@@ -989,40 +998,65 @@ public class VideoStoreApp extends Application {
             infoText.setText("No customer found!");
         }
 
-        // Set action for updateButton to call updateCustomer method
-        updateButton.setOnAction(event -> {
-            vsm.updateCustomer(vsm.getCurrentUserID(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), "", "", usernameField.getText(), passwordField.getText(), "");
-        });
+        // Set up the layout
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.addRow(0, nameLabel, nameField);
+        gridPane.addRow(1, addressLabel, addressField);
+        gridPane.addRow(2, phoneLabel, phoneField);
+        gridPane.addRow(3, usernameLabel, usernameField);
+        gridPane.addRow(4, passwordLabel, passwordField);
 
-        // Create a grid to hold the text fields
-        GridPane infoGrid = new GridPane();
-        infoGrid.setHgap(10);
-        infoGrid.setVgap(10);
-        infoGrid.add(nameLabel, 0, 0);
-        infoGrid.add(nameField, 1, 0);
-        infoGrid.add(addressLabel, 0, 1);
-        infoGrid.add(addressField, 1, 1);
-        infoGrid.add(phoneLabel, 0, 2);
-        infoGrid.add(phoneField, 1, 2);
-        infoGrid.add(usernameLabel, 0, 3);
-        infoGrid.add(usernameField, 1, 3);
-        infoGrid.add(passwordLabel, 0, 4);
-        infoGrid.add(passwordField, 1, 4);
-
-        HBox infoBox = new HBox(10, infoText, infoGrid);
+        VBox infoBox = new VBox(20);
         infoBox.setAlignment(Pos.CENTER);
+        infoBox.getChildren().addAll(infoText, gridPane);
 
-        // Create a VBox to store everything
-        VBox vBox = new VBox();
-        vBox.setAlignment(Pos.TOP_CENTER);
-        vBox.setSpacing(10);
-        vBox.getChildren().addAll(customerPageButtonBox(primaryStage), infoBox, updateBox);
+        VBox vBox = new VBox(20);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setPadding(new Insets(20));
+        vBox.getChildren().addAll(customerPageButtonBox(primaryStage), infoBox, updateButton);
 
         // Create a Scene and set it on the Stage
-        Scene scene = new Scene(vBox, 700, 400);
+        Scene scene = new Scene(vBox, 800, 600);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("View/Update information");
+        primaryStage.setTitle("View/Update Information");
+
+        // Apply high-end styling
+        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
+        vBox.setStyle("-fx-background-color: #f2f2f2;");
+        infoText.setFont(Font.font("Montserrat", 16));
+        infoText.setFill(Color.web("#333333"));
+        gridPane.setStyle("-fx-background-color: white; -fx-padding: 20px; -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);");
+        nameLabel.setStyle("-fx-font-weight: bold;");
+        addressLabel.setStyle("-fx-font-weight: bold;");
+        phoneLabel.setStyle("-fx-font-weight: bold;");
+        usernameLabel.setStyle("-fx-font-weight: bold;");
+        passwordLabel.setStyle("-fx-font-weight: bold;");
+        updateButton.setOnMouseEntered(e -> updateButton.setStyle("-fx-background-color: #92a2db; -fx-text-fill: white; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 0; -fx-cursor: hand;"));
+        updateButton.setOnMouseExited(e -> updateButton.setStyle("-fx-background-color: #92a2db; -fx-text-fill: white; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 0;"));
+
         primaryStage.show();
+    }
+
+    private void validateInputFields(TextField phoneField, TextField... fields) throws IllegalArgumentException {
+        for (TextField field : fields) {
+            if (field.getText().trim().isEmpty()) {
+                throw new IllegalArgumentException("Field cannot be empty.");
+            }
+        }
+        if (!phoneField.getText().matches("\\d+")) {
+            throw new IllegalArgumentException("Phone number should only contain digits.");
+        }
+    }
+
+    private void showErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void adminHome(Stage primaryStage) {
@@ -1048,9 +1082,7 @@ public class VideoStoreApp extends Application {
         addItemIcon.setFitHeight(20);
         addItemIcon.setFitWidth(20);
         addItemButton.setGraphic(addItemIcon);
-        addItemButton.setOnAction(actionEvent -> {
-            addItemStage(primaryStage);
-        });
+        addItemButton.setOnAction(actionEvent -> addItemStage(primaryStage));
 
         Button updateItemButton = new Button("Update item");
         updateItemButton.setPrefSize(120, 50);
@@ -1059,9 +1091,7 @@ public class VideoStoreApp extends Application {
         updateItemIcon.setFitHeight(20);
         updateItemIcon.setFitWidth(20);
         updateItemButton.setGraphic(updateItemIcon);
-        updateItemButton.setOnAction(actionEvent -> {
-            updateItemStage(primaryStage);
-        });
+        updateItemButton.setOnAction(actionEvent -> updateItemStage(primaryStage));
 
         Button increaseItemButton = new Button("Increase\ncopies");
         increaseItemButton.setPrefSize(120, 50);
@@ -1070,9 +1100,7 @@ public class VideoStoreApp extends Application {
         increaseItemIcon.setFitHeight(20);
         increaseItemIcon.setFitWidth(20);
         increaseItemButton.setGraphic(increaseItemIcon);
-        increaseItemButton.setOnAction(actionEvent -> {
-            increaseItemStage(primaryStage);
-        });
+        increaseItemButton.setOnAction(actionEvent -> increaseItemStage(primaryStage));
 
         Button deleteItemButton = new Button("Delete item");
         deleteItemButton.setPrefSize(120, 50);
@@ -1081,9 +1109,7 @@ public class VideoStoreApp extends Application {
         deleteItemIcon.setFitHeight(20);
         deleteItemIcon.setFitWidth(20);
         deleteItemButton.setGraphic(deleteItemIcon);
-        deleteItemButton.setOnAction(actionEvent -> {
-            deleteItemStage(primaryStage);
-        });
+        deleteItemButton.setOnAction(actionEvent -> deleteItemStage(primaryStage));
 
         Button displayItemButton = new Button("Display item");
         displayItemButton.setPrefSize(120, 50);
@@ -1092,9 +1118,7 @@ public class VideoStoreApp extends Application {
         displayItemIcon.setFitHeight(20);
         displayItemIcon.setFitWidth(20);
         displayItemButton.setGraphic(displayItemIcon);
-        displayItemButton.setOnAction(actionEvent -> {
-            displayItemStage(primaryStage);
-        });
+        displayItemButton.setOnAction(actionEvent -> displayItemStage(primaryStage));
 
         Button searchItemButton = new Button("Search item");
         searchItemButton.setPrefSize(120, 50);
@@ -1103,9 +1127,7 @@ public class VideoStoreApp extends Application {
         searchItemIcon.setFitHeight(20);
         searchItemIcon.setFitWidth(20);
         searchItemButton.setGraphic(searchItemIcon);
-        searchItemButton.setOnAction(actionEvent -> {
-            searchItemStage(primaryStage);
-        });
+        searchItemButton.setOnAction(actionEvent -> searchItemStage(primaryStage));
 
         itemGrid.add(addItemButton, 0, 0);
         itemGrid.add(updateItemButton, 0, 1);
@@ -1136,9 +1158,7 @@ public class VideoStoreApp extends Application {
         addCustomerIcon.setFitHeight(20);
         addCustomerIcon.setFitWidth(20);
         addCustomerButton.setGraphic(addCustomerIcon);
-        addCustomerButton.setOnAction(actionEvent -> {
-            addCustomerStage(primaryStage);
-        });
+        addCustomerButton.setOnAction(actionEvent -> addCustomerStage(primaryStage));
 
         Button updateCustomerButton = new Button("Update\ncustomer");
         updateCustomerButton.setPrefSize(120, 50);
@@ -1147,9 +1167,7 @@ public class VideoStoreApp extends Application {
         updateCustomerIcon.setFitHeight(20);
         updateCustomerIcon.setFitWidth(20);
         updateCustomerButton.setGraphic(updateCustomerIcon);
-        updateCustomerButton.setOnAction(actionEvent -> {
-            updateCustomerStage(primaryStage);
-        });
+        updateCustomerButton.setOnAction(actionEvent -> updateCustomerStage(primaryStage));
 
         Button displayCustomerButton = new Button("Display\ncustomer");
         displayCustomerButton.setPrefSize(120, 50);
@@ -1158,9 +1176,7 @@ public class VideoStoreApp extends Application {
         displayCustomerIcon.setFitHeight(20);
         displayCustomerIcon.setFitWidth(20);
         displayCustomerButton.setGraphic(displayCustomerIcon);
-        displayCustomerButton.setOnAction(actionEvent -> {
-            displayCustomerStage(primaryStage);
-        });
+        displayCustomerButton.setOnAction(actionEvent -> displayCustomerStage(primaryStage));
 
         Button searchCustomerButton = new Button("Search\ncustomer");
         searchCustomerButton.setPrefSize(120, 50);
@@ -1169,9 +1185,7 @@ public class VideoStoreApp extends Application {
         searchCustomerIcon.setFitHeight(20);
         searchCustomerIcon.setFitWidth(20);
         searchCustomerButton.setGraphic(searchCustomerIcon);
-        searchCustomerButton.setOnAction(actionEvent -> {
-            searchCustomerStage(primaryStage);
-        });
+        searchCustomerButton.setOnAction(actionEvent -> searchCustomerStage(primaryStage));
 
         Button logoutButton = new Button("Logout");
         logoutButton.setPrefWidth(120);
@@ -1180,9 +1194,7 @@ public class VideoStoreApp extends Application {
         logoutIcon.setFitHeight(20);
         logoutIcon.setFitWidth(20);
         logoutButton.setGraphic(logoutIcon);
-        logoutButton.setOnAction(actionEvent -> {
-            loginStage(primaryStage);
-        });
+        logoutButton.setOnAction(actionEvent -> loginStage(primaryStage));
 
         customerGrid.add(addCustomerButton, 0, 0);
         customerGrid.add(updateCustomerButton, 0, 1);
@@ -1215,80 +1227,56 @@ public class VideoStoreApp extends Application {
     private VBox adminPageButtonBox(Stage primaryStage) {
         // Home button
         Button homeButton = new Button("Home");
-        homeButton.setOnAction(actionEvent -> {
-            adminHome(primaryStage);
-        });
+        homeButton.setOnAction(actionEvent -> adminHome(primaryStage));
         homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; " + "-fx-font-weight: bold;");
         homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: white; -fx-border-color: white; " + "-fx-border-width: 2; -fx-font-weight: bold;"));
         homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + "#00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         // Buttons for items management
         Button addItemButton = new Button("Add item");
-        addItemButton.setOnAction(actionEvent -> {
-            addItemStage(primaryStage);
-        });
+        addItemButton.setOnAction(actionEvent -> addItemStage(primaryStage));
         buttonDesignForHeader(addItemButton);
 
         Button updateItemButton = new Button("Update item");
-        updateItemButton.setOnAction(actionEvent -> {
-            updateItemStage(primaryStage);
-        });
+        updateItemButton.setOnAction(actionEvent -> updateItemStage(primaryStage));
         buttonDesignForHeader(updateItemButton);
 
         Button increaseItemButton = new Button("Increase item");
-        increaseItemButton.setOnAction(actionEvent -> {
-            increaseItemStage(primaryStage);
-        });
+        increaseItemButton.setOnAction(actionEvent -> increaseItemStage(primaryStage));
         buttonDesignForHeader(increaseItemButton);
 
         Button deleteItemButton = new Button("Delete item");
-        deleteItemButton.setOnAction(actionEvent -> {
-            deleteItemStage(primaryStage);
-        });
+        deleteItemButton.setOnAction(actionEvent -> deleteItemStage(primaryStage));
         buttonDesignForHeader(deleteItemButton);
 
         Button displayItemButton = new Button("Display item");
-        displayItemButton.setOnAction(actionEvent -> {
-            displayItemStage(primaryStage);
-        });
+        displayItemButton.setOnAction(actionEvent -> displayItemStage(primaryStage));
         buttonDesignForHeader(displayItemButton);
 
         Button searchItemButton = new Button("Search item");
-        searchItemButton.setOnAction(actionEvent -> {
-            searchItemStage(primaryStage);
-        });
+        searchItemButton.setOnAction(actionEvent -> searchItemStage(primaryStage));
         buttonDesignForHeader(searchItemButton);
 
         // Buttons for customers management
         Button addCustomerButton = new Button("Add customer");
-        addCustomerButton.setOnAction(actionEvent -> {
-            addCustomerStage(primaryStage);
-        });
+        addCustomerButton.setOnAction(actionEvent -> addCustomerStage(primaryStage));
         buttonDesignForHeader(addCustomerButton);
 
         Button updateCustomerButton = new Button("Update customer");
-        updateCustomerButton.setOnAction(actionEvent -> {
-            updateCustomerStage(primaryStage);
-        });
+        updateCustomerButton.setOnAction(actionEvent -> updateCustomerStage(primaryStage));
         buttonDesignForHeader(updateCustomerButton);
 
         Button displayCustomerButton = new Button("Display customer");
-        displayCustomerButton.setOnAction(actionEvent -> {
-            displayCustomerStage(primaryStage);
-        });
+        displayCustomerButton.setOnAction(actionEvent -> displayCustomerStage(primaryStage));
         buttonDesignForHeader(displayCustomerButton);
 
         Button searchCustomerButton = new Button("Search customer");
-        searchCustomerButton.setOnAction(actionEvent -> {
-            searchCustomerStage(primaryStage);
-        });
+        searchCustomerButton.setOnAction(actionEvent -> searchCustomerStage(primaryStage));
         buttonDesignForHeader(searchCustomerButton);
 
         // Logout button
         Button logoutButton = new Button("Logout");
-        logoutButton.setOnAction(actionEvent -> {
-            loginStage(primaryStage);
-        });
+        logoutButton.setOnAction(actionEvent -> loginStage(primaryStage));
         logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; " + "-fx-font-weight: bold;");
         logoutButton.setOnMouseEntered(e -> logoutButton.setStyle("-fx-background-color: white; -fx-border-color: " + "white; -fx-border-width: 2; -fx-font-weight: bold;"));
         logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; " + "-fx-border" + "-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
@@ -1442,9 +1430,7 @@ public class VideoStoreApp extends Application {
         });
 
         // Set action for add button
-        addButton.setOnAction(actionEvent -> {
-            vsm.addItem(idField.getText(), infoText, titleField.getText(), rentalTypeComboBox.getValue(), loanTypeComboBox.getValue(), noOfCopyField.getText(), rentalFeeField.getText(), genreComboBox.getValue());
-        });
+        addButton.setOnAction(actionEvent -> vsm.addItem(idField.getText(), infoText, titleField.getText(), rentalTypeComboBox.getValue(), loanTypeComboBox.getValue(), noOfCopyField.getText(), rentalFeeField.getText(), genreComboBox.getValue()));
 
         // Create a GridPane to hold text fields
         GridPane grid = new GridPane();
@@ -1617,9 +1603,7 @@ public class VideoStoreApp extends Application {
         });
 
         // Set action for updateButton to call updateCustomer method
-        updateButton.setOnAction(event -> {
-            vsm.updateItem(idField.getText(), infoText, newIDField.getText(), titleField.getText(), itemRentalTypeComboBox.getValue(), itemLoanTypeComboBox.getValue(), noOfCopiesField.getText(), rentalFeeField.getText(), itemrentalStatusComboBox.getValue(), genreComboBox.getValue());
-        });
+        updateButton.setOnAction(event -> vsm.updateItem(idField.getText(), infoText, newIDField.getText(), titleField.getText(), itemRentalTypeComboBox.getValue(), itemLoanTypeComboBox.getValue(), noOfCopiesField.getText(), rentalFeeField.getText(), itemrentalStatusComboBox.getValue(), genreComboBox.getValue()));
 
         // Create a GridPane to hold text fields
         GridPane grid = new GridPane();
@@ -1723,9 +1707,7 @@ public class VideoStoreApp extends Application {
         });
 
         // Set action for increase button to call increaseNoOfCopies method
-        increaseButton.setOnAction(actionEvent -> {
-            vsm.increaseNoOfCopies(idField.getText(), infoText, numberField.getText());
-        });
+        increaseButton.setOnAction(actionEvent -> vsm.increaseNoOfCopies(idField.getText(), infoText, numberField.getText()));
 
         // Create a GridPane to hold text fields
         GridPane grid = new GridPane();
@@ -1838,9 +1820,7 @@ public class VideoStoreApp extends Application {
                 warningStage.close();
             });
 
-            noButton.setOnAction(e -> {
-                warningStage.close();
-            });
+            noButton.setOnAction(e -> warningStage.close());
         });
 
         // Create a VBox to store everything
@@ -1875,15 +1855,19 @@ public class VideoStoreApp extends Application {
         sortTable.setSpacing(10);
         sortButton.setOnAction(e -> {
             String selectedOption = sortComboBox.getValue();
-            if (selectedOption.equals("Sort by ID")) {
-                sortTable.getChildren().clear();
-                vsm.displayIDSortItem(gridPane);
-            } else if (selectedOption.equals("Sort by Title")) {
-                sortTable.getChildren().clear();
-                vsm.displayTitleSortItem(gridPane);
-            } else if (selectedOption.equals("With no Copies")) {
-                sortTable.getChildren().clear();
-                vsm.displayItemNoCopies(gridPane);
+            switch (selectedOption) {
+                case "Sort by ID" -> {
+                    sortTable.getChildren().clear();
+                    vsm.displayIDSortItem(gridPane);
+                }
+                case "Sort by Title" -> {
+                    sortTable.getChildren().clear();
+                    vsm.displayTitleSortItem(gridPane);
+                }
+                case "With no Copies" -> {
+                    sortTable.getChildren().clear();
+                    vsm.displayItemNoCopies(gridPane);
+                }
             }
             sortTable.getChildren().addAll(buttonBox, gridPane);
         });
@@ -1915,13 +1899,11 @@ public class VideoStoreApp extends Application {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             String selectedOption = searchComboBox.getValue();
             if (selectedOption.equals("Search by ID")) {
-                String ID = newValue;
                 searchTable.getChildren().clear();
-                vsm.searchItemID(itemTable, ID);
+                vsm.searchItemID(itemTable, newValue);
             } else if (selectedOption.equals("Search by Title")) {
-                String title = newValue;
                 searchTable.getChildren().clear();
-                vsm.searchItemTitle(itemTable, title);
+                vsm.searchItemTitle(itemTable, newValue);
             }
             searchTable.getChildren().addAll(itemTable);
         });
@@ -2055,9 +2037,7 @@ public class VideoStoreApp extends Application {
         });
 
         // Set action for add button
-        addButton.setOnAction(actionEvent -> {
-            vsm.addCustomer(idField.getText(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), usernameField.getText(), passwordField.getText());
-        });
+        addButton.setOnAction(actionEvent -> vsm.addCustomer(idField.getText(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), usernameField.getText(), passwordField.getText()));
 
         // Create a GridPane to hold text fields
         GridPane grid = new GridPane();
@@ -2215,9 +2195,7 @@ public class VideoStoreApp extends Application {
         });
 
         // Set action for updateButton to call updateCustomer method
-        updateButton.setOnAction(event -> {
-            vsm.updateCustomer(idField.getText(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), noOfRentalField.getText(), customerTypeComboBox.getValue(), usernameField.getText(), passwordField.getText(), rewardPointField.getText());
-        });
+        updateButton.setOnAction(event -> vsm.updateCustomer(idField.getText(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), noOfRentalField.getText(), customerTypeComboBox.getValue(), usernameField.getText(), passwordField.getText(), rewardPointField.getText()));
 
         // Create a GridPane to hold text fields
         GridPane grid = new GridPane();
@@ -2277,15 +2255,19 @@ public class VideoStoreApp extends Application {
         sortTable.setSpacing(10);
         sortButton.setOnAction(e -> {
             String selectedOption = sortComboBox.getValue();
-            if (selectedOption.equals("Sort by ID")) {
-                sortTable.getChildren().clear();
-                vsm.displayIDSortCustomer(gridPane);
-            } else if (selectedOption.equals("Sort by Name")) {
-                sortTable.getChildren().clear();
-                vsm.displayNameSortCustomer(gridPane);
-            } else if (selectedOption.equals("Sort by Group")) {
-                sortTable.getChildren().clear();
-                vsm.displayGroup(gridPane);
+            switch (selectedOption) {
+                case "Sort by ID" -> {
+                    sortTable.getChildren().clear();
+                    vsm.displayIDSortCustomer(gridPane);
+                }
+                case "Sort by Name" -> {
+                    sortTable.getChildren().clear();
+                    vsm.displayNameSortCustomer(gridPane);
+                }
+                case "Sort by Group" -> {
+                    sortTable.getChildren().clear();
+                    vsm.displayGroup(gridPane);
+                }
             }
             sortTable.getChildren().addAll(buttonBox, gridPane);
         });
@@ -2315,13 +2297,11 @@ public class VideoStoreApp extends Application {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             String selectedOption = searchComboBox.getValue();
             if (selectedOption.equals("Search by ID")) {
-                String ID = newValue;
                 searchTable.getChildren().clear();
-                vsm.searchCustomerID(customerTable, ID);
+                vsm.searchCustomerID(customerTable, newValue);
             } else if (selectedOption.equals("Search by Name")) {
-                String name = newValue;
                 searchTable.getChildren().clear();
-                vsm.searchCustomerName(customerTable, name);
+                vsm.searchCustomerName(customerTable, newValue);
             }
             searchTable.getChildren().addAll(customerTable);
         });
