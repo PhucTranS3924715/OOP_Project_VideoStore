@@ -348,9 +348,11 @@ public class VideoStoreApp extends Application {
 
             // Item ID label
             Label itemIDLabel = new Label(item.getID());
+            itemIDLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
             // Item title label
             Label itemTitleLabel = new Label(item.getTitle());
+            itemTitleLabel.setFont(Font.font("Arial"));
 
             // Item image view
             ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" + ".jpg")).toExternalForm());
@@ -403,49 +405,62 @@ public class VideoStoreApp extends Application {
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setAlignment(Pos.CENTER);
-        grid.setVgap(5);
+        grid.setVgap(10); // Increase the vertical gap for better separation
         grid.setHgap(5);
+
+        // Title label
+        Label titleLabel = new Label("Item Information");
+        titleLabel.setFont(Font.font("System", FontWeight.BOLD, 25)); // Set font weight and size
+        GridPane.setConstraints(titleLabel, 0, 0, 2, 1); // Span 2 columns
+        GridPane.setHalignment(titleLabel, HPos.CENTER); // Align to center
 
         // Item ID label and field
         Label itemIDLabel = new Label("ID:");
-        GridPane.setConstraints(itemIDLabel, 0, 0);
+        itemIDLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemIDLabel, 0, 1);
         Label itemIDField = new Label(item.getID());
-        GridPane.setConstraints(itemIDField, 1, 0);
+        GridPane.setConstraints(itemIDField, 1, 1);
 
         // Item title label and field
         Label itemTitleLabel = new Label("Title:");
-        GridPane.setConstraints(itemTitleLabel, 0, 1);
+        itemTitleLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemTitleLabel, 0, 2);
         Label itemTitleField = new Label(item.getTitle());
-        GridPane.setConstraints(itemTitleField, 1, 1);
+        GridPane.setConstraints(itemTitleField, 1, 2);
 
         // Item rental type label and field
         Label itemRentalTypeLabel = new Label("Rental Type:");
-        GridPane.setConstraints(itemRentalTypeLabel, 0, 2);
+        itemRentalTypeLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemRentalTypeLabel, 0, 3);
         Label itemRentalTypeField = new Label(item.getRentalType());
-        GridPane.setConstraints(itemRentalTypeField, 1, 2);
+        GridPane.setConstraints(itemRentalTypeField, 1, 3);
 
         // Item loan type label and field
         Label itemLoanTypeLabel = new Label("Loan Type:");
-        GridPane.setConstraints(itemLoanTypeLabel, 0, 3);
+        itemLoanTypeLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemLoanTypeLabel, 0, 4);
         Label itemLoanTypeField = new Label(item.getLoanType());
-        GridPane.setConstraints(itemLoanTypeField, 1, 3);
+        GridPane.setConstraints(itemLoanTypeField, 1, 4);
 
         // Item number of copies label and field
         Label itemNoOfCopiesLabel = new Label("Number of copies:");
-        GridPane.setConstraints(itemNoOfCopiesLabel, 0, 4);
+        itemNoOfCopiesLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemNoOfCopiesLabel, 0, 5);
         Label itemNoOfCopiesField = new Label(String.valueOf(item.getNoOfCopy()));
-        GridPane.setConstraints(itemNoOfCopiesField, 1, 4);
+        GridPane.setConstraints(itemNoOfCopiesField, 1, 5);
 
         // Item rental fee label and field
         Label itemRentalFeeLabel = new Label("Rental Fee:");
-        GridPane.setConstraints(itemRentalFeeLabel, 0, 5);
+        itemRentalFeeLabel.setFont(Font.font("System", FontWeight.BOLD, 12)); // Set font weight to bold
+        GridPane.setConstraints(itemRentalFeeLabel, 0, 6);
         Label itemRentalFeeField = new Label(String.valueOf(item.getRentalFee()));
-        GridPane.setConstraints(itemRentalFeeField, 1, 5);
+        GridPane.setConstraints(itemRentalFeeField, 1, 6);
 
         // Rent button
         Button rentButton = new Button("Rent");
         buttonDesignForStage(rentButton);
         GridPane.setConstraints(rentButton, 0, 6);
+        GridPane.setMargin(rentButton, new Insets(60, 0, 0, 0));
 
         Label messageText = new Label();
 
@@ -464,24 +479,38 @@ public class VideoStoreApp extends Application {
 
         // Close button
         Button closeButton = new Button("Close");
-        closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: red; -fx-border-width: 2;");
-        closeButton.setOnMouseEntered(e -> closeButton.setStyle("-fx-background-color: red; -fx-border-color: red; " + "-fx-border-width: 2;"));
-        closeButton.setOnMouseExited(e -> closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + "red; " + "-fx-border-width: 2;"));
+        closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #a792db; -fx-border-width: 2;");
+        closeButton.setOnMouseEntered(e -> closeButton.setStyle("-fx-background-color: #a792db; -fx-border-color: #a792db; " + "-fx-border-width: 2;"));
+        closeButton.setOnMouseExited(e -> closeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + "#a792db; " + "-fx-border-width: 2;"));
 
         GridPane.setConstraints(closeButton, 1, 6);
+        GridPane.setMargin(closeButton, new Insets(60, 0, 0, 60));
         closeButton.setOnAction(e -> {
             showItemInformationStage.close();
         });
 
+        // Set the row constraints
+        RowConstraints titleRow = new RowConstraints();
+        titleRow.setPrefHeight(40); // Increase the preferred height for the title row
+        RowConstraints contentRow = new RowConstraints();
+        contentRow.setPrefHeight(25); // Set the preferred height for the content rows
+        grid.getRowConstraints().addAll(titleRow, contentRow, contentRow, contentRow, contentRow, contentRow, contentRow);
+
         // Add all components to the grid
-        grid.getChildren().addAll(itemIDLabel, itemIDField, itemTitleLabel, itemTitleField, itemRentalTypeLabel, itemRentalTypeField, itemLoanTypeLabel, itemLoanTypeField, itemNoOfCopiesLabel, itemNoOfCopiesField, itemRentalFeeLabel, itemRentalFeeField, rentButton, closeButton);
+        grid.getChildren().addAll(
+                titleLabel,
+                itemIDLabel, itemIDField, itemTitleLabel, itemTitleField,
+                itemRentalTypeLabel, itemRentalTypeField, itemLoanTypeLabel, itemLoanTypeField,
+                itemNoOfCopiesLabel, itemNoOfCopiesField, itemRentalFeeLabel, itemRentalFeeField,
+                rentButton, closeButton
+        );
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(grid, messageText);
 
         // Set up the scene and stage
-        Scene scene = new Scene(vBox, 400, 200);
+        Scene scene = new Scene(vBox, 300, 400);
         showItemInformationStage.setScene(scene);
         showItemInformationStage.setTitle("Item Information");
         showItemInformationStage.show();
@@ -508,7 +537,7 @@ public class VideoStoreApp extends Application {
             emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx-font-size: " + "30px;");
             VBox.setMargin(emptyLabel, new Insets(10));
 
-            ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" + "/pompomsayno.png")).toExternalForm());
+            ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" + "/hertawonder.png")).toExternalForm());
             emptyImageView.setFitWidth(200);
             emptyImageView.setFitHeight(200);
 
@@ -530,9 +559,12 @@ public class VideoStoreApp extends Application {
 
                 // Item ID label
                 Label itemIDLabel = new Label(item.getID());
+                itemIDLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
                 // Item title label
                 Label itemTitleLabel = new Label(item.getTitle());
+                itemTitleLabel.setFont(Font.font("Arial"));
+
 
                 // Item image view
                 ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" + "/dvdmockup.jpg")).toExternalForm());
@@ -557,10 +589,12 @@ public class VideoStoreApp extends Application {
                     warningStage.initModality(Modality.APPLICATION_MODAL);
 
                     Label warningLabel = new Label("Are you sure you want to return this item?");
+                    warningLabel.setFont(Font.font("System", FontWeight.BOLD, 10));
+
                     Button yesButton = new Button("Yes");
-                    yesButton.setStyle("-fx-background-color: transparent; -fx-border-color: #f44336; " + "-fx-border-width: 2;");
-                    yesButton.setOnMouseEntered(e1 -> yesButton.setStyle("-fx-background-color: #f44336; " + "-fx-border-color: #f44336; " + "-fx-border-width: 2;"));
-                    yesButton.setOnMouseExited(e1 -> yesButton.setStyle("-fx-background-color: transparent; " + "-fx-border-color: #f44336; " + "-fx-border-width: 2;"));
+                    yesButton.setStyle("-fx-background-color: transparent; -fx-border-color: #a792db; " + "-fx-border-width: 2;");
+                    yesButton.setOnMouseEntered(e1 -> yesButton.setStyle("-fx-background-color: #a792db; " + "-fx-border-color: #a792db; " + "-fx-border-width: 2;"));
+                    yesButton.setOnMouseExited(e1 -> yesButton.setStyle("-fx-background-color: transparent; " + "-fx-border-color: #a792db; " + "-fx-border-width: 2;"));
 
                     Button noButton = new Button("No");
                     buttonDesignForStage(noButton);
@@ -641,7 +675,7 @@ public class VideoStoreApp extends Application {
                                 emptyLabel.setStyle("-fx-font-family: 'Arial';" + "-fx-font-weight: bold;" + "-fx" + "-font-size: " + "30px;");
                                 VBox.setMargin(emptyLabel, new Insets(10));
 
-                                ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/pompomsayno" + ".png")).toExternalForm());
+                                ImageView emptyImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/hertawonder" + ".png")).toExternalForm());
                                 emptyImageView.setFitWidth(300);
                                 emptyImageView.setFitHeight(300);
 
@@ -712,26 +746,26 @@ public class VideoStoreApp extends Application {
 
         // Create a label to display the reward points
         Label rewardPointsLabel = new Label("Total Reward Points: " + currentUser.getRewardPoints());
-        rewardPointsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        rewardPointsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 35));
 
         // Create an ImageView for the image
         ImageView image = new ImageView();
-        String imagePath = "file:src/main/resources/Images/pompomicon.png";
+        String imagePath = "file:src/main/resources/Images/pompomreward.png";
         image.setImage(new Image(imagePath));
-        image.setFitWidth(400);
-        image.setFitHeight(400);
+        image.setFitWidth(350);
+        image.setFitHeight(350);
 
         // Create a button to redeem reward points
         Button redeemButton = new Button("Redeem Points");
-        redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #4CAF50; " + "-fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
-        redeemButton.setOnMouseEntered(e -> redeemButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: " + "white; -fx-border-color: #4CAF50; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
-        redeemButton.setOnMouseExited(e -> redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; " + "-fx-border-color: #4CAF50; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
+        redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #cc92db; " + "-fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
+        redeemButton.setOnMouseEntered(e -> redeemButton.setStyle("-fx-background-color: #cc92db; -fx-text-fill: " + "white; -fx-border-color: #cc92db; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
+        redeemButton.setOnMouseExited(e -> redeemButton.setStyle("-fx-background-color: white; -fx-text-fill: black; " + "-fx-border-color: #cc92db; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
 
         // Create a button to go back to the main menu
         Button backButton = new Button("Back");
-        backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #f44336; " + "-fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
-        backButton.setOnMouseEntered(e1 -> backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; " + "-fx-border-color: #f44336; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
-        backButton.setOnMouseExited(e1 -> backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; " + "-fx-border-color: #f44336; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
+        backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: #a792db; " + "-fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 2;");
+        backButton.setOnMouseEntered(e1 -> backButton.setStyle("-fx-background-color: #a792db; -fx-text-fill: white; " + "-fx-border-color: #a792db; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
+        backButton.setOnMouseExited(e1 -> backButton.setStyle("-fx-background-color: white; -fx-text-fill: black; " + "-fx-border-color: #a792db; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; " + "-fx-border-width: 2;"));
 
         // Set up the action for the redeem button
         redeemButton.setOnAction(e -> {
@@ -879,10 +913,10 @@ public class VideoStoreApp extends Application {
 
             rentButton.setOnAction(e -> {
                 boolean success = vsm.rentItemRewardPoint(item.getID(), messageText);
+                Stage infoStage = new Stage();
+                infoStage.initModality(Modality.WINDOW_MODAL);
                 if (success) {
                     // Create a new stage for the information message
-                    Stage infoStage = new Stage();
-                    infoStage.initModality(Modality.WINDOW_MODAL);
 
                     infoStage.setTitle("Rental Successful");
 
@@ -908,11 +942,8 @@ public class VideoStoreApp extends Application {
                     // Set the scene and show the stage
                     Scene scene = new Scene(root);
                     infoStage.setScene(scene);
-                    infoStage.show();
                 } else {
                     // Create a new stage for the information message
-                    Stage infoStage = new Stage();
-                    infoStage.initModality(Modality.WINDOW_MODAL);
 
                     infoStage.setTitle("Rental Failed");
 
@@ -938,8 +969,8 @@ public class VideoStoreApp extends Application {
                     // Set the scene and show the stage
                     Scene scene = new Scene(root);
                     infoStage.setScene(scene);
-                    infoStage.show();
                 }
+                infoStage.show();
             });
 
             // Add the VBox to the grid
@@ -974,12 +1005,18 @@ public class VideoStoreApp extends Application {
         Label usernameLabel = new Label("Enter new username:");
         TextField usernameField = new TextField();
         Label passwordLabel = new Label("Enter new password:");
-        TextField passwordField = new TextField();
+        PasswordField passwordField = new PasswordField();
 
-        Button updateButton = new Button("Update information");
-        buttonDesignForStage(updateButton);
-        HBox updateBox = new HBox(updateButton);
-        updateBox.setAlignment(Pos.CENTER);
+        Button updateButton = new Button("Update Information");
+        updateButton.setStyle("-fx-background-color: #92a2db; -fx-text-fill: white; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 0;");
+        updateButton.setOnAction(event -> {
+            try {
+                validateInputFields(nameField, addressField, phoneField, usernameField, passwordField);
+                vsm.updateCustomer(vsm.getCurrentUserID(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), "", "", usernameField.getText(), passwordField.getText(), "");
+            } catch (IllegalArgumentException e) {
+                showErrorMessage("Invalid input: " + e.getMessage());
+            }
+        });
 
         // Display current customer info
         Customer customer = vsm.findCustomerByID(vsm.getCurrentUserID());
@@ -989,40 +1026,65 @@ public class VideoStoreApp extends Application {
             infoText.setText("No customer found!");
         }
 
-        // Set action for updateButton to call updateCustomer method
-        updateButton.setOnAction(event -> {
-            vsm.updateCustomer(vsm.getCurrentUserID(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), "", "", usernameField.getText(), passwordField.getText(), "");
-        });
+        // Set up the layout
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.addRow(0, nameLabel, nameField);
+        gridPane.addRow(1, addressLabel, addressField);
+        gridPane.addRow(2, phoneLabel, phoneField);
+        gridPane.addRow(3, usernameLabel, usernameField);
+        gridPane.addRow(4, passwordLabel, passwordField);
 
-        // Create a grid to hold the text fields
-        GridPane infoGrid = new GridPane();
-        infoGrid.setHgap(10);
-        infoGrid.setVgap(10);
-        infoGrid.add(nameLabel, 0, 0);
-        infoGrid.add(nameField, 1, 0);
-        infoGrid.add(addressLabel, 0, 1);
-        infoGrid.add(addressField, 1, 1);
-        infoGrid.add(phoneLabel, 0, 2);
-        infoGrid.add(phoneField, 1, 2);
-        infoGrid.add(usernameLabel, 0, 3);
-        infoGrid.add(usernameField, 1, 3);
-        infoGrid.add(passwordLabel, 0, 4);
-        infoGrid.add(passwordField, 1, 4);
-
-        HBox infoBox = new HBox(10, infoText, infoGrid);
+        VBox infoBox = new VBox(20);
         infoBox.setAlignment(Pos.CENTER);
+        infoBox.getChildren().addAll(infoText, gridPane);
 
-        // Create a VBox to store everything
-        VBox vBox = new VBox();
-        vBox.setAlignment(Pos.TOP_CENTER);
-        vBox.setSpacing(10);
-        vBox.getChildren().addAll(customerPageButtonBox(primaryStage), infoBox, updateBox);
+        VBox vBox = new VBox(20);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setPadding(new Insets(20));
+        vBox.getChildren().addAll(customerPageButtonBox(primaryStage), infoBox, updateButton);
 
         // Create a Scene and set it on the Stage
-        Scene scene = new Scene(vBox, 700, 400);
+        Scene scene = new Scene(vBox, 800, 600);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("View/Update information");
+        primaryStage.setTitle("View/Update Information");
+
+        // Apply high-end styling
+        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
+        vBox.setStyle("-fx-background-color: #f2f2f2;");
+        infoText.setFont(Font.font("Montserrat", 16));
+        infoText.setFill(Color.web("#333333"));
+        gridPane.setStyle("-fx-background-color: white; -fx-padding: 20px; -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);");
+        nameLabel.setStyle("-fx-font-weight: bold;");
+        addressLabel.setStyle("-fx-font-weight: bold;");
+        phoneLabel.setStyle("-fx-font-weight: bold;");
+        usernameLabel.setStyle("-fx-font-weight: bold;");
+        passwordLabel.setStyle("-fx-font-weight: bold;");
+        updateButton.setOnMouseEntered(e -> updateButton.setStyle("-fx-background-color: #92a2db; -fx-text-fill: white; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 0; -fx-cursor: hand;"));
+        updateButton.setOnMouseExited(e -> updateButton.setStyle("-fx-background-color: #92a2db; -fx-text-fill: white; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 0;"));
+
         primaryStage.show();
+    }
+
+    private void validateInputFields(TextField phoneField, TextField... fields) throws IllegalArgumentException {
+        for (TextField field : fields) {
+            if (field.getText().trim().isEmpty()) {
+                throw new IllegalArgumentException("Field cannot be empty.");
+            }
+        }
+        if (!phoneField.getText().matches("\\d+")) {
+            throw new IllegalArgumentException("Phone number should only contain digits.");
+        }
+    }
+
+    private void showErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void adminHome(Stage primaryStage) {
