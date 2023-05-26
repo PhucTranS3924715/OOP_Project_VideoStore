@@ -22,6 +22,9 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javafx.application.Platform;
+import java.io.InputStream;
+
 
 public class VideoStoreApp extends Application {
     private VideoStoreManagement vsm = new VideoStoreManagement();
@@ -134,7 +137,7 @@ public class VideoStoreApp extends Application {
         VBox screen = new VBox(20);
         screen.setAlignment(Pos.CENTER);
         screen.setPadding(new Insets(50));
-        screen.setStyle("-fx-background-color: #63E5FF;");
+        screen.setStyle("-fx-background-color: #92c6db;");
         screen.getChildren().addAll(courseTitle, studentInfo, grid);
 
         // Set up the scene and stage
@@ -145,15 +148,15 @@ public class VideoStoreApp extends Application {
     }
 
     private void buttonDesignForHeader(Button button) {
-        button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2;");
+        button.setStyle("-fx-background-color: transparent; -fx-border-color: #92c6db; -fx-border-width: 2;");
         button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: white; -fx-border-color: white; " + "-fx" + "-border-width: 2;"));
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; " + "-fx-border-width: 2;"));
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-border-color: #92c6db; " + "-fx-border-width: 2;"));
     }
 
     private void buttonDesignForStage(Button button) {
-        button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2;");
-        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #00abe4; -fx-border-color: #00abe4; " + "-fx-border-width: 2;"));
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; " + "-fx-border-width: 2;"));
+        button.setStyle("-fx-background-color: transparent; -fx-border-color: #92c6db; -fx-border-width: 2;");
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #92c6db; -fx-border-color: #92c6db; " + "-fx-border-width: 2;"));
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-border-color: #92c6db; " + "-fx-border-width: 2;"));
     }
 
     private HBox customerPageButtonBox(Stage primaryStage) {
@@ -162,9 +165,9 @@ public class VideoStoreApp extends Application {
         homeButton.setOnAction(actionEvent -> {
             customerHome(primaryStage);
         });
-        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; " + "-fx-font-weight: bold;");
+        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color:  #ffffff ; -fx-border-width: 2; " + "-fx-font-weight: bold;");
         homeButton.setOnMouseEntered(e -> homeButton.setStyle("-fx-background-color: white; -fx-border-color: white; " + "-fx-border-width: 2; -fx-font-weight: bold;"));
-        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + "#00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
+        homeButton.setOnMouseExited(e -> homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: " + " #ffffff ; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         Button rentItemButton = new Button("Rent item");
         rentItemButton.setOnAction(actionEvent -> {
@@ -194,16 +197,16 @@ public class VideoStoreApp extends Application {
         logoutButton.setOnAction(actionEvent -> {
             loginStage(primaryStage);
         });
-        logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color: #00abe4; -fx-border-width: 2; " + "-fx-font-weight: bold;");
+        logoutButton.setStyle("-fx-background-color: transparent; -fx-border-color:  #ffffff ; -fx-border-width: 2; " + "-fx-font-weight: bold;");
         logoutButton.setOnMouseEntered(e -> logoutButton.setStyle("-fx-background-color: white; -fx-border-color: " + "white; -fx-border-width: 2; -fx-font-weight: bold;"));
-        logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; " + "-fx-border" + "-color: #00abe4; -fx-border-width: 2; -fx-font-weight: bold;"));
+        logoutButton.setOnMouseExited(e -> logoutButton.setStyle("-fx-background-color: transparent; " + "-fx-border" + "-color:  #ffffff ; -fx-border-width: 2; -fx-font-weight: bold;"));
 
         // Create an HBox to group the buttons together
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(20);
         buttonBox.getChildren().addAll(homeButton, rentItemButton, returnItemButton, rewardPointsButton, viewUpdateInfoButton, logoutButton);
-        buttonBox.setStyle("-fx-background-color: #00abe4;");
+        buttonBox.setStyle("-fx-background-color: #92c6db;");
         buttonBox.setPrefHeight(50);
 
         return buttonBox;
@@ -212,88 +215,116 @@ public class VideoStoreApp extends Application {
     private void customerHome(Stage primaryStage) {
         // Create home text
         Text homeText = new Text(vsm.welcomeTitle());
-        homeText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        homeText.setFont(Font.font("Arial", FontWeight.BOLD, 40));
+        homeText.setFill(Color.WHITE);
+
+        // Create mascot image
+        ImageView mascotImage = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/pompomhappy.png")).toExternalForm());
+        mascotImage.setFitHeight(250);
+        mascotImage.setFitWidth(250);
 
         // Create grid for buttons
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setPadding(new Insets(20));
         grid.setAlignment(Pos.CENTER);
-        grid.setVgap(5);
-        grid.setHgap(5);
+        grid.setVgap(20);
+        grid.setHgap(20);
 
         // Create the buttons
-        Button rentItemButton = new Button("Rent item");
-        rentItemButton.setPrefSize(120, 50);
-        buttonDesignForStage(rentItemButton);
-        ImageView rentItemIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/rentItem.png")).toExternalForm());
-        rentItemIcon.setFitHeight(20);
-        rentItemIcon.setFitWidth(20);
-        rentItemButton.setGraphic(rentItemIcon);
+        Button rentItemButton = createStyledButton("Rent Item", "/Images/rentItem.png");
+        Button returnItemButton = createStyledButton("Return Item", "/Images/returnItem.png");
+        Button rewardPointsButton = createStyledButton("Reward Points", "/Images/rewardPoints.png");
+        Button viewUpdateInfoButton = createStyledButton("View/Update\nInformation", "/Images/info.png");
+        Button logoutButton = createStyledButton("Logout", "/Images/logout.png");
+
         rentItemButton.setOnAction(actionEvent -> {
             rentItemStage(primaryStage);
         });
 
-        Button returnItemButton = new Button("Return item");
-        returnItemButton.setPrefSize(120, 50);
-        buttonDesignForStage(returnItemButton);
-        ImageView returnItemIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/returnItem" + ".png")).toExternalForm());
-        returnItemIcon.setFitHeight(20);
-        returnItemIcon.setFitWidth(20);
-        returnItemButton.setGraphic(returnItemIcon);
         returnItemButton.setOnAction(actionEvent -> {
             returnItemStage(primaryStage, vsm.getCurrentUser());
         });
 
-        Button rewardPointsButton = new Button("Reward points");
-        rewardPointsButton.setPrefSize(120, 50);
-        buttonDesignForStage(rewardPointsButton);
-        ImageView rewardPointsIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images" + "/rewardPoints.png")).toExternalForm());
-        rewardPointsIcon.setFitHeight(20);
-        rewardPointsIcon.setFitWidth(20);
-        rewardPointsButton.setGraphic(rewardPointsIcon);
         rewardPointsButton.setOnAction(actionEvent -> {
             rewardPointsStage(primaryStage, vsm.getCurrentUser());
         });
 
-        Button viewUpdateInfoButton = new Button("View/Update\ninformation");
-        viewUpdateInfoButton.setPrefSize(120, 50);
-        buttonDesignForStage(viewUpdateInfoButton);
-        viewUpdateInfoButton.setAlignment(Pos.CENTER);
-        ImageView viewInfoIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/info.png")).toExternalForm());
-        viewInfoIcon.setFitHeight(20);
-        viewInfoIcon.setFitWidth(20);
-        viewUpdateInfoButton.setGraphic(viewInfoIcon);
         viewUpdateInfoButton.setOnAction(actionEvent -> {
             viewUpdateInfoStage(primaryStage);
         });
 
-        Button logoutButton = new Button("Logout");
-        logoutButton.setPrefWidth(120);
-        buttonDesignForStage(logoutButton);
-        ImageView logoutIcon = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/logout.png")).toExternalForm());
-        logoutIcon.setFitHeight(20);
-        logoutIcon.setFitWidth(20);
-        logoutButton.setGraphic(logoutIcon);
         logoutButton.setOnAction(actionEvent -> {
             loginStage(primaryStage);
         });
 
-        grid.add(rentItemButton, 0, 0);
-        grid.add(returnItemButton, 1, 0);
-        grid.add(rewardPointsButton, 0, 1);
-        grid.add(viewUpdateInfoButton, 1, 1);
+        grid.addColumn(0, rentItemButton, returnItemButton);
+        grid.addColumn(1, rewardPointsButton, viewUpdateInfoButton);
         grid.add(logoutButton, 1, 2);
 
-        // Create vertical box to store everything
-        VBox vBox = new VBox();
+        // Create VBox for the mascot image
+        VBox mascotBox = new VBox(mascotImage);
+        mascotBox.setAlignment(Pos.BOTTOM_LEFT);
+        mascotBox.setPadding(new Insets(0, 10, 10, 10));
+
+        // Create VBox to hold home text and grid
+        VBox contentBox = new VBox(homeText, grid);
+        contentBox.setAlignment(Pos.CENTER);
+        contentBox.setSpacing(30);
+
+        // Create HBox to hold mascotBox and contentBox
+        HBox hBox = new HBox(mascotBox, contentBox);
+        hBox.setAlignment(Pos.CENTER);
+
+        // Create VBox to store everything
+        VBox vBox = new VBox(hBox);
         vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(homeText, grid);
+        vBox.setBackground(new Background(
+                new BackgroundFill(Color.rgb(146, 198, 219), CornerRadii.EMPTY, Insets.EMPTY))
+        );
+        vBox.setPadding(new Insets(20));
+        vBox.setSpacing(20);
 
         // Set up the scene and stage
-        Scene scene = new Scene(vBox, 500, 200);
+        Scene scene = new Scene(vBox, 900, 700);
+        setButtonStyles(rentItemButton, returnItemButton, rewardPointsButton, viewUpdateInfoButton, logoutButton);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Video Store");
+        primaryStage.setOnCloseRequest(windowEvent -> Platform.exit());
         primaryStage.show();
+    }
+
+    private Button createStyledButton(String text, String iconPath) {
+        Button button = new Button(text);
+        button.setPrefSize(200, 100);
+        button.setBackground(new Background(
+                new BackgroundFill(Color.rgb(240, 240, 240), new CornerRadii(10), Insets.EMPTY))
+        );
+        button.setTextFill(Color.BLACK);
+        button.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+
+        InputStream iconStream = getClass().getResourceAsStream(iconPath);
+        if (iconStream != null) {
+            Image icon = new Image(iconStream);
+            ImageView iconView = new ImageView(icon);
+            iconView.setFitWidth(30);
+            iconView.setFitHeight(30);
+            button.setGraphic(iconView);
+        } else {
+            System.err.println("Icon not found: " + iconPath);
+        }
+
+        return button;
+    }
+
+    private void setButtonStyles(Button... buttons) {
+        for (Button button : buttons) {
+            button.setOnMouseEntered(event -> button.setBackground(new Background(
+                    new BackgroundFill(Color.rgb(220, 220, 220), new CornerRadii(10), Insets.EMPTY))
+            ));
+            button.setOnMouseExited(event -> button.setBackground(new Background(
+                    new BackgroundFill(Color.rgb(240, 240, 240), new CornerRadii(10), Insets.EMPTY))
+            ));
+        }
     }
 
     private void rentItemStage(Stage primaryStage) {
