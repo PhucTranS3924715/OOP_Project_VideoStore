@@ -20,7 +20,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
@@ -1862,7 +1861,6 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    // Modified version of searchItemStage
     private void searchItemStage(Stage primaryStage) {
         ComboBox<String> searchComboBox = new ComboBox<>();
         searchComboBox.getItems().addAll("Search by ID", "Search by Title");
@@ -2262,7 +2260,6 @@ public class VideoStoreApp extends Application {
         primaryStage.show();
     }
 
-    // Modified version of searchCustomerStage
     private void searchCustomerStage(Stage primaryStage) {
         ComboBox<String> searchComboBox = new ComboBox<>();
         searchComboBox.getItems().addAll("Search by ID", "Search by Name");
