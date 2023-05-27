@@ -326,11 +326,11 @@ public class VideoStoreApp extends Application {
 
             // Item ID label
             Label itemIDLabel = new Label(item.getID());
-            itemIDLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+            itemIDLabel.setFont(Font.font("Arial"));
 
             // Item title label
             Label itemTitleLabel = new Label(item.getTitle());
-            itemTitleLabel.setFont(Font.font("Arial"));
+            itemTitleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
             // Item image view
             ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" + ".jpg")).toExternalForm());
@@ -535,11 +535,11 @@ public class VideoStoreApp extends Application {
 
                 // Item ID label
                 Label itemIDLabel = new Label(item.getID());
-                itemIDLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+                itemIDLabel.setFont(Font.font("Arial"));
 
                 // Item title label
                 Label itemTitleLabel = new Label(item.getTitle());
-                itemTitleLabel.setFont(Font.font("Arial"));
+                itemTitleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
 
                 // Item image view
@@ -859,9 +859,11 @@ public class VideoStoreApp extends Application {
 
             // Item ID label
             Label itemIDLabel = new Label(item.getID());
+            itemIDLabel.setFont(Font.font("Arial"));
 
             // Item title label
             Label itemTitleLabel = new Label(item.getTitle());
+            itemTitleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
             // Item image view
             ImageView itemImageView = new ImageView(Objects.requireNonNull(getClass().getResource("/Images/dvdmockup" + ".jpg")).toExternalForm());
@@ -977,18 +979,22 @@ public class VideoStoreApp extends Application {
         Label usernameLabel = new Label("Enter new username:");
         TextField usernameField = new TextField();
         Label passwordLabel = new Label("Enter new password:");
-        PasswordField passwordField = new PasswordField();
+        TextField passwordField = new TextField();
 
-        Button updateButton = new Button("Update Information");
-        updateButton.setStyle("-fx-background-color: #92a2db; -fx-text-fill: white; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 0;");
-        updateButton.setOnAction(event -> {
-            try {
-                validateInputFields(nameField, addressField, phoneField, usernameField, passwordField);
-                vsm.updateCustomer(vsm.getCurrentUserID(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), "", "", usernameField.getText(), passwordField.getText(), "");
-            } catch (IllegalArgumentException e) {
-                showErrorMessage("Invalid input: " + e.getMessage());
-            }
-        });
+        Button updateButton = new Button("Update information");
+        buttonDesignForStage(updateButton);
+        HBox updateBox = new HBox(updateButton);
+        updateBox.setAlignment(Pos.CENTER);
+
+        // Set font weight to bold for information fields
+        nameLabel.setStyle("-fx-font-weight: bold;-fx-font-size: 15px;");
+        addressLabel.setStyle("-fx-font-weight: bold;-fx-font-size: 15px;");
+        phoneLabel.setStyle("-fx-font-weight: bold;-fx-font-size: 15px;");
+        usernameLabel.setStyle("-fx-font-weight: bold;-fx-font-size: 15px;");
+        passwordLabel.setStyle("-fx-font-weight: bold;-fx-font-size: 15px;");
+
+        // Create a Separator
+        Separator separator = new Separator();
 
         // Display current customer info
         Customer customer = vsm.findCustomerByID(vsm.getCurrentUserID());
@@ -998,65 +1004,38 @@ public class VideoStoreApp extends Application {
             infoText.setText("No customer found!");
         }
 
-        // Set up the layout
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.addRow(0, nameLabel, nameField);
-        gridPane.addRow(1, addressLabel, addressField);
-        gridPane.addRow(2, phoneLabel, phoneField);
-        gridPane.addRow(3, usernameLabel, usernameField);
-        gridPane.addRow(4, passwordLabel, passwordField);
+        // Set action for updateButton to call updateCustomer method
+        updateButton.setOnAction(event -> vsm.updateCustomer(vsm.getCurrentUserID(), infoText, nameField.getText(), addressField.getText(), phoneField.getText(), "", "", usernameField.getText(), passwordField.getText(), ""));
 
-        VBox infoBox = new VBox(20);
+        // Create a grid to hold the text fields
+        GridPane infoGrid = new GridPane();
+        infoGrid.setHgap(10);
+        infoGrid.setVgap(10);
+        infoGrid.add(nameLabel, 0, 0);
+        infoGrid.add(nameField, 1, 0);
+        infoGrid.add(addressLabel, 0, 1);
+        infoGrid.add(addressField, 1, 1);
+        infoGrid.add(phoneLabel, 0, 2);
+        infoGrid.add(phoneField, 1, 2);
+        infoGrid.add(usernameLabel, 0, 3);
+        infoGrid.add(usernameField, 1, 3);
+        infoGrid.add(passwordLabel, 0, 4);
+        infoGrid.add(passwordField, 1, 4);
+
+        HBox infoBox = new HBox(10, infoText, infoGrid);
         infoBox.setAlignment(Pos.CENTER);
-        infoBox.getChildren().addAll(infoText, gridPane);
 
-        VBox vBox = new VBox(20);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setPadding(new Insets(20));
-        vBox.getChildren().addAll(customerPageButtonBox(primaryStage), infoBox, updateButton);
+        // Create a VBox to store everything
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setSpacing(10);
+        vBox.getChildren().addAll(customerPageButtonBox(primaryStage), infoBox, separator, updateBox);
 
         // Create a Scene and set it on the Stage
-        Scene scene = new Scene(vBox, 800, 600);
+        Scene scene = new Scene(vBox, 700, 400);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("View/Update Information");
-
-        // Apply high-end styling
-        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
-        vBox.setStyle("-fx-background-color: #f2f2f2;");
-        infoText.setFont(Font.font("Montserrat", 16));
-        infoText.setFill(Color.web("#333333"));
-        gridPane.setStyle("-fx-background-color: white; -fx-padding: 20px; -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);");
-        nameLabel.setStyle("-fx-font-weight: bold;");
-        addressLabel.setStyle("-fx-font-weight: bold;");
-        phoneLabel.setStyle("-fx-font-weight: bold;");
-        usernameLabel.setStyle("-fx-font-weight: bold;");
-        passwordLabel.setStyle("-fx-font-weight: bold;");
-        updateButton.setOnMouseEntered(e -> updateButton.setStyle("-fx-background-color: #92a2db; -fx-text-fill: white; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 0; -fx-cursor: hand;"));
-        updateButton.setOnMouseExited(e -> updateButton.setStyle("-fx-background-color: #92a2db; -fx-text-fill: white; -fx-font-family: Arial; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-width: 0;"));
-
+        primaryStage.setTitle("View/Update information");
         primaryStage.show();
-    }
-
-    private void validateInputFields(TextField phoneField, TextField... fields) throws IllegalArgumentException {
-        for (TextField field : fields) {
-            if (field.getText().trim().isEmpty()) {
-                throw new IllegalArgumentException("Field cannot be empty.");
-            }
-        }
-        if (!phoneField.getText().matches("\\d+")) {
-            throw new IllegalArgumentException("Phone number should only contain digits.");
-        }
-    }
-
-    private void showErrorMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     private void adminHome(Stage primaryStage) {
