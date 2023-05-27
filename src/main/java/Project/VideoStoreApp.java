@@ -263,7 +263,7 @@ public class VideoStoreApp extends Application {
         vBox.setSpacing(20);
 
         // Set up the scene and stage
-        Scene scene = new Scene(vBox, 900, 700);
+        Scene scene = new Scene(vBox, 800, 700);
         setButtonStyles(rentItemButton, returnItemButton, rewardPointsButton, viewUpdateInfoButton, logoutButton);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Video Store");
