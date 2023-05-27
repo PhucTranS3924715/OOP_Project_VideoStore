@@ -31,7 +31,7 @@ public class VideoStoreManagement {
         this.adminPassword = "password";
     }
 
-    //Allow VideoStoreApp to access the instance
+    // Allow VideoStoreApp to access the instance
     public Customer getCurrentUser() {
         return currentUser;
     }
@@ -333,8 +333,8 @@ public class VideoStoreManagement {
         }
     }
 
-    //Rent an item (decrease the number of copies held in stock)
-    //Return true if the item is successfully rented, false otherwise
+    // Rent an item (decrease the number of copies held in stock)
+    // Return true if the item is successfully rented, false otherwise
     public boolean rentItem(String itemID, Label messageLabel) {
         Item item = findItemByID(itemID);
 
@@ -409,17 +409,6 @@ public class VideoStoreManagement {
             messageLabel.setText("Item rented successfully.");
             return true;
         }
-    }
-
-    //Implement available item
-    public ArrayList<Item> getAvailableItems() {
-        ArrayList<Item> availableItems = new ArrayList<Item>();
-        for (Item item : items) {
-            if (item.getRentalStatus().equals("available")) {
-                availableItems.add(item);
-            }
-        }
-        return availableItems;
     }
 
     //Return an item (increase the number of copies held in stock)
@@ -1051,7 +1040,6 @@ public class VideoStoreManagement {
         }
     }
 
-    // Modified version of searchItemTitle
     public void searchItemTitle(GridPane itemTable, String input) {
         Collections.sort(items, new TitleSortItem());
 
@@ -1224,7 +1212,6 @@ public class VideoStoreManagement {
         }
     }
 
-    // Modified version of searchCustomerName
     public void searchCustomerName(GridPane customerTable, String input) {
         Collections.sort(customers, new NameSortCustomer());
 
