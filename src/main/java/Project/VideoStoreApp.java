@@ -440,6 +440,7 @@ public class VideoStoreApp extends Application {
         GridPane.setMargin(rentButton, new Insets(60, 0, 0, 0));
 
         Label messageText = new Label();
+        VBox.setMargin(messageText, new Insets(20, 0, 0, 0));
 
         rentButton.setOnAction(e -> {
             boolean success = vsm.rentItem(item.getID(), messageText);
